@@ -39,17 +39,29 @@
       [[NotificarePushLib shared] initializeWithKey:nil andSecret:nil];
       [[NotificarePushLib shared] setDelegate:self];
       [[NotificarePushLib shared] didFinishLaunchingWithOptions:_launchOptions];
-      result(@"");
+      result([NSNull null]);
   } else if ([@"launch" isEqualToString:call.method]) {
       [[NotificarePushLib shared] launch];
-      result(@"");
+      result([NSNull null]);
+  } else if ([@"registerForNotifications" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] registerForNotifications];
+      result([NSNull null]);
+  } else if ([@"unregisterForNotifications" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] unregisterForNotifications];
+      result([NSNull null]);
+  } else if ([@"isRemoteNotificationsEnabled" isEqualToString:call.method]) {
+      result([NSNumber numberWithBool:[[NotificarePushLib shared] remoteNotificationsEnabled]]);
+  } else if ([@"isAllowedUIEnabled" isEqualToString:call.method]) {
+      result([NSNumber numberWithBool:[[NotificarePushLib shared] allowedUIEnabled]]);
+  } else if ([@"isNotificationFromNotificare" isEqualToString:call.method]) {
+      result([NSNumber numberWithBool:[[NotificarePushLib shared] isNotificationFromNotificare:call.arguments]]);
   } else {
     result(FlutterMethodNotImplemented);
   }
 }
 
 -(void)notificarePushLib:(NotificarePushLib *)library onReady:(NotificareApplication *)application{
-    _eventSink(@{@"event":@"onReady", @"body": [[NotificarePushLibUtils shared] dictionaryFromApplication:application]});
+    _eventSink(@{@"event":@"ready", @"body": [[NotificarePushLibUtils shared] dictionaryFromApplication:application]});
 }
 
 -(void)sendEvent:(NSDictionary*)event{
@@ -64,6 +76,15 @@
     if (launchOptions != nil) {
         _launchOptions = launchOptions;
     }
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
+    [[NotificarePushLib shared] handleOpenURL:url withOptions:options];
+    NSMutableDictionary * payload = [NSMutableDictionary new];
+    [payload setObject:[url absoluteString] forKey:@"url"];
+    [payload setObject:options forKey:@"options"];
+    _eventSink(@{@"event":@"urlOpened", @"body": payload});
     return YES;
 }
 

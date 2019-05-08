@@ -31,6 +31,25 @@ class NotificarePushLib {
     await _methodChannel.invokeMethod('launch');
   }
 
+  Future<void> registerForNotifications() async {
+    await _methodChannel.invokeMethod('registerForNotifications');
+  }
+
+  Future<void> unregisterForNotifications() async {
+    await _methodChannel.invokeMethod('unregisterForNotifications');
+  }
+
+  Future<void> isRemoteNotificationsEnabled() async {
+    await _methodChannel.invokeMethod('isRemoteNotificationsEnabled');
+  }
+
+  Future<void> isAllowedUIEnabled() async {
+    await _methodChannel.invokeMethod('isAllowedUIEnabled');
+  }
+
+  Future<void> isNotificationFromNotificare(Map<String, dynamic> userInfo) async {
+    await _methodChannel.invokeMethod('isNotificationFromNotificare', userInfo);
+  }
 
   Stream<NotificareEvent> get onEventReceived {
     if (_onEventReceived == null) {

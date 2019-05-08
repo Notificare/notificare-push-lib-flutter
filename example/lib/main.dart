@@ -33,11 +33,14 @@ class _MyAppState extends State<MyApp> {
 
     _notificare.onEventReceived.listen((NotificareEvent event) {
         switch (event.eventName) {
-          case "onReady": {
-            print(event.body);
-            setState(() {
-              _application = event.body;
-            });
+          case "ready": {
+            print("Application is Ready: " + event.body['name']);
+            _notificare.registerForNotifications();
+          }
+          break;
+          case "urlOpened": {
+            print("URL: " + event.body['url']);
+            //Handle Deep Link
           }
           break;
         }
@@ -52,7 +55,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running ${_application["name"]}'),
+          child: Text('Running...'),
         ),
       ),
     );
