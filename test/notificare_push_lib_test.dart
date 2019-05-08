@@ -15,7 +15,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await NotificarePushLib.platformVersion, '42');
+  test('initializeWithKeyAndSecret', () async {
+    //expect(await NotificarePushLib().initializeWithKeyAndSecret('asdf', 'sadf'), '42');
   });
 }

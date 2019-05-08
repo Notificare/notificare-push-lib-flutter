@@ -3,19 +3,19 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'notificare_push_lib'
-  s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.version          = '1.0.0'
+  s.summary          = 'Notificare Flutter Plugin'
   s.description      = <<-DESC
-A new flutter plugin project.
+Notificare Flutter Plugin implements the power of smart notifications, location services, contextual marketing and powerful loyalty solutions provided by the Notificare platform in Flutter applications.\n\nFor documentation please refer to: http://docs.notifica.re\n\nFor support please use: http://support.notifica.re
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://notificare.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Notificare' => 'info@notificare.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-
-  s.ios.deployment_target = '8.0'
+  s.dependency 'notificare-push-lib', '>= 2.1.0', '< 3.0'
+  s.ios.deployment_target = '9.0'
 end
 
