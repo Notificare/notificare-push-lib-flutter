@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSDictionary *)dictionaryFromScannable:(NotificareScannable *)scannable;
 -(NotificareScannable *)scannableFromDictionary:(NSDictionary *)dictionary;
 
--(NSDictionary *)dictionaryFromNotificationSettings:(UNNotificationSettings *)settings;
+-(NSDictionary *)dictionaryFromNotificationSettings:(UNNotificationSettings *)settings API_AVAILABLE(ios(10.0));
 
 @end
 

@@ -43,6 +43,99 @@ class _MyAppState extends State<MyApp> {
             //Handle Deep Link
           }
           break;
+          case "launchUrlReceived": {
+            print("URL: " + event.body['url']);
+            //Handle Deep Link
+          }
+          break;
+          case "deviceRegistered": {
+            print("Device: " + event.body['deviceID']);
+          }
+          break;
+          case "notificationSettingsChanged": {
+            print("Allowed UI: " + event.body['granted']);
+          }
+          break;
+          case "remoteNotificationReceivedInBackground": {
+            print("Notification: " + event.body['message']);
+          }
+          break;
+          case "remoteNotificationReceivedInForeground": {
+            print("Notification: " + event.body['message']);
+          }
+          break;
+          case "systemNotificationReceivedInBackground": {
+            print("System Notification: " + event.body['notificationID']);
+          }
+          break;
+          case "systemNotificationReceivedInForeground": {
+            print("System Notification: " + event.body['notificationID']);
+          }
+          break;
+          case "unknownNotificationReceived": {
+            print("Unknown Notification: " + event.body.toString());
+          }
+          break;
+          case "unknownActionForNotificationReceived": {
+            print("Unknown Notification: " + event.body.toString());
+          }
+          break;
+          case "notificationWillOpen": {
+            print("Notification: " + event.body['message']);
+          }
+          break;
+          case "notificationOpened": {
+            print("Notification: " + event.body['message']);
+          }
+          break;
+          case "notificationClosed": {
+            print("Notification: " + event.body['message']);
+          }
+          break;
+          case "notificationFailedToOpen": {
+            print("Notification: " + event.body['message']);
+          }
+          break;
+          case "urlClickedInNotification": {
+            print("URL: " + event.body['url']);
+            //Handle Deep Link
+          }
+          break;
+          case "notificationFailedToOpen": {
+            print("Notification: " + event.body['message']);
+          }
+          break;
+          case "urlClickedInNotification": {
+            print("URL: " + event.body['url']);
+            //Handle Deep Link
+          }
+          break;
+          case "actionWillExecute": {
+            print("Action: " + event.body['label']);
+          }
+          break;
+          case "actionExecuted": {
+            print("Action: " + event.body['label']);
+          }
+          break;
+          case "shouldPerformSelectorWithUrl": {
+            print("URL: " + event.body['url']);
+            //Handle Deep Link
+          }
+          break;
+          case "actionNotExecuted": {
+            print("Action: " + event.body['label']);
+          }
+          break;
+          case "actionFailedToExecute": {
+            print("Action: " + event.body['label']);
+          }
+          break;
+          case "shouldOpenSettings": {
+            print("Notification: " + event.body.toString());
+            //Go to settings
+          }
+          break;
         }
     });
   }
