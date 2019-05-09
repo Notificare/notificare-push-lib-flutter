@@ -1,0 +1,29 @@
+PODS:
+  - Flutter (1.0.0)
+  - notificare-push-lib (2.1.0)
+  - notificare_push_lib (1.0.0):
+    - Flutter
+    - notificare-push-lib (< 3.0, >= 2.1.0)
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - notificare_push_lib (from `.symlinks/plugins/notificare_push_lib/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - notificare-push-lib
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  notificare_push_lib:
+    :path: ".symlinks/plugins/notificare_push_lib/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  notificare-push-lib: ddc6abbdf12a29c4419a367017a6aef56e037f4f
+  notificare_push_lib: 74fd519b9b2971d569022d1f7796d55678d0cb6f
+
+PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
+
+COCOAPODS: 1.6.1
