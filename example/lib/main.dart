@@ -53,7 +53,11 @@ class _MyAppState extends State<MyApp> {
           }
           break;
           case "notificationSettingsChanged": {
-            print("Allowed UI: " + event.body['granted']);
+            if (event.body['granted']) {
+              print("Allowed UI: Granted");
+            } else {
+              print("Allowed UI: Not Granted");
+            }
           }
           break;
           case "remoteNotificationReceivedInBackground": {

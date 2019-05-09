@@ -57,7 +57,12 @@ static NotificarePushLibUtils *utils;
     [data setValue:[device altitude] forKey:@"altitude"];
     [data setValue:[device floor] forKey:@"floor"];
     [data setValue:[device course] forKey:@"course"];
-    [data setValue:[device lastRegistered] forKey:@"lastRegistered"];
+    
+//    if ([device lastRegistered] && [[device lastRegistered] isKindOfClass:[NSDate class]]) {
+//        NSTimeInterval interval = [[device lastRegistered] timeIntervalSince1970];
+//        [data setValue:[NSNumber numberWithDouble:interval] forKey:@"lastRegistered"];
+//    }
+    
     [data setValue:[device locationServicesAuthStatus] forKey:@"locationServicesAuthStatus"];
     [data setValue:[NSNumber numberWithBool:[device registeredForNotifications]] forKey:@"registeredForNotifications"];
     [data setValue:[NSNumber numberWithBool:[device allowedLocationServices]] forKey:@"allowedLocationServices"];
