@@ -55,6 +55,22 @@
       result([NSNumber numberWithBool:[[NotificarePushLib shared] allowedUIEnabled]]);
   } else if ([@"isNotificationFromNotificare" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[NotificarePushLib shared] isNotificationFromNotificare:call.arguments]]);
+  } else if ([@"fetchNotificationSettings" isEqualToString:call.method]) {
+      if (@available(iOS 10.0, *)) {
+          [[[NotificarePushLib shared] userNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+              result([[NotificarePushLibUtils shared] dictionaryFromNotificationSettings:settings]);
+          }];
+      } else {
+          result([NSNull null]);
+      }
+  } else if ([@"startLocationUpdates" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] startLocationUpdates];
+      result([NSNull null]);
+  } else if ([@"stopLocationUpdates" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] stopLocationUpdates];
+      result([NSNull null]);
+  } else if ([@"isLocationServicesEnabled" isEqualToString:call.method]) {
+      result([NSNumber numberWithBool:[[NotificarePushLib shared] locationServicesEnabled]]);
   } else {
     result(FlutterMethodNotImplemented);
   }

@@ -39,16 +39,37 @@ class NotificarePushLib {
     await _methodChannel.invokeMethod('unregisterForNotifications');
   }
 
-  Future<void> isRemoteNotificationsEnabled() async {
-    await _methodChannel.invokeMethod('isRemoteNotificationsEnabled');
+  Future<bool> isRemoteNotificationsEnabled() async {
+    var status = await _methodChannel.invokeMethod("isRemoteNotificationsEnabled");
+    return status as bool;
   }
 
-  Future<void> isAllowedUIEnabled() async {
-    await _methodChannel.invokeMethod('isAllowedUIEnabled');
+  Future<bool> isAllowedUIEnabled() async {
+    var status = await _methodChannel.invokeMethod("isAllowedUIEnabled");
+    return status as bool;
   }
 
-  Future<void> isNotificationFromNotificare(Map<String, dynamic> userInfo) async {
-    await _methodChannel.invokeMethod('isNotificationFromNotificare', userInfo);
+  Future<bool> isNotificationFromNotificare(Map<String, dynamic> userInfo) async {
+    var status = await _methodChannel.invokeMethod('isNotificationFromNotificare', userInfo);
+    return status as bool;
+  }
+
+  Future<Map<String, dynamic>> fetchNotificationSettings() async {
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('fetchNotificationSettings');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<void> startLocationUpdates() async {
+    await _methodChannel.invokeMethod('startLocationUpdates');
+  }
+
+  Future<void> stopLocationUpdates() async {
+    await _methodChannel.invokeMethod('stopLocationUpdates');
+  }
+
+  Future<bool> isLocationServicesEnabled() async {
+    var status = await _methodChannel.invokeMethod("isLocationServicesEnabled");
+    return status as bool;
   }
 
   Stream<NotificareEvent> get onEventReceived {
