@@ -1,4 +1,9 @@
 ### Flutter ###
+
+# InteliJ
+.idea
+*.iml
+
 # Flutter/Dart/Pub related
 **/doc/api/
 .dart_tool/
