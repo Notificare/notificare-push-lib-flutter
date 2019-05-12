@@ -36,7 +36,9 @@
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"initializeWithKeyAndSecret" isEqualToString:call.method]) {
-      [[NotificarePushLib shared] initializeWithKey:nil andSecret:nil];
+      NSString* key = (call.arguments[@"key"]) ? call.arguments[@"key"] : nil;
+      NSString* secret = (call.arguments[@"secret"]) ? call.arguments[@"secret"] : nil;
+      [[NotificarePushLib shared] initializeWithKey:key andSecret:secret];
       [[NotificarePushLib shared] setDelegate:self];
       [[NotificarePushLib shared] didFinishLaunchingWithOptions:_launchOptions];
       result([NSNull null]);
@@ -71,10 +73,71 @@
       result([NSNull null]);
   } else if ([@"isLocationServicesEnabled" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[NotificarePushLib shared] locationServicesEnabled]]);
+  } else if ([@"registerDevice" isEqualToString:call.method]) {
+      NSString* userID = (call.arguments[@"userID"]) ? call.arguments[@"userID"] : nil;
+      NSString* userName = (call.arguments[@"userName"]) ? call.arguments[@"userName"] : nil;
+      [[NotificarePushLib shared] registerDevice:userID withUsername:userName completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchDevice" isEqualToString:call.method]) {
+      NotificareDevice * device = [[NotificarePushLib shared] myDevice];
+      result([[NotificarePushLibUtils shared] dictionaryFromDevice:device]);
+  } else if ([@"fetchPreferredLanguage" isEqualToString:call.method]) {
+      result([[NotificarePushLib shared] preferredLanguage]);
+  } else if ([@"updatePreferredLanguage" isEqualToString:call.method]) {
+      NSString* preferredLanguage = call.arguments[@"preferredLanguage"];
+      [[NotificarePushLib shared] updatePreferredLanguage:preferredLanguage completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchTags" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] fetchTags:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"addTag" isEqualToString:call.method]) {
+      NSString* tag = call.arguments[@"tag"];
+      [[NotificarePushLib shared] addTag:tag completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"addTags" isEqualToString:call.method]) {
+      NSArray* tags = call.arguments[@"tags"];
+      [[NotificarePushLib shared] addTags:tags completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
   } else {
     result(FlutterMethodNotImplemented);
   }
 }
+
 
 -(void)sendEvent:(NSDictionary*)event{
     if (!_eventSink) {

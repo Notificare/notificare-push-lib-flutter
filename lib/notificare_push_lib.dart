@@ -72,6 +72,41 @@ class NotificarePushLib {
     return status as bool;
   }
 
+  Future<Map<String, dynamic>> registerDevice(String userID, String userName) async {
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('registerDevice', {'userID': userID, 'userName': userName});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> fetchDevice() async {
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('fetchDevice');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> fetchPreferredLanguage() async {
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('fetchPreferredLanguage');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> updatePreferredLanguage(String preferredLanguage) async {
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('updatePreferredLanguage', {'preferredLanguage': preferredLanguage});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<List> fetchTags(String preferredLanguage) async {
+    List response = await _methodChannel.invokeMethod('fetchTags');
+    return response;
+  }
+
+  Future<Map<String, dynamic>> addTag(String tag) async {
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('addTag', {'tag': tag});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> addTags(List tags) async {
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('addTags', {'tags': tags});
+    return response.cast<String, dynamic>();
+  }
+
   Stream<NotificareEvent> get onEventReceived {
     if (_onEventReceived == null) {
       _onEventReceived = _eventChannel
