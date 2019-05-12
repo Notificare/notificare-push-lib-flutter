@@ -24,7 +24,7 @@ class NotificarePushLib {
   Stream<NotificareEvent> _onEventReceived;
 
   Future<void> initializeWithKeyAndSecret(String key, String secret) async {
-    await _methodChannel.invokeMethod('initializeWithKeyAndSecret', {'key': key, 'secret': secret});
+    await _methodChannel.invokeMapMethod('initializeWithKeyAndSecret', {'key': key, 'secret': secret});
   }
 
   Future<void> launch() async {
@@ -50,7 +50,7 @@ class NotificarePushLib {
   }
 
   Future<bool> isNotificationFromNotificare(Map<String, dynamic> userInfo) async {
-    var status = await _methodChannel.invokeMethod('isNotificationFromNotificare', userInfo);
+    var status = await _methodChannel.invokeMapMethod('isNotificationFromNotificare', userInfo);
     return status as bool;
   }
 
@@ -73,7 +73,7 @@ class NotificarePushLib {
   }
 
   Future<Map<String, dynamic>> registerDevice(String userID, String userName) async {
-    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('registerDevice', {'userID': userID, 'userName': userName});
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMapMethod('isNotificationFromNotificare', {'userID': userID, 'userName': userName});
     return response.cast<String, dynamic>();
   }
 
@@ -88,7 +88,7 @@ class NotificarePushLib {
   }
 
   Future<Map<String, dynamic>> updatePreferredLanguage(String preferredLanguage) async {
-    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('updatePreferredLanguage', {'preferredLanguage': preferredLanguage});
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMapMethod('isNotificationFromNotificare', {'preferredLanguage': preferredLanguage});
     return response.cast<String, dynamic>();
   }
 
@@ -98,12 +98,12 @@ class NotificarePushLib {
   }
 
   Future<Map<String, dynamic>> addTag(String tag) async {
-    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('addTag', {'tag': tag});
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMapMethod('addTag', {'tag': tag});
     return response.cast<String, dynamic>();
   }
 
   Future<Map<String, dynamic>> addTags(List tags) async {
-    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('addTags', {'tags': tags});
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMapMethod('addTags', {'tags': tags});
     return response.cast<String, dynamic>();
   }
 
