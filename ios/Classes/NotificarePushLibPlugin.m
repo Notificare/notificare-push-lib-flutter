@@ -1,6 +1,7 @@
 #import "NotificarePushLibPlugin.h"
 #import "NotificarePushLib.h"
 #import "NotificarePushLibUtils.h"
+#import "UIImage+FromBundle.h"
 
 @interface NotificarePushLibPlugin () <FlutterStreamHandler,NotificarePushLibDelegate>
 @end
@@ -251,9 +252,178 @@
                                          details:error.localizedDescription]);
           }
       }];
+  } else if ([@"clearPrivateNotification" isEqualToString:call.method]) {
+      NSDictionary* notification = call.arguments[@"notification"];
+      [[NotificarePushLib shared] clearPrivateNotification:[[NotificarePushLibUtils shared] notificationFromDictionary:notification] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromNotification:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"presentNotification" isEqualToString:call.method]) {
+      NSDictionary* notification = call.arguments[@"notification"];
+      NotificareNotification * item = [[NotificarePushLibUtils shared] notificationFromDictionary:notification];
+      id controller = [[NotificarePushLib shared] controllerForNotification:item];
+      if ([self isViewController:controller]) {
+          UINavigationController *navController = [self navigationControllerForViewControllers:controller];
+          [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
+              [[NotificarePushLib shared] presentNotification:item inNavigationController:navController withController:controller];
+          }];
+      } else {
+          [[NotificarePushLib shared] presentNotification:item inNavigationController:[self navigationControllerForRootViewController] withController:controller];
+      }
+      result([NSNull null]);
+  } else if ([@"reply" isEqualToString:call.method]) {
+      NSDictionary* notification = call.arguments[@"notification"];
+      NSDictionary* action = call.arguments[@"action"];
+      NSDictionary* data = (call.arguments[@"data"]) ? call.arguments[@"data"] : nil;
+      [[NotificarePushLib shared] reply:[[NotificarePushLibUtils shared] notificationFromDictionary:notification] forAction:[[NotificarePushLibUtils shared] actionFromDictionary:action]  andData:data completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchInbox" isEqualToString:call.method]) {
+      [[[NotificarePushLib shared] inboxManager] fetchInbox:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              NSMutableArray * payload = [NSMutableArray array];
+              for (NotificareDeviceInbox * inboxItem in response) {
+                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromDeviceInbox:inboxItem]];
+              }
+              result(payload);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"presentInboxItem" isEqualToString:call.method]) {
+      NSDictionary* inboxItem = call.arguments[@"inboxItem"];
+      NotificareDeviceInbox * item = [[NotificarePushLibUtils shared] deviceInboxFromDictionary:inboxItem];
+      [[[NotificarePushLib shared] inboxManager] openInboxItem:item completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              if ([self isViewController:response]) {
+                  UINavigationController *navController = [self navigationControllerForViewControllers:response];
+                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
+                      [[NotificarePushLib shared] presentInboxItem:item inNavigationController:navController withController:response];
+                  }];
+              } else {
+                  [[NotificarePushLib shared] presentInboxItem:item inNavigationController:[self navigationControllerForRootViewController] withController:response];
+              }
+          }
+      }];
+      result([NSNull null]);
+  } else if ([@"removeFromInbox" isEqualToString:call.method]) {
+      NSDictionary* inboxItem = call.arguments[@"inboxItem"];
+      [[[NotificarePushLib shared] inboxManager] removeFromInbox:[[NotificarePushLibUtils shared] deviceInboxFromDictionary:inboxItem] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromDeviceInbox:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"markAsRead" isEqualToString:call.method]) {
+      NSDictionary* inboxItem = call.arguments[@"inboxItem"];
+      [[[NotificarePushLib shared] inboxManager] markAsRead:[[NotificarePushLibUtils shared] deviceInboxFromDictionary:inboxItem] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromDeviceInbox:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"clearInbox" isEqualToString:call.method]) {
+      [[[NotificarePushLib shared] inboxManager] clearInbox:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchAssets" isEqualToString:call.method]) {
+      NSString* group = call.arguments[@"group"];
+      [[NotificarePushLib shared] fetchAssets:group completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              NSMutableArray * payload = [NSMutableArray array];
+              for (NotificareAsset * asset in response) {
+                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromAsset:asset]];
+              }
+              result(payload);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchPassWithSerial" isEqualToString:call.method]) {
+      NSString* serial = call.arguments[@"serial"];
+      [[NotificarePushLib shared] fetchPassWithSerial:serial completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromPass:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchPassWithBarcode" isEqualToString:call.method]) {
+      NSString* barcode = call.arguments[@"barcode"];
+      [[NotificarePushLib shared] fetchPassWithBarcode:barcode completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromPass:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
   } else {
     result(FlutterMethodNotImplemented);
   }
+}
+
+
+
+
+
+#pragma mark Helper Methods
+-(void)close{
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+-(UINavigationController*)navigationControllerForViewControllers:(id)object{
+    UINavigationController *navController = [UINavigationController new];
+    [[(UIViewController *)object navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageFromBundle:@"closeIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(close)]];
+    return navController;
+}
+
+-(UINavigationController*)navigationControllerForRootViewController{
+    UINavigationController * navController = (UINavigationController*)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+    return navController;
+}
+
+-(BOOL)isViewController:(id)controller{
+    BOOL result = YES;
+    if ([[controller class] isEqual:[UIAlertController class]] ||
+        [[controller class] isEqual:[SKStoreProductViewController class]] ||
+        [[controller class] isEqual:[NSObject class]] ||
+        controller == nil) {
+        result = NO;
+    }
+    return result;
 }
 
 #pragma mark Event Sink

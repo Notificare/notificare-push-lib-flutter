@@ -25,7 +25,7 @@ class NotificarePushLib {
 
   Future<void> initializeWithKeyAndSecret(String key, String secret) async {
     if (key != null && secret != null) {
-      await _methodChannel.invokeMapMethod('initializeWithKeyAndSecret', {'key': key, 'secret': secret});
+      await _methodChannel.invokeMethod('initializeWithKeyAndSecret', {'key': key, 'secret': secret});
     } else {
       await _methodChannel.invokeMethod('initializeWithKeyAndSecret');
     }
@@ -54,12 +54,12 @@ class NotificarePushLib {
   }
 
   Future<bool> isNotificationFromNotificare(Map<String, dynamic> userInfo) async {
-    var status = await _methodChannel.invokeMapMethod('isNotificationFromNotificare', userInfo);
+    var status = await _methodChannel.invokeMethod('isNotificationFromNotificare', userInfo);
     return status as bool;
   }
 
   Future<Map<String, dynamic>> fetchNotificationSettings() async {
-    Map<dynamic, dynamic> response = await _methodChannel.invokeMethod('fetchNotificationSettings');
+    Map<dynamic, dynamic> response = await _methodChannel.invokeMapMethod('fetchNotificationSettings');
     return response.cast<String, dynamic>();
   }
 
@@ -84,13 +84,13 @@ class NotificarePushLib {
       Map<String, dynamic> response = await _methodChannel.invokeMapMethod('registerDevice', {'userID': userID});
       return response.cast<String, dynamic>();
     } else {
-      Map<String, dynamic> response = await _methodChannel.invokeMethod('registerDevice');
+      Map<String, dynamic> response = await _methodChannel.invokeMapMethod('registerDevice');
       return response.cast<String, dynamic>();
     }
   }
 
   Future<Map<String, dynamic>> fetchDevice() async {
-    Map<String, dynamic> response = await _methodChannel.invokeMethod('fetchDevice');
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchDevice');
     return response.cast<String, dynamic>();
   }
 
@@ -110,7 +110,7 @@ class NotificarePushLib {
   }
 
   Future<List> fetchTags() async {
-    List response = await _methodChannel.invokeMethod('fetchTags');
+    List response = await _methodChannel.invokeListMethod('fetchTags');
     return response;
   }
 
@@ -150,27 +150,80 @@ class NotificarePushLib {
   }
 
   Future<Map<String, dynamic>> fetchDoNotDisturb() async {
-    Map<String, dynamic> response = await _methodChannel.invokeMethod('fetchDoNotDisturb');
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchDoNotDisturb');
     return response.cast<String, dynamic>();
   }
 
   Future<Map<String, dynamic>> updateDoNotDisturb(Map<String, dynamic> dnd) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMethod('updateDoNotDisturb', {'dnd': dnd});
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('updateDoNotDisturb', {'dnd': dnd});
     return response.cast<String, dynamic>();
   }
 
   Future<Map<String, dynamic>> clearDoNotDisturb() async {
-    Map<String, dynamic> response = await _methodChannel.invokeMethod('clearDoNotDisturb');
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('clearDoNotDisturb');
     return response.cast<String, dynamic>();
   }
 
   Future<Map<String, dynamic>> fetchNotification(Map<String, dynamic> notification) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMethod('fetchNotification', {'notification': notification});
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchNotification', {'notification': notification});
     return response.cast<String, dynamic>();
   }
 
   Future<Map<String, dynamic>> fetchNotificationForInboxItem(Map<String, dynamic> inboxItem) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMethod('fetchNotificationForInboxItem', {'inboxItem': inboxItem});
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchNotificationForInboxItem', {'inboxItem': inboxItem});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> clearPrivateNotification(Map<String, dynamic> notification) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('clearPrivateNotification', {'notification': notification});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<void> presentNotification(Map<String, dynamic> notification) async {
+    await _methodChannel.invokeMethod('presentNotification', {'notification': notification});
+  }
+
+  Future<Map<String, dynamic>> reply(Map<String, dynamic> notification, Map<String, dynamic> action, Map<String, dynamic> data) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('reply', {'notification': notification, 'action': action, 'data': data});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<List> fetchInbox() async {
+    List response = await _methodChannel.invokeListMethod('fetchInbox');
+    return response;
+  }
+
+  Future<void> presentInboxItem(Map<String, dynamic> inboxItem) async {
+    await _methodChannel.invokeMapMethod('presentInboxItem', {'inboxItem': inboxItem});
+  }
+
+  Future<Map<String, dynamic>> removeFromInbox(Map<String, dynamic> inboxItem) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('removeFromInbox', {'inboxItem': inboxItem});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> markAsRead(Map<String, dynamic> inboxItem) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('markAsRead', {'inboxItem': inboxItem});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> clearInbox() async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('clearInbox');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<List> fetchAssets(String group) async {
+    List response = await _methodChannel.invokeListMethod('fetchAssets', {'group': group});
+    return response;
+  }
+
+  Future<Map<String, dynamic>> fetchPassWithSerial(Map<String, dynamic> serial) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchPassWithSerial', {'serial': serial});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> fetchPassWithBarcode(Map<String, dynamic> barcode) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchPassWithBarcode', {'barcode': barcode});
     return response.cast<String, dynamic>();
   }
 

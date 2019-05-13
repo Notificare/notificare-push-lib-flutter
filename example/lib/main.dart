@@ -28,6 +28,8 @@ class _MyAppState extends State<MyApp> {
           print("Application is Ready: " + event.body['name']);
           _notificare.registerForNotifications();
           _registerDevice("1234567890", "Joel Oliveira");
+          _fetchInbox();
+          _fetchAssets("TEST");
         }
         break;
         case "urlOpened": {
@@ -187,6 +189,16 @@ class _MyAppState extends State<MyApp> {
   void _addTag(String tag) async {
     Map<String, dynamic> response = await _notificare.addTag(tag);
     print("Add Tag: " + response.toString());
+  }
+
+  void _fetchInbox() async {
+    List response = await _notificare.fetchInbox();
+    print("Inbox: " + response.toString());
+  }
+
+  void _fetchAssets(String group) async {
+    List response = await _notificare.fetchAssets(group);
+    print("Assets: " + response.toString());
   }
 
   @override
