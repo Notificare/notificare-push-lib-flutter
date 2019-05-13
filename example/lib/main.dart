@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
         case "ready": {
           print("Application is Ready: " + event.body['name']);
           _notificare.registerForNotifications();
+          _registerDevice("1234567890", "Joel Oliveira");
         }
         break;
         case "urlOpened": {
@@ -42,6 +43,9 @@ class _MyAppState extends State<MyApp> {
         case "deviceRegistered": {
           print("Device: " + event.body['deviceID']);
           _fetchNotificationSettings();
+          _fetchTags();
+          _addTag("tag_flutter");
+          _fetchPreferredLanguage();
         }
         break;
         case "notificationSettingsChanged": {
@@ -162,6 +166,27 @@ class _MyAppState extends State<MyApp> {
   void _fetchNotificationSettings() async {
     Map<String, dynamic> settings = await _notificare.fetchNotificationSettings();
     print("Settings: " + settings.toString());
+  }
+
+  void _fetchPreferredLanguage() async {
+    String preferredLanguage = await _notificare.fetchPreferredLanguage();
+    print("Preferred Language: " + preferredLanguage.toString());
+  }
+
+  void _registerDevice(String userID, String userName) async {
+    Map<String, dynamic> response = await _notificare.registerDevice(userID, userName);
+    print("Register Device: " + response.toString());
+  }
+
+
+  void _fetchTags() async {
+    List tags = await _notificare.fetchTags();
+    print("Tags: " + tags.toString());
+  }
+
+  void _addTag(String tag) async {
+    Map<String, dynamic> response = await _notificare.addTag(tag);
+    print("Add Tag: " + response.toString());
   }
 
   @override

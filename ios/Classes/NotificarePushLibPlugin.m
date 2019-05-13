@@ -78,9 +78,9 @@
       NSString* userName = (call.arguments[@"userName"]) ? call.arguments[@"userName"] : nil;
       [[NotificarePushLib shared] registerDevice:userID withUsername:userName completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result([[NotificarePushLibUtils shared] dictionaryFromDevice:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
                                          details:error.localizedDescription]);
           }
@@ -96,7 +96,7 @@
           if (!error) {
               result(response);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
                                          details:error.localizedDescription]);
           }
@@ -106,7 +106,7 @@
           if (!error) {
               result(response);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
                                          details:error.localizedDescription]);
           }
@@ -117,7 +117,7 @@
           if (!error) {
               result(response);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
                                          details:error.localizedDescription]);
           }
@@ -128,7 +128,72 @@
           if (!error) {
               result(response);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", error.code]
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"removeTag" isEqualToString:call.method]) {
+      NSString* tag = call.arguments[@"tag"];
+      [[NotificarePushLib shared] removeTag:tag completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"removeTags" isEqualToString:call.method]) {
+      NSArray* tags = call.arguments[@"tags"];
+      [[NotificarePushLib shared] removeTags:tags completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"clearTags" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] clearTags:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchUserData" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] fetchUserData:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              NSMutableArray * payload = [NSMutableArray array];
+              for (NotificareUserData * userData in response) {
+                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromUserData:userData]];
+              }
+              result(payload);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"updateUserData" isEqualToString:call.method]) {
+      NSArray* userData = call.arguments[@"userData"];
+      NSMutableArray * data = [NSMutableArray array];
+      for (NSDictionary * field in userData) {
+          [data addObject:[[NotificarePushLibUtils shared] userDataFromDictionary:field]];
+      }
+      [[NotificarePushLib shared] updateUserData:data completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              NSMutableArray * payload = [NSMutableArray array];
+              for (NotificareUserData * userData in response) {
+                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromUserData:userData]];
+              }
+              result(payload);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
                                          details:error.localizedDescription]);
           }
