@@ -198,12 +198,65 @@
                                          details:error.localizedDescription]);
           }
       }];
+  } else if ([@"fetchDoNotDisturb" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] fetchDoNotDisturb:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromDeviceDnD:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"updateDoNotDisturb" isEqualToString:call.method]) {
+      NSDictionary* deviceDnD = call.arguments[@"dnd"];
+      [[NotificarePushLib shared] updateDoNotDisturb:[[NotificarePushLibUtils shared] deviceDnDFromDictionary:deviceDnD] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromDeviceDnD:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"clearDoNotDisturb" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] clearDoNotDisturb:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromDeviceDnD:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchNotification" isEqualToString:call.method]) {
+      NSDictionary* notification = call.arguments[@"notification"];
+      [[NotificarePushLib shared] fetchNotification:notification completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromNotification:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchNotificationForInboxItem" isEqualToString:call.method]) {
+      NSDictionary* inboxItem = call.arguments[@"inboxItem"];
+      [[NotificarePushLib shared] fetchNotification:[inboxItem objectForKey:@"inboxId"] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromNotification:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
   } else {
     result(FlutterMethodNotImplemented);
   }
 }
 
-
+#pragma mark Event Sink
 -(void)sendEvent:(NSDictionary*)event{
     if (!_eventSink) {
         return;

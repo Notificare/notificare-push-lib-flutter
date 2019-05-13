@@ -149,6 +149,31 @@ class NotificarePushLib {
     return response;
   }
 
+  Future<Map<String, dynamic>> fetchDoNotDisturb() async {
+    Map<String, dynamic> response = await _methodChannel.invokeMethod('fetchDoNotDisturb');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> updateDoNotDisturb(Map<String, dynamic> dnd) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMethod('updateDoNotDisturb', {'dnd': dnd});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> clearDoNotDisturb() async {
+    Map<String, dynamic> response = await _methodChannel.invokeMethod('clearDoNotDisturb');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> fetchNotification(Map<String, dynamic> notification) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMethod('fetchNotification', {'notification': notification});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> fetchNotificationForInboxItem(Map<String, dynamic> inboxItem) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMethod('fetchNotificationForInboxItem', {'inboxItem': inboxItem});
+    return response.cast<String, dynamic>();
+  }
+
   Stream<NotificareEvent> get onEventReceived {
     if (_onEventReceived == null) {
       _onEventReceived = _eventChannel
