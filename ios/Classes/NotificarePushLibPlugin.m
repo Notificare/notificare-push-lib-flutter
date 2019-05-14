@@ -978,7 +978,7 @@
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToLoadStore:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    _eventSink(@{@"event":@"storeLstoreFailedToLoadoaded", @"body": payload});
+    _eventSink(@{@"event":@"storeFailedToLoad", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didCompleteProductTransaction:(SKPaymentTransaction *)transaction{

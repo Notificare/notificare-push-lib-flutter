@@ -138,6 +138,134 @@ class _MyAppState extends State<MyApp> {
           //Go to settings
         }
         break;
+        case "inboxLoaded": {
+          _fetchInbox();
+        }
+        break;
+        case "badgeUpdated": {
+          print("Unread Count: " + event.body.toString());
+        }
+        break;
+        case "locationServiceAuthorizationStatusReceived": {
+          print("Location Services Authorization Status: " + event.body.toString());
+        }
+        break;
+        case "locationServiceFailedToStart": {
+          print("Location Services Error: " + event.body.toString());
+        }
+        break;
+        case "locationsUpdated": {
+          print("Locations Updated: " + event.body.toString());
+        }
+        break;
+        case "monitoringForRegionStarted": {
+          print("Monitoring For Region: " + event.body.toString());
+        }
+        break;
+        case "monitoringForRegionFailed": {
+          print("Monitoring for Region Failed: " + event.body.toString());
+        }
+        break;
+        case "stateForRegionChanged": {
+          print("State for Region: " + event.body.toString());
+        }
+        break;
+        case "regionEntered": {
+          print("Enter Region: " + event.body.toString());
+        }
+        break;
+        case "regionExited": {
+          print("Exit Region: " + event.body.toString());
+        }
+        break;
+        case "beaconsInRangeForRegion": {
+          print("Beacons in Range for Region: " + event.body.toString());
+        }
+        break;
+        case "rangingBeaconsFailed": {
+          print("Ranging Beacons Failed: " + event.body.toString());
+        }
+        break;
+        case "headingUpdated": {
+          print("Heading: " + event.body.toString());
+        }
+        break;
+        case "visitReceived": {
+          print("Visit Received: " + event.body.toString());
+        }
+        break;
+        case "accountStateChanged": {
+          print("Account State Changed: " + event.body.toString());
+        }
+        break;
+        case "accountSessionFailedToRenewWithError": {
+          print("Account Session Failed to Renew: " + event.body.toString());
+        }
+        break;
+        case "activationTokenReceived": {
+          print("Activation Token: " + event.body.toString());
+        }
+        break;
+        case "resetPasswordTokenReceived": {
+          print("Reset Pass Token: " + event.body.toString());
+        }
+        break;
+        case "storeLoaded": {
+          print("In-App Store Loaded: " + event.body.toString());
+        }
+        break;
+        case "storeFailedToLoad": {
+          print("In-App Store Failed to Load: " + event.body.toString());
+        }
+        break;
+        case "productTransactionCompleted": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productTransactionRestored": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productTransactionFailed": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productContentDownloadStarted": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productContentDownloadPaused": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productContentDownloadCancelled": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productContentDownloadProgress": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productContentDownloadFailed": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "productContentDownloadFinished": {
+          print("Product: " + event.body.toString());
+        }
+        break;
+        case "qrCodeScannerStarted": {
+          //Opened Built-in QR Code Scanner
+        }
+        break;
+        case "scannableDetected": {
+          print("Scannable: " + event.body.toString());
+        }
+        break;
+        case "scannableSessionInvalidatedWithError": {
+          print("Scannable Session Failed: " + event.body.toString());
+        }
+        break;
       }
     });
 
@@ -147,21 +275,10 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
 
-//    bool isRemoteNotificationsEnabled = await _notificare.isRemoteNotificationsEnabled();
-//
-//    if (isRemoteNotificationsEnabled) {
-//      print("Notifications Enabled");
-//    } else {
-//      print("Notifications Disabled");
-//    }
-//
-//    Map<String, dynamic> settings = await _notificare.fetchNotificationSettings();
-//    print("Settings: " + settings.toString());
-
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
-    //if (!mounted) return;
+    if (!mounted) return;
 
   }
 
