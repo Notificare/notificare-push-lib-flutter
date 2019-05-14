@@ -217,13 +217,62 @@ class NotificarePushLib {
     return response;
   }
 
-  Future<Map<String, dynamic>> fetchPassWithSerial(Map<String, dynamic> serial) async {
+  Future<Map<String, dynamic>> fetchPassWithSerial(String serial) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchPassWithSerial', {'serial': serial});
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> fetchPassWithBarcode(Map<String, dynamic> barcode) async {
+  Future<Map<String, dynamic>> fetchPassWithBarcode(String barcode) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchPassWithBarcode', {'barcode': barcode});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<List> fetchProducts() async {
+    List response = await _methodChannel.invokeListMethod('fetchProducts');
+    return response;
+  }
+
+  Future<List> fetchPurchasedProducts() async {
+    List response = await _methodChannel.invokeListMethod('fetchPurchasedProducts');
+    return response;
+  }
+
+  Future<Map<String, dynamic>> fetchProduct(Map<String, dynamic> product) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchProduct', {'product': product});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<void> buyProduct(Map<String, dynamic> product) async {
+    await _methodChannel.invokeMethod('buyProduct', {'product': product});
+  }
+
+  Future<Map<String, dynamic>> logCustomEvent(String name, Map<String, dynamic> data) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logCustomEvent', {'name': name, 'data': data});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> logOpenNotification(Map<String, dynamic> notification) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logOpenNotification', {'notification': notification});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> logInfluencedNotification(Map<String, dynamic> notification) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logInfluencedNotification', {'notification': notification});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> logReceiveNotification(Map<String, dynamic> notification) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logReceiveNotification', {'notification': notification});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> doPushHostOperation(String verb, String path, Map<String, dynamic> params, Map<String, dynamic> body) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('doPushHostOperation', {'verb': verb, 'path': path, 'params': params, 'body': body});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> doCloudHostOperation(String verb, String path, Map<String, dynamic> params, Map<String, dynamic> headers, Map<String, dynamic> body) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('doPushHostOperation', {'verb': verb, 'path': path, 'params': params, 'headers': headers, 'body': body});
     return response.cast<String, dynamic>();
   }
 

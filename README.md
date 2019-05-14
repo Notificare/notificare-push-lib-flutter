@@ -13,8 +13,8 @@ iOS:
 - [x] User Data
 - [x] Asset Groups
 - [x] Wallet Passes
-- [ ] Custom events
-- [ ] In-App Purchases
+- [x] Custom events
+- [x] In-App Purchases
 - [ ] Scannables
 - [ ] Users & Authentication
 

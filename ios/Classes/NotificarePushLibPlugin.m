@@ -388,6 +388,139 @@
                                          details:error.localizedDescription]);
           }
       }];
+  } else if ([@"fetchProducts" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] fetchProducts:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              NSMutableArray * payload = [NSMutableArray array];
+              for (NotificareProduct * product in response) {
+                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:product]];
+              }
+              result(payload);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchPurchasedProducts" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] fetchPurchasedProducts:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              NSMutableArray * payload = [NSMutableArray array];
+              for (NotificareProduct * product in response) {
+                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:product]];
+              }
+              result(payload);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchProduct" isEqualToString:call.method]) {
+      NSDictionary* product = call.arguments[@"product"];
+      [[NotificarePushLib shared] fetchProduct:[product objectForKey:@"productIdentifier"] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromProduct:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"buyProduct" isEqualToString:call.method]) {
+      NSDictionary* product = call.arguments[@"product"];
+      [[NotificarePushLib shared] fetchProduct:[product objectForKey:@"productIdentifier"] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              [[NotificarePushLib shared] buyProduct:response];
+          }
+      }];
+      result([NSNull null]);
+  } else if ([@"logCustomEvent" isEqualToString:call.method]) {
+      NSString* name = call.arguments[@"name"];
+      NSDictionary* data = (call.arguments[@"data"]) ? call.arguments[@"data"] : nil;
+      [[NotificarePushLib shared] logCustomEvent:name withData:data completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+      result([NSNull null]);
+  } else if ([@"logOpenNotification" isEqualToString:call.method]) {
+      NSDictionary* notification = call.arguments[@"notification"];
+      NSMutableDictionary * eventData = [NSMutableDictionary dictionary];
+      [eventData setObject:[notification objectForKey:@"id"] forKey:@"notification"];
+      [[NotificarePushLib shared] logEvent:kNotificareEventNotificationOpen withData:eventData completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+      result([NSNull null]);
+  } else if ([@"logInfluencedNotification" isEqualToString:call.method]) {
+      NSDictionary* notification = call.arguments[@"notification"];
+      NSMutableDictionary * eventData = [NSMutableDictionary dictionary];
+      [eventData setObject:[notification objectForKey:@"id"] forKey:@"notification"];
+      [[NotificarePushLib shared] logEvent:kNotificareEventNotificationInfluenced withData:eventData completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+      result([NSNull null]);
+  } else if ([@"logReceiveNotification" isEqualToString:call.method]) {
+      NSDictionary* notification = call.arguments[@"notification"];
+      NSMutableDictionary * eventData = [NSMutableDictionary dictionary];
+      [eventData setObject:[notification objectForKey:@"id"] forKey:@"notification"];
+      [[NotificarePushLib shared] logEvent:kNotificareEventNotificationReceive withData:eventData completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+      result([NSNull null]);
+  } else if ([@"doPushHostOperation" isEqualToString:call.method]) {
+      NSString* verb = call.arguments[@"verb"];
+      NSString* path = call.arguments[@"path"];
+      NSDictionary* params = (call.arguments[@"params"]) ? call.arguments[@"params"] : nil;
+      NSDictionary* body = (call.arguments[@"body"]) ? call.arguments[@"body"] : nil;
+      [[NotificarePushLib shared] doPushHostOperation:verb path:path URLParams:params bodyJSON:body completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+      result([NSNull null]);
+  } else if ([@"doCloudHostOperation" isEqualToString:call.method]) {
+      NSString* verb = call.arguments[@"verb"];
+      NSString* path = call.arguments[@"path"];
+      NSDictionary* headers = (call.arguments[@"headers"]) ? call.arguments[@"headers"] : nil;
+      NSDictionary* params = (call.arguments[@"params"]) ? call.arguments[@"params"] : nil;
+      NSDictionary* body = (call.arguments[@"body"]) ? call.arguments[@"body"] : nil;
+      [[NotificarePushLib shared] doCloudHostOperation:verb path:path URLParams:params customHeaders:headers bodyJSON:body completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+      result([NSNull null]);
   } else {
     result(FlutterMethodNotImplemented);
   }
