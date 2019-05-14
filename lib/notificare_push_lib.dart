@@ -276,6 +276,68 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
+  Future<Map<String, dynamic>> createAccount(String email, String name, String password) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('createAccount', {'email': email, 'name': name, 'password': password});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> resetPassword(String password, String token) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('resetPassword', {'password': password, 'token': token});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('login', {'email': email, 'password': password});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<void> logout() async {
+    await _methodChannel.invokeMethod('logout');
+  }
+
+  Future<bool> isLoggedIn() async {
+    var status = await _methodChannel.invokeMethod("isLoggedIn");
+    return status as bool;
+  }
+
+  Future<Map<String, dynamic>> generateAccessToken() async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('generateAccessToken');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> changePassword(String password) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('changePassword', {'password': password});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> fetchAccountDetails() async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchAccountDetails');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> fetchUserPreferences() async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchUserPreferences');
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> addSegmentToUserPreference(Map<String, dynamic> segment, Map<String, dynamic> userPreference) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('addSegmentToUserPreference', {'segment': segment, 'userPreference': userPreference});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<Map<String, dynamic>> removeSegmentFromUserPreference(Map<String, dynamic> segment, Map<String, dynamic> userPreference) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('removeSegmentFromUserPreference', {'segment': segment, 'userPreference': userPreference});
+    return response.cast<String, dynamic>();
+  }
+
+  Future<void> startScannableSessionWithQRCode() async {
+    await _methodChannel.invokeMethod('startScannableSessionWithQRCode');
+  }
+
+  Future<void> presentScannable(Map<String, dynamic> scannable) async {
+    await _methodChannel.invokeMethod('presentScannable', {'scannable': scannable});
+  }
+
   Stream<NotificareEvent> get onEventReceived {
     if (_onEventReceived == null) {
       _onEventReceived = _eventChannel

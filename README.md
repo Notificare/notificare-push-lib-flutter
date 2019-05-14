@@ -15,8 +15,8 @@ iOS:
 - [x] Wallet Passes
 - [x] Custom events
 - [x] In-App Purchases
-- [ ] Scannables
-- [ ] Users & Authentication
+- [x] Scannables
+- [x] Users & Authentication
 
 Android:
 - [ ] Notifications

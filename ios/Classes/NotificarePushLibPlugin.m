@@ -447,7 +447,6 @@
                                          details:error.localizedDescription]);
           }
       }];
-      result([NSNull null]);
   } else if ([@"logOpenNotification" isEqualToString:call.method]) {
       NSDictionary* notification = call.arguments[@"notification"];
       NSMutableDictionary * eventData = [NSMutableDictionary dictionary];
@@ -461,7 +460,6 @@
                                          details:error.localizedDescription]);
           }
       }];
-      result([NSNull null]);
   } else if ([@"logInfluencedNotification" isEqualToString:call.method]) {
       NSDictionary* notification = call.arguments[@"notification"];
       NSMutableDictionary * eventData = [NSMutableDictionary dictionary];
@@ -475,7 +473,6 @@
                                          details:error.localizedDescription]);
           }
       }];
-      result([NSNull null]);
   } else if ([@"logReceiveNotification" isEqualToString:call.method]) {
       NSDictionary* notification = call.arguments[@"notification"];
       NSMutableDictionary * eventData = [NSMutableDictionary dictionary];
@@ -489,7 +486,6 @@
                                          details:error.localizedDescription]);
           }
       }];
-      result([NSNull null]);
   } else if ([@"doPushHostOperation" isEqualToString:call.method]) {
       NSString* verb = call.arguments[@"verb"];
       NSString* path = call.arguments[@"path"];
@@ -504,7 +500,6 @@
                                          details:error.localizedDescription]);
           }
       }];
-      result([NSNull null]);
   } else if ([@"doCloudHostOperation" isEqualToString:call.method]) {
       NSString* verb = call.arguments[@"verb"];
       NSString* path = call.arguments[@"path"];
@@ -520,14 +515,140 @@
                                          details:error.localizedDescription]);
           }
       }];
+  } else if ([@"createAccount" isEqualToString:call.method]) {
+      NSString* email = call.arguments[@"email"];
+      NSString* name = call.arguments[@"name"];
+      NSString* password = call.arguments[@"password"];
+      [[[NotificarePushLib shared] authManager] createAccount:email withName:name andPassword:password completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"resetPassword" isEqualToString:call.method]) {
+      NSString* password = call.arguments[@"password"];
+      NSString* token = call.arguments[@"token"];
+      [[[NotificarePushLib shared] authManager] resetPassword:password withToken:token completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"login" isEqualToString:call.method]) {
+      NSString* email = call.arguments[@"email"];
+      NSString* password = call.arguments[@"password"];
+      [[[NotificarePushLib shared] authManager] loginWithUsername:email andPassword:password completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"logout" isEqualToString:call.method]) {
+      [[[NotificarePushLib shared] authManager] logoutAccount];
+      result([NSNull null]);
+  } else if ([@"isLoggedIn" isEqualToString:call.method]) {
+      result([NSNumber numberWithBool:[[[NotificarePushLib shared] authManager] isLoggedIn]]);
+  } else if ([@"generateAccessToken" isEqualToString:call.method]) {
+      [[[NotificarePushLib shared] authManager] generateAccessToken:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"changePassword" isEqualToString:call.method]) {
+      NSString* password = call.arguments[@"password"];
+      [[[NotificarePushLib shared] authManager] changePassword:password completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchAccountDetails" isEqualToString:call.method]) {
+      [[[NotificarePushLib shared] authManager] fetchAccountDetails:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([[NotificarePushLibUtils shared] dictionaryFromUser:response]);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"fetchUserPreferences" isEqualToString:call.method]) {
+      [[[NotificarePushLib shared] authManager] fetchUserPreferences:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              NSMutableArray * payload = [NSMutableArray array];
+              for (NotificareUserPreference * preference in response) {
+                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromUserPreference:preference]];
+              }
+              result(payload);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"addSegmentToUserPreference" isEqualToString:call.method]) {
+      NSDictionary* segment = call.arguments[@"segment"];
+      NSDictionary* userPreference = call.arguments[@"userPreference"];
+      [[[NotificarePushLib shared] authManager] addSegment:[[NotificarePushLibUtils shared] segmentFromDictionary:segment] toPreference:[[NotificarePushLibUtils shared] userPreferenceFromDictionary:userPreference] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"removeSegmentFromUserPreference" isEqualToString:call.method]) {
+      NSDictionary* segment = call.arguments[@"segment"];
+      NSDictionary* userPreference = call.arguments[@"userPreference"];
+      [[[NotificarePushLib shared] authManager] addSegment:[[NotificarePushLibUtils shared] segmentFromDictionary:segment] toPreference:[[NotificarePushLibUtils shared] userPreferenceFromDictionary:userPreference] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(response);
+          } else {
+              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                         message:error.domain
+                                         details:error.localizedDescription]);
+          }
+      }];
+  } else if ([@"startScannableSessionWithQRCode" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] startScannableSessionWithQRCode:[self navigationControllerForRootViewController] asModal:YES];
+      result([NSNull null]);
+  } else if ([@"presentScannable" isEqualToString:call.method]) {
+      NSDictionary* scannable = call.arguments[@"scannable"];
+      NotificareScannable * item = [[NotificarePushLibUtils shared] scannableFromDictionary:scannable];
+      [[NotificarePushLib shared] openScannable:item completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              if ([self isViewController:response]) {
+                  UINavigationController *navController = [self navigationControllerForViewControllers:response];
+                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
+                      [[NotificarePushLib shared] presentScannable:item inNavigationController:navController withController:response];
+                  }];
+              } else {
+                  [[NotificarePushLib shared] presentScannable:item inNavigationController:[self navigationControllerForRootViewController] withController:response];
+              }
+          }
+      }];
       result([NSNull null]);
   } else {
     result(FlutterMethodNotImplemented);
   }
 }
-
-
-
 
 
 #pragma mark Helper Methods
@@ -689,24 +810,24 @@
     _eventSink(@{@"event":@"shouldOpenSettings", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
 }
 
-/*
+
 - (void)notificarePushLib:(NotificarePushLib *)library didLoadInbox:(NSArray<NotificareDeviceInbox*>*)items{
     NSMutableArray * inboxItems = [NSMutableArray array];
     for (NotificareDeviceInbox * inboxItem in items) {
-        [inboxItems addObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromDeviceInbox:inboxItem]];
+        [inboxItems addObject:[[NotificarePushLibUtils shared] dictionaryFromDeviceInbox:inboxItem]];
     }
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"inboxLoaded" body:inboxItems];
+    _eventSink(@{@"event":@"inboxLoaded", @"body": inboxItems});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateBadge:(int)badge{
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"badgeUpdated" body:[NSNumber numberWithInt:badge]];
+    _eventSink(@{@"event":@"badgeUpdated", @"body": [NSNumber numberWithInt:badge]});
 }
 
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToStartLocationServiceWithError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"locationServiceFailedToStart" body:payload];
+    _eventSink(@{@"event":@"locationServiceFailedToStart", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveLocationServiceAuthorizationStatus:(NotificareGeoAuthorizationStatus)status{
@@ -716,25 +837,25 @@
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateLocations:(NSArray<NotificareLocation*> *)locations{
     NSMutableArray * payload = [NSMutableArray new];
     for (NotificareLocation * location in locations) {
-        [payload addObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromLocation:location]];
+        [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromLocation:location]];
     }
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"locationsUpdated" body:payload];
+    _eventSink(@{@"event":@"locationsUpdated", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library monitoringDidFailForRegion:(id)region withError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"monitoringForRegionFailed" body:payload];
+    _eventSink(@{@"event":@"monitoringForRegionFailed", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didStartMonitoringForRegion:(id)region{
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"monitoringForRegionStarted" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromRegion:region]];
+        _eventSink(@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]});
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"monitoringForRegionStarted" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromBeacon:region]];
+        _eventSink(@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]});
     }
 }
 
@@ -751,35 +872,35 @@
     }
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromRegion:region] forKey:@"region"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromRegion:region] forKey:@"region"];
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromRegion:region] forKey:@"region"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromRegion:region] forKey:@"region"];
     }
     
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"stateForRegionChanged" body:payload];
+    _eventSink(@{@"event":@"stateForRegionChanged", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didEnterRegion:(id)region{
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"regionEntered" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromRegion:region]];
+        _eventSink(@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]});
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"regionEntered" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromBeacon:region]];
+        _eventSink(@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]});
     }
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didExitRegion:(id)region{
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"regionExited" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromRegion:region]];
+        _eventSink(@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]});
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"regionExited" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromBeacon:region]];
+        _eventSink(@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]});
     }
     
 }
@@ -787,74 +908,74 @@
 - (void)notificarePushLib:(NotificarePushLib *)library rangingBeaconsDidFailForRegion:(NotificareBeacon *)region withError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"rangingBeaconsFailed" body:payload];
+    [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
+    _eventSink(@{@"event":@"rangingBeaconsFailed", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didRangeBeacons:(NSArray<NotificareBeacon *> *)beacons inRegion:(NotificareBeacon *)region{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     NSMutableArray * beaconsList = [NSMutableArray new];
     for (NotificareBeacon * beacon in beacons) {
-        [beaconsList addObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromBeacon:beacon]];
+        [beaconsList addObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:beacon]];
     }
     [payload setObject:beaconsList forKey:@"beacons"];
-    [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"beaconsInRangeForRegion" body:payload];
+    [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
+    _eventSink(@{@"event":@"beaconsInRangeForRegion", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateHeading:(NotificareHeading*)heading{
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"headingUpdated" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromHeading:heading]];
+    _eventSink(@{@"event":@"headingUpdated", @"body": [[NotificarePushLibUtils shared] dictionaryFromHeading:heading]});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didVisit:(NotificareVisit*)visit{
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"visitReceived" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromVisit:visit]];
+    _eventSink(@{@"event":@"visitReceived", @"body": [[NotificarePushLibUtils shared] dictionaryFromVisit:visit]});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didChangeAccountState:(NSDictionary *)info{
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"accountStateChanged" body:info];
+    _eventSink(@{@"event":@"accountStateChanged", @"body": info});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToRenewAccountSessionWithError:(NSError * _Nullable)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"accountSessionFailedToRenewWithError" body:payload];
+    _eventSink(@{@"event":@"accountSessionFailedToRenewWithError", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveActivationToken:(NSString *)token{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:token forKey:@"token"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"activationTokenReceived" body:payload];
+    _eventSink(@{@"event":@"activationTokenReceived", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveResetPasswordToken:(NSString *)token{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:token forKey:@"token"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"resetPasswordTokenReceived" body:payload];
+    _eventSink(@{@"event":@"resetPasswordTokenReceived", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didLoadStore:(NSArray<NotificareProduct *> *)products{
     NSMutableArray * payload = [NSMutableArray array];
     for (NotificareProduct * product in products) {
-        [payload addObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:product]];
+        [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:product]];
     }
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"storeLoaded" body:payload];
+    _eventSink(@{@"event":@"storeLoaded", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToLoadStore:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"storeFailedToLoad" body:payload];
+    _eventSink(@{@"event":@"storeLstoreFailedToLoadoaded", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didCompleteProductTransaction:(SKPaymentTransaction *)transaction{
     [[NotificarePushLib shared] fetchProduct:[[transaction payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productTransactionCompleted" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response]];
+        self->_eventSink(@{@"event":@"productTransactionCompleted", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]});
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didRestoreProductTransaction:(SKPaymentTransaction *)transaction{
     [[NotificarePushLib shared] fetchProduct:[[transaction payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productTransactionRestored" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response]];
+        self->_eventSink(@{@"event":@"productTransactionRestored", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]});
     }];
 }
 
@@ -862,77 +983,76 @@
     [[NotificarePushLib shared] fetchProduct:[[transaction payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
         NSMutableDictionary * payload = [NSMutableDictionary new];
         [payload setObject:[error localizedDescription] forKey:@"error"];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productTransactionFailed" body:payload];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
+        self->_eventSink(@{@"event":@"productTransactionFailed", @"body": payload});
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didStartDownloadContent:(SKPaymentTransaction *)transaction{
     [[NotificarePushLib shared] fetchProduct:[[transaction payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productContentDownloadStarted" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response]];
+        self->_eventSink(@{@"event":@"productContentDownloadStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]});
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didPauseDownloadContent:(SKDownload *)download{
     [[NotificarePushLib shared] fetchProduct:[[[download transaction] payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
         NSMutableDictionary * payload = [NSMutableDictionary new];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productContentDownloadPaused" body:payload];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
+        self->_eventSink(@{@"event":@"productContentDownloadPaused", @"body": payload});
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didCancelDownloadContent:(SKDownload *)download{
     [[NotificarePushLib shared] fetchProduct:[[[download transaction] payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
         NSMutableDictionary * payload = [NSMutableDictionary new];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productContentDownloadCancelled" body:payload];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
+        self->_eventSink(@{@"event":@"productContentDownloadCancelled", @"body": payload});
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveProgressDownloadContent:(SKDownload *)download{
     [[NotificarePushLib shared] fetchProduct:[[[download transaction] payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
         NSMutableDictionary * payload = [NSMutableDictionary new];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productContentDownloadProgress" body:payload];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
+        self->_eventSink(@{@"event":@"productContentDownloadProgress", @"body": payload});
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailDownloadContent:(SKDownload *)download{
     [[NotificarePushLib shared] fetchProduct:[[[download transaction] payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
         NSMutableDictionary * payload = [NSMutableDictionary new];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productContentDownloadFailed" body:payload];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
+        self->_eventSink(@{@"event":@"productContentDownloadFailed", @"body": payload});
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFinishDownloadContent:(SKDownload *)download{
     [[NotificarePushLib shared] fetchProduct:[[[download transaction] payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
         NSMutableDictionary * payload = [NSMutableDictionary new];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromSKDownload:download]forKey:@"download"];
-        [payload setObject:[[NotificareReactNativeIOSUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        [[NotificareReactNativeIOS getInstance] dispatchEvent:@"productContentDownloadFinished" body:payload];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download]forKey:@"download"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
+        self->_eventSink(@{@"event":@"productContentDownloadFinished", @"body": payload});
     }];
 }
 
 
 - (void)notificarePushLib:(NotificarePushLib *)library didStartQRCodeScanner:(UIViewController*)scanner{
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"qrCodeScannerStarted" body:[NSNull null]];
+    _eventSink(@{@"event":@"qrCodeScannerStarted", @"body": [NSNull null]});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didInvalidateScannableSessionWithError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"scannableSessionInvalidatedWithError" body:payload];
+    _eventSink(@{@"event":@"scannableSessionInvalidatedWithError", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didDetectScannable:(NotificareScannable *)scannable{
-    [[NotificareReactNativeIOS getInstance] dispatchEvent:@"scannableDetected" body:[[NotificareReactNativeIOSUtils shared] dictionaryFromScannable:scannable]];
+    _eventSink(@{@"event":@"scannableDetected", @"body": [[NotificarePushLibUtils shared] dictionaryFromScannable:scannable]});
 }
- */
 
 #pragma mark AppDelegate implementation
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -966,6 +1086,7 @@
     return YES;
 }
 
+/* Deprecated Action Methods for iOS 9 and 8
 -(void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(nonnull NSDictionary *)userInfo withResponseInfo:(nonnull NSDictionary *)responseInfo completionHandler:(nonnull void (^)())completionHandler{
     [[NotificarePushLib shared] handleActionWithIdentifier:identifier forRemoteNotification:userInfo withResponseInfo:responseInfo completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
         completionHandler();
@@ -977,7 +1098,7 @@
         completionHandler();
     }];
 }
-
+*/
 
 #pragma mark FlutterStreamHandler implementation
 - (FlutterError*)onListenWithArguments:(id)arguments eventSink:(FlutterEventSink)eventSink {
