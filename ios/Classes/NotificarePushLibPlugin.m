@@ -831,7 +831,21 @@
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveLocationServiceAuthorizationStatus:(NotificareGeoAuthorizationStatus)status{
+    NSMutableDictionary * payload = [NSMutableDictionary new];
     
+    if (status == NotificareGeoAuthorizationStatusDenied) {
+        [payload setObject:@"denied" forKey:@"status"];
+    } else if (status == NotificareGeoAuthorizationStatusRestricted) {
+        [payload setObject:@"restricted" forKey:@"status"];
+    } else if (status == NotificareGeoAuthorizationStatusNotDetermined) {
+        [payload setObject:@"notDetermined" forKey:@"status"];
+    } else if (status == NotificareGeoAuthorizationStatusAuthorizedAlways) {
+        [payload setObject:@"always" forKey:@"status"];
+    } else if (status == NotificareGeoAuthorizationStatusAuthorizedWhenInUse) {
+        [payload setObject:@"whenInUse" forKey:@"status"];
+    }
+
+    _eventSink(@{@"event":@"locationServiceAuthorizationStatusReceived", @"body": payload});
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateLocations:(NSArray<NotificareLocation*> *)locations{
