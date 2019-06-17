@@ -349,8 +349,7 @@ class NotificarePushLib {
 
   NotificareEvent _toEventMessage(dynamic map) {
     if (map is Map) {
-      var body = new Map<String, dynamic>.from(map['body']);
-      return new NotificareEvent(map['event'], body);
+      return new NotificareEvent(map['event'], map['body']);
     }
     return null;
   }
@@ -358,7 +357,6 @@ class NotificarePushLib {
 
 class NotificareEvent {
   final String eventName;
-  final Map<String, dynamic> body;
-
+  final dynamic body;
   NotificareEvent(this.eventName, this.body);
 }

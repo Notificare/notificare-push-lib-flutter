@@ -693,9 +693,11 @@
     _eventSink(@{@"event":@"ready", @"body": [[NotificarePushLibUtils shared] dictionaryFromApplication:application]});
 }
 
+
 - (void)notificarePushLib:(NotificarePushLib *)library didRegisterDevice:(nonnull NotificareDevice *)device{
     _eventSink(@{@"event":@"deviceRegistered", @"body": [[NotificarePushLibUtils shared] dictionaryFromDevice:device]});
 }
+
 
 - (void)notificarePushLib:(NotificarePushLib *)library didChangeNotificationSettings:(BOOL)granted{
     NSMutableDictionary * payload = [NSMutableDictionary new];
@@ -804,7 +806,7 @@
  }
  
  }
- */
+*/
 
 - (void)notificarePushLib:(NotificarePushLib *)library shouldOpenSettings:(NotificareNotification* _Nullable)notification{
     _eventSink(@{@"event":@"shouldOpenSettings", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});

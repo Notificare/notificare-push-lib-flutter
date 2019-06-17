@@ -13,20 +13,21 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  final NotificarePushLib _notificare = NotificarePushLib();
+  final NotificarePushLib notificare = NotificarePushLib();
 
   @override
   void initState() {
     super.initState();
 
-    _notificare.initializeWithKeyAndSecret(null, null);
-    _notificare.launch();
+    notificare.initializeWithKeyAndSecret(null, null);
+    notificare.launch();
 
-    _notificare.onEventReceived.listen((NotificareEvent event) {
+    notificare.onEventReceived.listen((NotificareEvent event) {
       switch (event.eventName) {
         case "ready": {
+          _isRemoteNotificationsEnabled();
           print("Application is Ready: " + event.body['name']);
-          _notificare.registerForNotifications();
+          notificare.registerForNotifications();
           _registerDevice("1234567890", "Joel Oliveira");
           _fetchInbox();
           _fetchAssets("TEST");
@@ -283,39 +284,46 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _fetchNotificationSettings() async {
-    Map<String, dynamic> settings = await _notificare.fetchNotificationSettings();
+    Map<String, dynamic> settings = await notificare.fetchNotificationSettings();
     print("Settings: " + settings.toString());
   }
 
   void _fetchPreferredLanguage() async {
-    String preferredLanguage = await _notificare.fetchPreferredLanguage();
+    String preferredLanguage = await notificare.fetchPreferredLanguage();
     print("Preferred Language: " + preferredLanguage.toString());
   }
 
   void _registerDevice(String userID, String userName) async {
-    Map<String, dynamic> response = await _notificare.registerDevice(userID, userName);
+    Map<String, dynamic> response = await notificare.registerDevice(userID, userName);
     print("Register Device: " + response.toString());
   }
 
 
   void _fetchTags() async {
-    List tags = await _notificare.fetchTags();
+    List tags = await notificare.fetchTags();
     print("Tags: " + tags.toString());
   }
 
   void _addTag(String tag) async {
-    Map<String, dynamic> response = await _notificare.addTag(tag);
+    Map<String, dynamic> response = await notificare.addTag(tag);
     print("Add Tag: " + response.toString());
   }
 
   void _fetchInbox() async {
-    List response = await _notificare.fetchInbox();
+    List response = await notificare.fetchInbox();
     print("Inbox: " + response.toString());
   }
 
   void _fetchAssets(String group) async {
-    List response = await _notificare.fetchAssets(group);
+    List response = await notificare.fetchAssets(group);
     print("Assets: " + response.toString());
+  }
+
+  void _isRemoteNotificationsEnabled() async {
+    bool status = await notificare.isRemoteNotificationsEnabled();
+    if (status) {
+      print("Remote Notifications are enabled");
+    }
   }
 
   @override
