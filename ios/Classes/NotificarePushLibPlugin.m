@@ -528,7 +528,18 @@
                                          details:error.localizedDescription]);
           }
       }];
-  } else if ([@"resetPassword" isEqualToString:call.method]) {
+  } else if ([@"validateAccount" isEqualToString:call.method]) {
+         NSString* token = call.arguments[@"token"];
+         [[[NotificarePushLib shared] authManager] validateAccount:token completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+             if (!error) {
+                 result(response);
+             } else {
+                 result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
+                                            message:error.domain
+                                            details:error.localizedDescription]);
+             }
+         }];
+     } else if ([@"resetPassword" isEqualToString:call.method]) {
       NSString* password = call.arguments[@"password"];
       NSString* token = call.arguments[@"token"];
       [[[NotificarePushLib shared] authManager] resetPassword:password withToken:token completionHandler:^(id  _Nullable response, NSError * _Nullable error) {

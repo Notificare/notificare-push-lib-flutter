@@ -281,6 +281,11 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
+  Future<Map<String, dynamic>> validateAccount(String token) async {
+    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('validateAccount', {'token': token});
+    return response.cast<String, dynamic>();
+  }
+
   Future<Map<String, dynamic>> resetPassword(String password, String token) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod('resetPassword', {'password': password, 'token': token});
     return response.cast<String, dynamic>();

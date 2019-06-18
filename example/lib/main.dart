@@ -22,15 +22,24 @@ class _MyAppState extends State<MyApp> {
     notificare.initializeWithKeyAndSecret(null, null);
     notificare.launch();
 
-    notificare.onEventReceived.listen((NotificareEvent event) {
+    notificare.onEventReceived.listen((NotificareEvent event) async {
       switch (event.eventName) {
         case "ready": {
-          _isRemoteNotificationsEnabled();
           print("Application is Ready: " + event.body['name']);
           notificare.registerForNotifications();
           _registerDevice("1234567890", "Joel Oliveira");
           _fetchInbox();
           _fetchAssets("TEST");
+
+          if (! await notificare.isRemoteNotificationsEnabled()) {
+            print("Remote Notifications Enabled");
+          }
+
+
+          if (! await notificare.isAllowedUIEnabled()) {
+            print("Allowed UI Enabled");
+          }
+
         }
         break;
         case "urlOpened": {
