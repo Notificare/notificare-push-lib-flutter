@@ -114,14 +114,12 @@ class NotificarePushLib {
     return response;
   }
 
-  Future<Map<String, dynamic>> addTag(String tag) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('addTag', {'tag': tag});
-    return response.cast<String, dynamic>();
+  Future<dynamic> addTag(String tag) async {
+    return await _methodChannel.invokeMapMethod('addTag', {'tag': tag});
   }
 
-  Future<Map<String, dynamic>> addTags(List tags) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('addTags', {'tags': tags});
-    return response.cast<String, dynamic>();
+  Future<dynamic> addTags(List tags) async {
+    return await _methodChannel.invokeMapMethod('addTags', {'tags': tags});
   }
 
   Future<Map<String, dynamic>> removeTag(String tag) async {
@@ -183,9 +181,8 @@ class NotificarePushLib {
     await _methodChannel.invokeMethod('presentNotification', {'notification': notification});
   }
 
-  Future<Map<String, dynamic>> reply(Map<String, dynamic> notification, Map<String, dynamic> action, Map<String, dynamic> data) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('reply', {'notification': notification, 'action': action, 'data': data});
-    return response.cast<String, dynamic>();
+  Future<dynamic> reply(Map<String, dynamic> notification, Map<String, dynamic> action, Map<String, dynamic> data) async {
+    return await _methodChannel.invokeMapMethod('reply', {'notification': notification, 'action': action, 'data': data});
   }
 
   Future<List> fetchInbox() async {
@@ -207,9 +204,8 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> clearInbox() async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('clearInbox');
-    return response.cast<String, dynamic>();
+  Future<dynamic> clearInbox() async {
+    return await _methodChannel.invokeMapMethod('clearInbox');
   }
 
   Future<List> fetchAssets(String group) async {
@@ -246,24 +242,20 @@ class NotificarePushLib {
     await _methodChannel.invokeMethod('buyProduct', {'product': product});
   }
 
-  Future<Map<String, dynamic>> logCustomEvent(String name, Map<String, dynamic> data) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logCustomEvent', {'name': name, 'data': data});
-    return response.cast<String, dynamic>();
+  Future<dynamic> logCustomEvent(String name, Map<String, dynamic> data) async {
+    return await _methodChannel.invokeMapMethod('logCustomEvent', {'name': name, 'data': data});
   }
 
-  Future<Map<String, dynamic>> logOpenNotification(Map<String, dynamic> notification) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logOpenNotification', {'notification': notification});
-    return response.cast<String, dynamic>();
+  Future<dynamic> logOpenNotification(Map<String, dynamic> notification) async {
+    return await _methodChannel.invokeMapMethod('logOpenNotification', {'notification': notification});
   }
 
-  Future<Map<String, dynamic>> logInfluencedNotification(Map<String, dynamic> notification) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logInfluencedNotification', {'notification': notification});
-    return response.cast<String, dynamic>();
+  Future<dynamic> logInfluencedNotification(Map<String, dynamic> notification) async {
+    return  await _methodChannel.invokeMapMethod('logInfluencedNotification', {'notification': notification});
   }
 
-  Future<Map<String, dynamic>> logReceiveNotification(Map<String, dynamic> notification) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('logReceiveNotification', {'notification': notification});
-    return response.cast<String, dynamic>();
+  Future<dynamic> logReceiveNotification(Map<String, dynamic> notification) async {
+    return await _methodChannel.invokeMapMethod('logReceiveNotification', {'notification': notification});
   }
 
   Future<Map<String, dynamic>> doPushHostOperation(String verb, String path, Map<String, dynamic> params, Map<String, dynamic> body) async {
@@ -276,28 +268,24 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> createAccount(String email, String name, String password) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('createAccount', {'email': email, 'name': name, 'password': password});
-    return response.cast<String, dynamic>();
+  Future<dynamic> createAccount(String email, String name, String password) async {
+    return await _methodChannel.invokeMapMethod('createAccount', {'email': email, 'name': name, 'password': password});
   }
 
-  Future<Map<String, dynamic>> validateAccount(String token) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('validateAccount', {'token': token});
-    return response.cast<String, dynamic>();
+  Future<dynamic> validateAccount(String token) async {
+    return await _methodChannel.invokeMapMethod('validateAccount', {'token': token});
   }
 
-  Future<Map<String, dynamic>> resetPassword(String password, String token) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('resetPassword', {'password': password, 'token': token});
-    return response.cast<String, dynamic>();
+  Future<dynamic> resetPassword(String password, String token) async {
+    return await _methodChannel.invokeMapMethod('resetPassword', {'password': password, 'token': token});
   }
 
-  Future<Map<String, dynamic>> login(String email, String password) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('login', {'email': email, 'password': password});
-    return response.cast<String, dynamic>();
+  Future<dynamic> login(String email, String password) async {
+    return await _methodChannel.invokeMapMethod('login', {'email': email, 'password': password});
   }
 
-  Future<void> logout() async {
-    await _methodChannel.invokeMethod('logout');
+  Future<dynamic> logout() async {
+    return await _methodChannel.invokeMethod('logout');
   }
 
   Future<bool> isLoggedIn() async {
@@ -310,9 +298,8 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> changePassword(String password) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('changePassword', {'password': password});
-    return response.cast<String, dynamic>();
+  Future<dynamic> changePassword(String password) async {
+    return await _methodChannel.invokeMapMethod('changePassword', {'password': password});
   }
 
   Future<Map<String, dynamic>> fetchAccountDetails() async {
@@ -325,14 +312,12 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> addSegmentToUserPreference(Map<String, dynamic> segment, Map<String, dynamic> userPreference) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('addSegmentToUserPreference', {'segment': segment, 'userPreference': userPreference});
-    return response.cast<String, dynamic>();
+  Future<dynamic> addSegmentToUserPreference(Map<String, dynamic> segment, Map<String, dynamic> userPreference) async {
+    return await _methodChannel.invokeMapMethod('addSegmentToUserPreference', {'segment': segment, 'userPreference': userPreference});
   }
 
-  Future<Map<String, dynamic>> removeSegmentFromUserPreference(Map<String, dynamic> segment, Map<String, dynamic> userPreference) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('removeSegmentFromUserPreference', {'segment': segment, 'userPreference': userPreference});
-    return response.cast<String, dynamic>();
+  Future<dynamic> removeSegmentFromUserPreference(Map<String, dynamic> segment, Map<String, dynamic> userPreference) async {
+    return await _methodChannel.invokeMapMethod('removeSegmentFromUserPreference', {'segment': segment, 'userPreference': userPreference});
   }
 
   Future<void> startScannableSessionWithQRCode() async {

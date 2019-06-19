@@ -314,8 +314,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _addTag(String tag) async {
-    Map<String, dynamic> response = await notificare.addTag(tag);
-    print("Add Tag: " + response.toString());
+    try {
+      await notificare.addTag(tag);
+      print("Added Tag: " + tag);
+    } catch(e){
+      print("Failed to add Tag: " + tag);
+    }
   }
 
   void _fetchInbox() async {
@@ -326,6 +330,12 @@ class _MyAppState extends State<MyApp> {
   void _fetchAssets(String group) async {
     List response = await notificare.fetchAssets(group);
     print("Assets: " + response.toString());
+
+    if  (response != null && response.length > 0) {
+      response.forEach((asset) => {
+
+      });
+    }
   }
 
   void _isRemoteNotificationsEnabled() async {

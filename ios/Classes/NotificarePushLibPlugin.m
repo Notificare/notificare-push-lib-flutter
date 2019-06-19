@@ -116,7 +116,7 @@
       NSString* tag = call.arguments[@"tag"];
       [[NotificarePushLib shared] addTag:tag completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -127,7 +127,7 @@
       NSArray* tags = call.arguments[@"tags"];
       [[NotificarePushLib shared] addTags:tags completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -138,7 +138,7 @@
       NSString* tag = call.arguments[@"tag"];
       [[NotificarePushLib shared] removeTag:tag completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -149,7 +149,7 @@
       NSArray* tags = call.arguments[@"tags"];
       [[NotificarePushLib shared] removeTags:tags completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -159,7 +159,7 @@
   } else if ([@"clearTags" isEqualToString:call.method]) {
       [[NotificarePushLib shared] clearTags:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -282,7 +282,7 @@
       NSDictionary* data = (call.arguments[@"data"]) ? call.arguments[@"data"] : nil;
       [[NotificarePushLib shared] reply:[[NotificarePushLibUtils shared] notificationFromDictionary:notification] forAction:[[NotificarePushLibUtils shared] actionFromDictionary:action]  andData:data completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -344,7 +344,7 @@
   } else if ([@"clearInbox" isEqualToString:call.method]) {
       [[[NotificarePushLib shared] inboxManager] clearInbox:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -440,7 +440,7 @@
       NSDictionary* data = (call.arguments[@"data"]) ? call.arguments[@"data"] : nil;
       [[NotificarePushLib shared] logCustomEvent:name withData:data completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -453,7 +453,7 @@
       [eventData setObject:[notification objectForKey:@"id"] forKey:@"notification"];
       [[NotificarePushLib shared] logEvent:kNotificareEventNotificationOpen withData:eventData completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -466,7 +466,7 @@
       [eventData setObject:[notification objectForKey:@"id"] forKey:@"notification"];
       [[NotificarePushLib shared] logEvent:kNotificareEventNotificationInfluenced withData:eventData completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -479,7 +479,7 @@
       [eventData setObject:[notification objectForKey:@"id"] forKey:@"notification"];
       [[NotificarePushLib shared] logEvent:kNotificareEventNotificationReceive withData:eventData completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -521,7 +521,7 @@
       NSString* password = call.arguments[@"password"];
       [[[NotificarePushLib shared] authManager] createAccount:email withName:name andPassword:password completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -532,7 +532,7 @@
          NSString* token = call.arguments[@"token"];
          [[[NotificarePushLib shared] authManager] validateAccount:token completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
              if (!error) {
-                 result(response);
+                 result(nil);
              } else {
                  result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                             message:error.domain
@@ -544,7 +544,7 @@
       NSString* token = call.arguments[@"token"];
       [[[NotificarePushLib shared] authManager] resetPassword:password withToken:token completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -556,7 +556,7 @@
       NSString* password = call.arguments[@"password"];
       [[[NotificarePushLib shared] authManager] loginWithUsername:email andPassword:password completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -565,13 +565,13 @@
       }];
   } else if ([@"logout" isEqualToString:call.method]) {
       [[[NotificarePushLib shared] authManager] logoutAccount];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"isLoggedIn" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[[NotificarePushLib shared] authManager] isLoggedIn]]);
   } else if ([@"generateAccessToken" isEqualToString:call.method]) {
       [[[NotificarePushLib shared] authManager] generateAccessToken:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result([[NotificarePushLibUtils shared] dictionaryFromUser:response]);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -582,7 +582,7 @@
       NSString* password = call.arguments[@"password"];
       [[[NotificarePushLib shared] authManager] changePassword:password completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
