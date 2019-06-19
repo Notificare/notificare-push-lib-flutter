@@ -618,7 +618,7 @@
       NSDictionary* userPreference = call.arguments[@"userPreference"];
       [[[NotificarePushLib shared] authManager] addSegment:[[NotificarePushLibUtils shared] segmentFromDictionary:segment] toPreference:[[NotificarePushLibUtils shared] userPreferenceFromDictionary:userPreference] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
@@ -630,7 +630,7 @@
       NSDictionary* userPreference = call.arguments[@"userPreference"];
       [[[NotificarePushLib shared] authManager] addSegment:[[NotificarePushLibUtils shared] segmentFromDictionary:segment] toPreference:[[NotificarePushLibUtils shared] userPreferenceFromDictionary:userPreference] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
                                          message:error.domain
