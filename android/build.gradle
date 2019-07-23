@@ -1,5 +1,5 @@
-group 're.notifica.notificare_push_lib'
-version '1.0-SNAPSHOT'
+group 're.notifica.flutter'
+version '2.0.0'
 
 buildscript {
     repositories {
@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.4.2'
     }
 }
 
@@ -16,6 +16,9 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://github.com/Notificare/notificare-mvn-repo/raw/master/releases"
+        }
     }
 }
 
@@ -31,4 +34,12 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+}
+
+dependencies {
+    api 're.notifica:notificare-core:2.0.7'
+    compileOnly "re.notifica:notificare-location:2.0.7"
+    compileOnly "re.notifica:notificare-beacon:2.0.7"
+    compileOnly "re.notifica:notificare-scannable:2.0.7"
+    implementation 'com.android.support:support-annotations:28.0.0'
 }

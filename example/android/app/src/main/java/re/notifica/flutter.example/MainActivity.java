@@ -1,4 +1,4 @@
-package re.notifica.notificare_push_lib_example;
+package re.notifica.flutter.example;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
