@@ -19,6 +19,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+    print("Launching...");
     notificare.initializeWithKeyAndSecret(null, null);
     notificare.launch();
 
@@ -26,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       switch (event.eventName) {
         case "ready": {
           print("Application is Ready: " + event.body['name']);
-          notificare.registerForNotifications();
+          await notificare.registerForNotifications();
           _registerDevice("1234567890", "Joel Oliveira");
           _fetchInbox();
           _fetchAssets("TEST");
