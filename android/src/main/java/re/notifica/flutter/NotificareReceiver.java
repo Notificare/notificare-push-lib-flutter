@@ -32,7 +32,7 @@ public class NotificareReceiver extends DefaultIntentReceiver {
         payload.put("url", urlClicked.toString());
         NotificareNotification notification = extras.getParcelable(Notificare.INTENT_EXTRA_NOTIFICATION);
         if (notification != null) {
-            payload.put("notification", NotificareUtils.notificationMap(notification));
+            payload.put("notification", NotificareUtils.mapNotification(notification));
         }
         NotificareEventEmitter.getInstance().sendEvent("urlClickedInNotification", payload, true);
     }
@@ -40,7 +40,7 @@ public class NotificareReceiver extends DefaultIntentReceiver {
     @Override
     public void onDeviceRegistered(NotificareDevice device) {
         // emit "deviceRegistered" event with device
-        NotificareEventEmitter.getInstance().sendEvent("deviceRegistered", NotificareUtils.deviceMap(device), true);
+        NotificareEventEmitter.getInstance().sendEvent("deviceRegistered", NotificareUtils.mapDevice(device), true);
     }
 
 }
