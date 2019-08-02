@@ -188,6 +188,7 @@ class NotificarePushLib {
   Future<List> fetchInbox() async {
     List response = await _methodChannel.invokeListMethod('fetchInbox');
     return response;
+    //return response.map(NotificareInboxItem.fromJSON).toList();
   }
 
   Future<void> presentInboxItem(Map<String, dynamic> inboxItem) async {
@@ -349,4 +350,19 @@ class NotificareEvent {
   final String eventName;
   final dynamic body;
   NotificareEvent(this.eventName, this.body);
+}
+
+class NotificareInboxItem {
+  NotificareInboxItem(this.inboxId);
+  final String inboxId;
+
+  static NotificareInboxItem fromJSON(dynamic json) {
+    return new NotificareInboxItem(json['inboxId']);
+  }
+
+  dynamic toJSON() {
+    return <String, dynamic> {
+      'inboxId': inboxId
+    };
+  }
 }

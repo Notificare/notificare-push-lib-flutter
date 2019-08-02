@@ -12,6 +12,8 @@
     NSDictionary *_launchOptions;
 }
 
+#define NOTIFICARE_ERROR @"notificare_error"
+
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                      methodChannelWithName:@"notificare_push_lib"
@@ -81,9 +83,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromDevice:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchDevice" isEqualToString:call.method]) {
@@ -97,9 +99,9 @@
           if (!error) {
               result(response);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchTags" isEqualToString:call.method]) {
@@ -107,9 +109,9 @@
           if (!error) {
               result(response);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"addTag" isEqualToString:call.method]) {
@@ -118,9 +120,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"addTags" isEqualToString:call.method]) {
@@ -129,9 +131,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"removeTag" isEqualToString:call.method]) {
@@ -140,9 +142,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"removeTags" isEqualToString:call.method]) {
@@ -151,9 +153,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"clearTags" isEqualToString:call.method]) {
@@ -161,9 +163,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchUserData" isEqualToString:call.method]) {
@@ -175,9 +177,9 @@
               }
               result(payload);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"updateUserData" isEqualToString:call.method]) {
@@ -194,9 +196,9 @@
               }
               result(payload);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchDoNotDisturb" isEqualToString:call.method]) {
@@ -204,9 +206,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromDeviceDnD:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"updateDoNotDisturb" isEqualToString:call.method]) {
@@ -215,9 +217,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromDeviceDnD:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"clearDoNotDisturb" isEqualToString:call.method]) {
@@ -225,9 +227,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromDeviceDnD:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchNotification" isEqualToString:call.method]) {
@@ -236,9 +238,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromNotification:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchNotificationForInboxItem" isEqualToString:call.method]) {
@@ -247,20 +249,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromNotification:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
-          }
-      }];
-  } else if ([@"clearPrivateNotification" isEqualToString:call.method]) {
-      NSDictionary* notification = call.arguments[@"notification"];
-      [[NotificarePushLib shared] clearPrivateNotification:[[NotificarePushLibUtils shared] notificationFromDictionary:notification] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-          if (!error) {
-              result([[NotificarePushLibUtils shared] dictionaryFromNotification:response]);
-          } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"presentNotification" isEqualToString:call.method]) {
@@ -276,19 +267,6 @@
           [[NotificarePushLib shared] presentNotification:item inNavigationController:[self navigationControllerForRootViewController] withController:controller];
       }
       result([NSNull null]);
-  } else if ([@"reply" isEqualToString:call.method]) {
-      NSDictionary* notification = call.arguments[@"notification"];
-      NSDictionary* action = call.arguments[@"action"];
-      NSDictionary* data = (call.arguments[@"data"]) ? call.arguments[@"data"] : nil;
-      [[NotificarePushLib shared] reply:[[NotificarePushLibUtils shared] notificationFromDictionary:notification] forAction:[[NotificarePushLibUtils shared] actionFromDictionary:action]  andData:data completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-          if (!error) {
-              result(nil);
-          } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
-          }
-      }];
   } else if ([@"fetchInbox" isEqualToString:call.method]) {
       [[[NotificarePushLib shared] inboxManager] fetchInbox:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
@@ -298,9 +276,9 @@
               }
               result(payload);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"presentInboxItem" isEqualToString:call.method]) {
@@ -325,9 +303,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromDeviceInbox:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"markAsRead" isEqualToString:call.method]) {
@@ -336,9 +314,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromDeviceInbox:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"clearInbox" isEqualToString:call.method]) {
@@ -346,9 +324,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchAssets" isEqualToString:call.method]) {
@@ -361,9 +339,9 @@
               }
               result(payload);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchPassWithSerial" isEqualToString:call.method]) {
@@ -372,9 +350,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromPass:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchPassWithBarcode" isEqualToString:call.method]) {
@@ -383,9 +361,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromPass:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchProducts" isEqualToString:call.method]) {
@@ -397,9 +375,9 @@
               }
               result(payload);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchPurchasedProducts" isEqualToString:call.method]) {
@@ -411,9 +389,9 @@
               }
               result(payload);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchProduct" isEqualToString:call.method]) {
@@ -422,9 +400,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromProduct:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"buyProduct" isEqualToString:call.method]) {
@@ -442,9 +420,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"logOpenNotification" isEqualToString:call.method]) {
@@ -455,9 +433,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"logInfluencedNotification" isEqualToString:call.method]) {
@@ -468,9 +446,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"logReceiveNotification" isEqualToString:call.method]) {
@@ -481,23 +459,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
-          }
-      }];
-  } else if ([@"doPushHostOperation" isEqualToString:call.method]) {
-      NSString* verb = call.arguments[@"verb"];
-      NSString* path = call.arguments[@"path"];
-      NSDictionary* params = (call.arguments[@"params"]) ? call.arguments[@"params"] : nil;
-      NSDictionary* body = (call.arguments[@"body"]) ? call.arguments[@"body"] : nil;
-      [[NotificarePushLib shared] doPushHostOperation:verb path:path URLParams:params bodyJSON:body completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-          if (!error) {
-              result(response);
-          } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"doCloudHostOperation" isEqualToString:call.method]) {
@@ -510,9 +474,9 @@
           if (!error) {
               result(response);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"createAccount" isEqualToString:call.method]) {
@@ -523,9 +487,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"validateAccount" isEqualToString:call.method]) {
@@ -534,21 +498,32 @@
              if (!error) {
                  result(nil);
              } else {
-                 result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                            message:error.domain
-                                            details:error.localizedDescription]);
+                 result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                            message:error.localizedDescription
+                                            details:nil]);
              }
          }];
-     } else if ([@"resetPassword" isEqualToString:call.method]) {
+  } else if ([@"resetPassword" isEqualToString:call.method]) {
       NSString* password = call.arguments[@"password"];
       NSString* token = call.arguments[@"token"];
       [[[NotificarePushLib shared] authManager] resetPassword:password withToken:token completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
+          }
+      }];
+  } else if ([@"sendPassword" isEqualToString:call.method]) {
+      NSString* email = call.arguments[@"email"];
+      [[[NotificarePushLib shared] authManager] sendPassword:email completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(nil);
+          } else {
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"login" isEqualToString:call.method]) {
@@ -558,9 +533,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"logout" isEqualToString:call.method]) {
@@ -573,9 +548,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromUser:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"changePassword" isEqualToString:call.method]) {
@@ -584,9 +559,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchAccountDetails" isEqualToString:call.method]) {
@@ -594,9 +569,9 @@
           if (!error) {
               result([[NotificarePushLibUtils shared] dictionaryFromUser:response]);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"fetchUserPreferences" isEqualToString:call.method]) {
@@ -608,9 +583,9 @@
               }
               result(payload);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"addSegmentToUserPreference" isEqualToString:call.method]) {
@@ -620,9 +595,9 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
   } else if ([@"removeSegmentFromUserPreference" isEqualToString:call.method]) {
@@ -632,12 +607,12 @@
           if (!error) {
               result(nil);
           } else {
-              result([FlutterError errorWithCode:[NSString stringWithFormat:@"Error %ld", (long)error.code]
-                                         message:error.domain
-                                         details:error.localizedDescription]);
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
           }
       }];
-  } else if ([@"startScannableSessionWithQRCode" isEqualToString:call.method]) {
+  } else if ([@"startScannableSession" isEqualToString:call.method]) {
       [[NotificarePushLib shared] startScannableSessionWithQRCode:[self navigationControllerForRootViewController] asModal:YES];
       result([NSNull null]);
   } else if ([@"presentScannable" isEqualToString:call.method]) {

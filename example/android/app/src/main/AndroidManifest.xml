@@ -71,5 +71,11 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="re.notifica.ui.NotificationActivity"
+            android:theme="@style/NotificationTheme.Translucent"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true" />
+
     </application>
 </manifest>

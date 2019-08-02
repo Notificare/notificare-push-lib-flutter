@@ -28,9 +28,9 @@ class _MyAppState extends State<MyApp> {
         case "ready": {
           print("Application is Ready: " + event.body['name']);
           await notificare.registerForNotifications();
-          _registerDevice("1234567890", "Joel Oliveira");
-          _fetchInbox();
-          _fetchAssets("TEST");
+          await _registerDevice("1234567890", "Joel Oliveira");
+          List inbox = await _fetchInbox();
+          await _fetchAssets("TEST");
 
           if (! await notificare.isRemoteNotificationsEnabled()) {
             print("Remote Notifications Enabled");
@@ -39,6 +39,10 @@ class _MyAppState extends State<MyApp> {
 
           if (! await notificare.isAllowedUIEnabled()) {
             print("Allowed UI Enabled");
+          }
+
+          if (inbox.isNotEmpty) {
+            notificare.presentInboxItem(inbox[0]);
           }
 
         }
@@ -293,28 +297,28 @@ class _MyAppState extends State<MyApp> {
 
   }
 
-  void _fetchNotificationSettings() async {
+  Future<void> _fetchNotificationSettings() async {
     Map<String, dynamic> settings = await notificare.fetchNotificationSettings();
     print("Settings: " + settings.toString());
   }
 
-  void _fetchPreferredLanguage() async {
+  Future<void> _fetchPreferredLanguage() async {
     String preferredLanguage = await notificare.fetchPreferredLanguage();
     print("Preferred Language: " + preferredLanguage.toString());
   }
 
-  void _registerDevice(String userID, String userName) async {
+  Future<void> _registerDevice(String userID, String userName) async {
     Map<String, dynamic> response = await notificare.registerDevice(userID, userName);
     print("Register Device: " + response.toString());
   }
 
 
-  void _fetchTags() async {
+  Future<void> _fetchTags() async {
     List tags = await notificare.fetchTags();
     print("Tags: " + tags.toString());
   }
 
-  void _addTag(String tag) async {
+  Future<void> _addTag(String tag) async {
     try {
       await notificare.addTag(tag);
       print("Added Tag: " + tag);
@@ -323,12 +327,13 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _fetchInbox() async {
+  Future<List> _fetchInbox() async {
     List response = await notificare.fetchInbox();
     print("Inbox: " + response.toString());
+    return response;
   }
 
-  void _fetchAssets(String group) async {
+  Future<void> _fetchAssets(String group) async {
     List response = await notificare.fetchAssets(group);
     print("Assets: " + response.toString());
 
@@ -339,7 +344,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _isRemoteNotificationsEnabled() async {
+  Future<void> _isRemoteNotificationsEnabled() async {
     bool status = await notificare.isRemoteNotificationsEnabled();
     if (status) {
       print("Remote Notifications are enabled");
