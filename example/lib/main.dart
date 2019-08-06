@@ -20,7 +20,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     print("Launching...");
-    notificare.initializeWithKeyAndSecret(null, null);
     notificare.launch();
 
     notificare.onEventReceived.listen((NotificareEvent event) async {
