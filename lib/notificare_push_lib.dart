@@ -167,7 +167,7 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> fetchNotificationForInboxItem(Map<String, dynamic> inboxItem) async {
+  Future<Map<String, dynamic>> fetchNotificationForInboxItem(Map<dynamic, dynamic> inboxItem) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchNotificationForInboxItem', {'inboxItem': inboxItem});
     return response.cast<String, dynamic>();
   }
@@ -191,16 +191,16 @@ class NotificarePushLib {
     //return response.map(NotificareInboxItem.fromJSON).toList();
   }
 
-  Future<void> presentInboxItem(Map<String, dynamic> inboxItem) async {
+  Future<void> presentInboxItem(Map<dynamic, dynamic> inboxItem) async {
     await _methodChannel.invokeMapMethod('presentInboxItem', {'inboxItem': inboxItem});
   }
 
-  Future<Map<String, dynamic>> removeFromInbox(Map<String, dynamic> inboxItem) async {
+  Future<Map<String, dynamic>> removeFromInbox(Map<dynamic, dynamic> inboxItem) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod('removeFromInbox', {'inboxItem': inboxItem});
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> markAsRead(Map<String, dynamic> inboxItem) async {
+  Future<Map<String, dynamic>> markAsRead(Map<dynamic, dynamic> inboxItem) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod('markAsRead', {'inboxItem': inboxItem});
     return response.cast<String, dynamic>();
   }
@@ -239,7 +239,7 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<void> buyProduct(Map<String, dynamic> product) async {
+  Future<void> buyProduct(Map<dynamic, dynamic> product) async {
     await _methodChannel.invokeMethod('buyProduct', {'product': product});
   }
 
@@ -247,15 +247,15 @@ class NotificarePushLib {
     return await _methodChannel.invokeMapMethod('logCustomEvent', {'name': name, 'data': data});
   }
 
-  Future<dynamic> logOpenNotification(Map<String, dynamic> notification) async {
+  Future<dynamic> logOpenNotification(Map<dynamic, dynamic> notification) async {
     return await _methodChannel.invokeMapMethod('logOpenNotification', {'notification': notification});
   }
 
-  Future<dynamic> logInfluencedNotification(Map<String, dynamic> notification) async {
+  Future<dynamic> logInfluencedNotification(Map<dynamic, dynamic> notification) async {
     return  await _methodChannel.invokeMapMethod('logInfluencedNotification', {'notification': notification});
   }
 
-  Future<dynamic> logReceiveNotification(Map<String, dynamic> notification) async {
+  Future<dynamic> logReceiveNotification(Map<dynamic, dynamic> notification) async {
     return await _methodChannel.invokeMapMethod('logReceiveNotification', {'notification': notification});
   }
 
@@ -264,7 +264,7 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> doCloudHostOperation(String verb, String path, Map<String, dynamic> params, Map<String, dynamic> headers, Map<String, dynamic> body) async {
+  Future<Map<String, dynamic>> doCloudHostOperation(String verb, String path, Map<String, String> params, Map<String, String> headers, Map<String, dynamic> body) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod('doPushHostOperation', {'verb': verb, 'path': path, 'params': params, 'headers': headers, 'body': body});
     return response.cast<String, dynamic>();
   }
@@ -352,17 +352,17 @@ class NotificareEvent {
   NotificareEvent(this.eventName, this.body);
 }
 
-class NotificareInboxItem {
-  NotificareInboxItem(this.inboxId);
-  final String inboxId;
-
-  static NotificareInboxItem fromJSON(dynamic json) {
-    return new NotificareInboxItem(json['inboxId']);
-  }
-
-  dynamic toJSON() {
-    return <String, dynamic> {
-      'inboxId': inboxId
-    };
-  }
-}
+//class NotificareInboxItem {
+//  NotificareInboxItem(this.inboxId);
+//  final String inboxId;
+//
+//  static NotificareInboxItem fromJSON(dynamic json) {
+//    return new NotificareInboxItem(json['inboxId']);
+//  }
+//
+//  dynamic toJSON() {
+//    return <String, dynamic> {
+//      'inboxId': inboxId
+//    };
+//  }
+//}

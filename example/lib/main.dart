@@ -30,14 +30,14 @@ class _MyAppState extends State<MyApp> {
           await notificare.registerForNotifications();
           await _registerDevice("1234567890", "Joel Oliveira");
           List inbox = await _fetchInbox();
-          await _fetchAssets("TEST");
+          //await _fetchAssets("TEST");
 
-          if (! await notificare.isRemoteNotificationsEnabled()) {
+          if (await notificare.isRemoteNotificationsEnabled()) {
             print("Remote Notifications Enabled");
           }
 
 
-          if (! await notificare.isAllowedUIEnabled()) {
+          if (await notificare.isAllowedUIEnabled()) {
             print("Allowed UI Enabled");
           }
 
@@ -75,6 +75,7 @@ class _MyAppState extends State<MyApp> {
         break;
         case "remoteNotificationReceivedInBackground": {
           print("Notification: " + event.body['message']);
+          notificare.presentNotification(event.body);
         }
         break;
         case "remoteNotificationReceivedInForeground": {
