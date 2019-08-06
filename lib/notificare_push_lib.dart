@@ -23,14 +23,6 @@ class NotificarePushLib {
   final EventChannel _eventChannel;
   Stream<NotificareEvent> _onEventReceived;
 
-  Future<void> initializeWithKeyAndSecret(String key, String secret) async {
-    if (key != null && secret != null) {
-      await _methodChannel.invokeMethod('initializeWithKeyAndSecret', {'key': key, 'secret': secret});
-    } else {
-      await _methodChannel.invokeMethod('initializeWithKeyAndSecret');
-    }
-  }
-
   Future<void> launch() async {
     await _methodChannel.invokeMethod('launch');
   }

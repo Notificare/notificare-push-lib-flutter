@@ -38,15 +38,11 @@
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"initializeWithKeyAndSecret" isEqualToString:call.method]) {
-      NSString* key = (call.arguments[@"key"]) ? call.arguments[@"key"] : nil;
-      NSString* secret = (call.arguments[@"secret"]) ? call.arguments[@"secret"] : nil;
-      [[NotificarePushLib shared] initializeWithKey:key andSecret:secret];
+  if ([@"launch" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] initializeWithKey:nil andSecret:nil];
+      [[NotificarePushLib shared] launch];
       [[NotificarePushLib shared] setDelegate:self];
       [[NotificarePushLib shared] didFinishLaunchingWithOptions:_launchOptions];
-      result([NSNull null]);
-  } else if ([@"launch" isEqualToString:call.method]) {
-      [[NotificarePushLib shared] launch];
       result([NSNull null]);
   } else if ([@"registerForNotifications" isEqualToString:call.method]) {
       [[NotificarePushLib shared] registerForNotifications];
