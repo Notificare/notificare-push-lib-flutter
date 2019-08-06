@@ -173,10 +173,6 @@ class NotificarePushLib {
     await _methodChannel.invokeMethod('presentNotification', {'notification': notification});
   }
 
-  Future<dynamic> reply(Map<String, dynamic> notification, Map<String, dynamic> action, Map<String, dynamic> data) async {
-    return await _methodChannel.invokeMapMethod('reply', {'notification': notification, 'action': action, 'data': data});
-  }
-
   Future<List> fetchInbox() async {
     List response = await _methodChannel.invokeListMethod('fetchInbox');
     return response;
@@ -249,11 +245,6 @@ class NotificarePushLib {
 
   Future<dynamic> logReceiveNotification(Map<dynamic, dynamic> notification) async {
     return await _methodChannel.invokeMapMethod('logReceiveNotification', {'notification': notification});
-  }
-
-  Future<Map<String, dynamic>> doPushHostOperation(String verb, String path, Map<String, dynamic> params, Map<String, dynamic> body) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('doPushHostOperation', {'verb': verb, 'path': path, 'params': params, 'body': body});
-    return response.cast<String, dynamic>();
   }
 
   Future<Map<String, dynamic>> doCloudHostOperation(String verb, String path, Map<String, String> params, Map<String, String> headers, Map<String, dynamic> body) async {
