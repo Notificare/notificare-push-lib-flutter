@@ -371,8 +371,6 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
           replyError(result, DEFAULT_ERROR_CODE, notificareError);
         }
       });
-    } else if ("fetchNotification".equals(call.method)) {
-      replySuccess(result, null);
     } else if ("fetchNotificationForInboxItem".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
         JSONObject inboxItem = call.argument("inboxItem");
@@ -478,7 +476,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         Notificare.shared().getInboxManager().clearInbox(new NotificareCallback<Integer>() {
           @Override
           public void onSuccess(Integer count) {
-            replySuccess(result, count);
+            replySuccess(result, null);
           }
 
           @Override
@@ -905,6 +903,10 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     }
   }
 
+  /**
+   * Present the notification in NotificationActivity, check if there was an inboxItemId
+   * @param notification
+   */
   private void presentNotification(JSONObject notification) {
     if (notification != null && notification.has("id")) {
       String notificationId = notification.optString("id");
@@ -1045,7 +1047,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     }
   }
 
-  protected JSONObject parseNotificationIntent(Intent intent) {
+  private JSONObject parseNotificationIntent(Intent intent) {
     NotificareNotification notification = intent.getParcelableExtra(Notificare.INTENT_EXTRA_NOTIFICATION);
     if (notification != null) {
       try {
@@ -1062,7 +1064,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     return null;
   }
 
-  protected void handleIntent(Intent intent) {
+  private void handleIntent(Intent intent) {
     JSONObject notificationMap = parseNotificationIntent(intent);
     if (notificationMap != null) {
       sendEvent("remoteNotificationReceivedInBackground", notificationMap, true);

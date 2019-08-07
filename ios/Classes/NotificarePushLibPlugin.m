@@ -95,7 +95,7 @@
       NSString* preferredLanguage = call.arguments[@"preferredLanguage"];
       [[NotificarePushLib shared] updatePreferredLanguage:preferredLanguage completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result(response);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:NOTIFICARE_ERROR
                                          message:error.localizedDescription

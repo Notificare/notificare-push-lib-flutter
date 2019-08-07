@@ -4,12 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import re.notifica.Notificare;
 import re.notifica.model.NotificareAction;
@@ -18,14 +14,11 @@ import re.notifica.model.NotificareAsset;
 import re.notifica.model.NotificareAttachment;
 import re.notifica.model.NotificareBeacon;
 import re.notifica.model.NotificareContent;
-import re.notifica.model.NotificareCoordinates;
 import re.notifica.model.NotificareDevice;
 import re.notifica.model.NotificareInboxItem;
 import re.notifica.model.NotificareNotification;
 import re.notifica.model.NotificarePass;
 import re.notifica.model.NotificarePassRedemption;
-import re.notifica.model.NotificarePoint;
-import re.notifica.model.NotificarePolygon;
 import re.notifica.model.NotificareProduct;
 import re.notifica.model.NotificareRegion;
 import re.notifica.model.NotificareScannable;
@@ -93,23 +86,33 @@ public class NotificareUtils {
         deviceMap.put("osVersion", device.getOsVersion());
         deviceMap.put("sdkVersion", device.getSdkVersion());
         deviceMap.put("appVersion", device.getAppVersion());
-        deviceMap.put("deviceString", device.getDeviceString());
-        deviceMap.put("deviceModel", device.getDeviceString());
         deviceMap.put("countryCode", device.getCountry());
         deviceMap.put("language", device.getLanguage());
         deviceMap.put("region", device.getRegion());
         deviceMap.put("transport", device.getTransport());
-        deviceMap.put("latitude", device.getLatitude());
-        deviceMap.put("longitude", device.getLongitude());
-        deviceMap.put("altitude", device.getAltitude());
-        deviceMap.put("speed", device.getSpeed());
-        deviceMap.put("course", device.getCourse());
-        deviceMap.put("lastRegistered", ISODateFormatter.format(device.getLastActive()));
+        if (!Double.isNaN(device.getLatitude())) {
+            deviceMap.put("latitude", device.getLatitude());
+        }
+        if (!Double.isNaN(device.getLongitude())) {
+            deviceMap.put("longitude", device.getLongitude());
+        }
+        if (!Double.isNaN(device.getAltitude())) {
+            deviceMap.put("altitude", device.getAltitude());
+        }
+        if (!Double.isNaN(device.getSpeed())) {
+            deviceMap.put("speed", device.getSpeed());
+        }
+        if (!Double.isNaN(device.getCourse())) {
+            deviceMap.put("course", device.getCourse());
+        }
+        if (device.getLastActive() != null) {
+            deviceMap.put("lastRegistered", ISODateFormatter.format(device.getLastActive()));
+        }
         deviceMap.put("locationServicesAuthStatus", device.getLocationServicesAuthStatus() ? "always" : "none");
         deviceMap.put("registeredForNotifications", Notificare.shared().isNotificationsEnabled());
         deviceMap.put("allowedLocationServices", device.getLocationServicesAuthStatus());
         deviceMap.put("allowedUI", device.getAllowedUI());
-        deviceMap.put("bluetoothEnabled", device.getBluetoothEnabled());
+        deviceMap.put("backgroundAppRefresh", true);
         deviceMap.put("bluetoothON", device.getBluetoothEnabled());
         return deviceMap;
     }

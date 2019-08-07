@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:notificare_push_lib/notificare_push_lib.dart';
+import 'package:notificare_push_lib/notificare_models.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +26,8 @@ class _MyAppState extends State<MyApp> {
     notificare.onEventReceived.listen((NotificareEvent event) async {
       switch (event.eventName) {
         case "ready": {
-          print("Application is Ready: " + event.body['name']);
+          NotificareApplication application = NotificareApplication.fromJson(event.body);
+          print("Application is Ready: " + application.name);
           await notificare.registerForNotifications();
           await _registerDevice("1234567890", "Joel Oliveira");
           List inbox = await _fetchInbox();
@@ -303,8 +305,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _registerDevice(String userID, String userName) async {
-    Map<String, dynamic> response = await notificare.registerDevice(userID, userName);
-    print("Register Device: " + response.toString());
+    NotificareDevice response = await notificare.registerDevice(userID, userName);
+    print("Register Device: " + response.toJson().toString());
   }
 
 
