@@ -39,81 +39,40 @@ import re.notifica.util.ISODateFormatter;
 public class NotificareUtils {
 
     /**
-     * Map JSON object
-     * @param jsonObject
-     * @return
-     * @throws JSONException
-     */
-    public static Map<String, Object> mapJSONObject(JSONObject jsonObject)  throws JSONException {
-        Map<String, Object> map = new HashMap<>();
-        Iterator<String> keys = jsonObject.keys();
-        while(keys.hasNext()) {
-            String key = keys.next();
-            Object value = jsonObject.get(key);
-            if (value instanceof JSONArray) {
-                value = mapJSONArray((JSONArray) value);
-            } else if (value instanceof JSONObject) {
-                value = mapJSONObject((JSONObject) value);
-            }
-            map.put(key, value);
-        }   return map;
-    }
-
-    /**
-     * Map JSON array to List
-     * @param jsonArray
-     * @return
-     * @throws JSONException
-     */
-    public static List<Object> mapJSONArray(JSONArray jsonArray) throws JSONException {
-        List<Object> list = new ArrayList<>();
-        for(int i = 0; i < jsonArray.length(); i++) {
-            Object value = jsonArray.get(i);
-            if (value instanceof JSONArray) {
-                value = mapJSONArray((JSONArray) value);
-            }
-            else if (value instanceof JSONObject) {
-                value = mapJSONObject((JSONObject) value);
-            }
-            list.add(value);
-        }   return list;
-    }
-
-    /**
      * Map application info
      * @param applicationInfo
      * @return
      */
-    public static Map<String, Object> mapApplicationInfo(NotificareApplicationInfo applicationInfo) {
-        Map<String, Object> infoMap = new HashMap<>();
+    public static JSONObject mapApplicationInfo(NotificareApplicationInfo applicationInfo) throws JSONException {
+        JSONObject infoMap = new JSONObject();
         infoMap.put("id", applicationInfo.getId());
         infoMap.put("name", applicationInfo.getName());
-        Map<String, Object> servicesMap = new HashMap<>();
+        JSONObject servicesMap = new JSONObject();
         for (String key : applicationInfo.getServices().keySet()) {
             servicesMap.put(key, applicationInfo.getServices().get(key));
         }
         infoMap.put("services", servicesMap);
 
         if (applicationInfo.getInboxConfig() != null) {
-            Map<String, Object> inboxConfigMap = new HashMap<>();
+            JSONObject inboxConfigMap = new JSONObject();
             inboxConfigMap.put("autoBadge", applicationInfo.getInboxConfig().getAutoBadge());
             inboxConfigMap.put("useInbox", applicationInfo.getInboxConfig().getUseInbox());
             infoMap.put("inboxConfig", inboxConfigMap);
         }
 
         if (applicationInfo.getRegionConfig() != null) {
-            Map<String, Object> regionConfigMap = new HashMap<>();
+            JSONObject regionConfigMap = new JSONObject();
             regionConfigMap.put("proximityUUID", applicationInfo.getRegionConfig().getProximityUUID());
             infoMap.put("regionConfig", regionConfigMap);
         }
 
 
-        List<Map<String, Object>> userDataFieldsArray = new ArrayList<>();
+        JSONArray userDataFieldsArray = new JSONArray();
         for (String key : applicationInfo.getUserDataFields().keySet()){
-            Map<String, Object> userDataFieldMap = new HashMap<>();
+            JSONObject userDataFieldMap = new JSONObject();
             userDataFieldMap.put("key", key);
             userDataFieldMap.put("label", applicationInfo.getUserDataFields().get(key).getLabel());
-            userDataFieldsArray.add(userDataFieldMap);
+            userDataFieldsArray.put(userDataFieldMap);
         }
         infoMap.put("userDataFields", userDataFieldsArray);
 
@@ -125,8 +84,8 @@ public class NotificareUtils {
      * @param device
      * @return
      */
-    public static Map<String, Object> mapDevice(NotificareDevice device) {
-        Map<String, Object> deviceMap = new HashMap<>();
+    public static JSONObject mapDevice(NotificareDevice device) throws JSONException {
+        JSONObject deviceMap = new JSONObject();
         deviceMap.put("deviceID", device.getDeviceId());
         deviceMap.put("userID", device.getUserId());
         deviceMap.put("userName", device.getUserName());
@@ -160,8 +119,8 @@ public class NotificareUtils {
      * @param notification
      * @return
      */
-    public static Map<String, Object> mapNotification(NotificareNotification notification) {
-        Map<String, Object> notificationMap = new HashMap<>();
+    public static JSONObject mapNotification(NotificareNotification notification) throws JSONException {
+        JSONObject notificationMap = new JSONObject();
         notificationMap.put("id", notification.getNotificationId());
         notificationMap.put("message", notification.getMessage());
         notificationMap.put("title", notification.getTitle());
@@ -169,42 +128,42 @@ public class NotificareUtils {
         notificationMap.put("type", notification.getType());
         notificationMap.put("time", ISODateFormatter.format(notification.getTime()));
         if (notification.getExtra() != null) {
-            Map<String, Object> extraMap = new HashMap<>();
+            JSONObject extraMap = new JSONObject();
             for (HashMap.Entry<String, String> prop : notification.getExtra().entrySet()) {
                 extraMap.put(prop.getKey(), prop.getValue());
             }
             notificationMap.put("extra", extraMap);
         }
         if (notification.getContent().size() > 0) {
-            List<Map<String,Object>> contentArray = new ArrayList<>();
+            JSONArray contentArray = new JSONArray();
             for (NotificareContent c : notification.getContent()) {
-                Map<String, Object> contentMap = new HashMap<>();
+                JSONObject contentMap = new JSONObject();
                 contentMap.put("type", c.getType());
                 contentMap.put("data", c.getData().toString());
-                contentArray.add(contentMap);
+                contentArray.put(contentMap);
             }
             notificationMap.put("content", contentArray);
         }
         if (notification.getAttachments().size() > 0) {
-            List<Map<String,Object>> attachmentsArray = new ArrayList<>();
+            JSONArray attachmentsArray = new JSONArray();
             for (NotificareAttachment a : notification.getAttachments()) {
-                Map<String, Object> attachmentsMap = new HashMap<>();
+                JSONObject attachmentsMap = new JSONObject();
                 attachmentsMap.put("mimeType", a.getMimeType());
                 attachmentsMap.put("uri", a.getUri());
-                attachmentsArray.add(attachmentsMap);
+                attachmentsArray.put(attachmentsMap);
             }
             notificationMap.put("attachments", attachmentsArray);
         }
         if (notification.getActions().size() > 0) {
-            List<Map<String, Object>> actionsArray = new ArrayList<>();
+            JSONArray actionsArray = new JSONArray();
             for (NotificareAction a : notification.getActions()) {
-                Map<String, Object> actionMap = new HashMap<>();
+                JSONObject actionMap = new JSONObject();
                 actionMap.put("label", a.getLabel());
                 actionMap.put("type", a.getType());
                 actionMap.put("target", a.getTarget());
                 actionMap.put("camera", a.getCamera());
                 actionMap.put("keyboard", a.getKeyboard());
-                actionsArray.add(actionMap);
+                actionsArray.put(actionMap);
             }
             notificationMap.put("actions", actionsArray);
         }
@@ -217,14 +176,14 @@ public class NotificareUtils {
      * @param notificationMap
      * @return
      */
-    public static NotificareNotification createNotification(Map<String, Object> notificationMap) {
-        if (notificationMap.get("partial") != null && (boolean)notificationMap.get("partial")) {
+    public static NotificareNotification createNotification(JSONObject notificationMap) {
+        if (notificationMap.optBoolean("partial", false)) {
             return null;
         } else {
             try {
-                JSONObject json = new JSONObject(notificationMap);
-                if (notificationMap.containsKey("id")) {
-                    json.put("_id", notificationMap.get("id"));
+                JSONObject json = new JSONObject(notificationMap.toString());
+                if (notificationMap.has("id")) {
+                    json.put("_id", notificationMap.getString("id"));
                 }
                 return new NotificareNotification(json);
             } catch (JSONException e) {
@@ -238,20 +197,20 @@ public class NotificareUtils {
      * @param asset
      * @return
      */
-    public static Map<String, Object> mapAsset(NotificareAsset asset) {
-        Map<String, Object> assetMap = new HashMap<>();
+    public static JSONObject mapAsset(NotificareAsset asset) throws JSONException {
+        JSONObject assetMap = new JSONObject();
         assetMap.put("assetTitle", asset.getTitle());
         assetMap.put("assetDescription", asset.getDescription());
         assetMap.put("assetUrl", asset.getUrl().toString());
 
-        Map<String, Object> metaMap = new HashMap<>();
+        JSONObject metaMap = new JSONObject();
         metaMap.put("originalFileName", asset.getOriginalFileName());
         metaMap.put("key", asset.getKey());
         metaMap.put("contentType", asset.getContentType());
         metaMap.put("contentLength", asset.getContentLength());
         assetMap.put("assetMetaData", metaMap);
 
-        Map<String, Object> buttonMap = new HashMap<>();
+        JSONObject buttonMap = new JSONObject();
         buttonMap.put("label", asset.getButtonLabel());
         buttonMap.put("action", asset.getButtonAction());
         assetMap.put("assetButton", buttonMap);
@@ -263,39 +222,11 @@ public class NotificareUtils {
      * @param notificareTimeOfDayRange
      * @return
      */
-    public static Map<String, Object> mapTimeOfDayRange(NotificareTimeOfDayRange notificareTimeOfDayRange) {
-        Map<String, Object> timeOfDayRangeMap = new HashMap<>();
+    public static JSONObject mapTimeOfDayRange(NotificareTimeOfDayRange notificareTimeOfDayRange) throws JSONException {
+        JSONObject timeOfDayRangeMap = new JSONObject();
         timeOfDayRangeMap.put("start", notificareTimeOfDayRange.getStart().toString());
         timeOfDayRangeMap.put("end", notificareTimeOfDayRange.getEnd().toString());
         return timeOfDayRangeMap;
-    }
-
-    /**
-     * Map a point
-     * @param point
-     * @return
-     */
-    public static Map<String, Object> mapPoint(NotificarePoint point) {
-        Map<String, Object> pointMap = new HashMap<>();
-        pointMap.put("type", point.getType());
-        pointMap.put("coordinates", Arrays.asList(point.getLongitude(), point.getLatitude()));
-        return pointMap;
-    }
-
-    /**
-     * Map a polygon
-     * @param polygon
-     * @return
-     */
-    public static Map<String, Object> mapPolygon(NotificarePolygon polygon) {
-        Map<String, Object> polygonMap = new HashMap<>();
-        polygonMap.put("type", polygon.getType());
-        List<List<Double>> coordinatesList = new ArrayList<>();
-        for (NotificareCoordinates coordinates : polygon.getCoordinates()) {
-            coordinatesList.add(Arrays.asList(coordinates.getLongitude(), coordinates.getLatitude()));
-        }
-        polygonMap.put("coordinates", Arrays.asList(coordinatesList));
-        return polygonMap;
     }
 
     /**
@@ -303,17 +234,17 @@ public class NotificareUtils {
      * @param region
      * @return
      */
-    public static Map<String, Object> mapRegion(NotificareRegion region) {
-        Map<String, Object> regionMap = new HashMap<>();
+    public static JSONObject mapRegion(NotificareRegion region) throws JSONException {
+        JSONObject regionMap = new JSONObject();
         regionMap.put("id", region.getRegionId());
         regionMap.put("regionId", region.getRegionId());
         regionMap.put("regionName", region.getName());
         regionMap.put("regionMajor", region.getMajor());
         if (region.getGeometry() != null) {
-            regionMap.put("regionGeometry", mapPoint(region.getGeometry()));
+            regionMap.put("regionGeometry", region.getGeometry().toJSONObject());
         }
         if (region.getAdvancedGeometry() != null) {
-            regionMap.put("regionAdvancedGeometry", mapPolygon(region.getAdvancedGeometry()));
+            regionMap.put("regionAdvancedGeometry", region.getAdvancedGeometry().toJSONObject());
         }
         regionMap.put("regionDistance", region.getDistance());
         regionMap.put("regionTimezone", region.getTimezone());
@@ -325,8 +256,8 @@ public class NotificareUtils {
      * @param beacon
      * @return
      */
-    public static Map<String, Object> mapBeacon(NotificareBeacon beacon) {
-        Map<String, Object> beaconMap = new HashMap<>();
+    public static JSONObject mapBeacon(NotificareBeacon beacon) throws JSONException {
+        JSONObject beaconMap = new JSONObject();
         beaconMap.put("beaconId", beacon.getBeaconId());
         beaconMap.put("beaconName", beacon.getName());
         beaconMap.put("beaconRegion", beacon.getRegionId());
@@ -342,8 +273,8 @@ public class NotificareUtils {
      * @param pass
      * @return
      */
-    public static Map<String, Object> mapPass(NotificarePass pass) {
-        Map<String, Object> passMap = new HashMap<>();
+    public static JSONObject mapPass(NotificarePass pass) throws JSONException {
+        JSONObject passMap = new JSONObject();
         passMap.put("passbook", pass.getPassbook());
         passMap.put("serial", pass.getSerial());
         if (pass.getRedeem() == NotificarePass.Redeem.ALWAYS) {
@@ -355,21 +286,16 @@ public class NotificareUtils {
         }
         passMap.put("token", pass.getToken());
         if (pass.getData() != null) {
-            try {
-                passMap.put("data", mapJSONObject(pass.getData()));
-            } catch (JSONException e) {
-                // ignore
-                passMap.put("data", new HashMap<String, Object>());
-            }
+            passMap.put("data", pass.getData());
         }
         passMap.put("date", ISODateFormatter.format(pass.getDate()));
         passMap.put("limit", pass.getLimit());
-        List<Map<String, Object>> redeemHistory = new ArrayList<>();
+        JSONArray redeemHistory = new JSONArray();
         for (NotificarePassRedemption redemption : pass.getRedeemHistory()) {
-            Map<String, Object> redemptionMap = new HashMap<>();
+            JSONObject redemptionMap = new JSONObject();
             redemptionMap.put("comments", redemption.getComments());
             redemptionMap.put("date", ISODateFormatter.format(redemption.getDate()));
-            redeemHistory.add(redemptionMap);
+            redeemHistory.put(redemptionMap);
         }
         passMap.put("redeemHistory", redeemHistory);
         return passMap;
@@ -380,8 +306,8 @@ public class NotificareUtils {
      * @param product
      * @return
      */
-    public static Map<String, Object> mapProduct(NotificareProduct product) {
-        Map<String, Object> productItemMap = new HashMap<>();
+    public static JSONObject mapProduct(NotificareProduct product) throws JSONException {
+        JSONObject productItemMap = new JSONObject();
         productItemMap.put("productType", product.getType());
         productItemMap.put("productIdentifier", product.getIdentifier());
         productItemMap.put("productName", product.getName());
@@ -398,10 +324,14 @@ public class NotificareUtils {
      * @param products
      * @return
      */
-    public static List<Map<String, Object>> mapProducts(List<NotificareProduct> products) {
-        List<Map<String, Object>> productList = new ArrayList<>();
-        for (NotificareProduct product : products){
-            productList.add(mapProduct(product));
+    public static JSONArray mapProducts(List<NotificareProduct> products) {
+        JSONArray productList = new JSONArray();
+        try {
+            for (NotificareProduct product : products) {
+                productList.put(mapProduct(product));
+            }
+        } catch (JSONException e) {
+            // ignore, return list as is
         }
         return productList;
     }
@@ -411,8 +341,8 @@ public class NotificareUtils {
      * @param notificareInboxItem
      * @return
      */
-    public static Map<String, Object> mapInboxItem(NotificareInboxItem notificareInboxItem) {
-        Map<String, Object> inboxItemMap = new HashMap<>();
+    public static JSONObject mapInboxItem(NotificareInboxItem notificareInboxItem) throws JSONException {
+        JSONObject inboxItemMap = new JSONObject();
         inboxItemMap.put("inboxId", notificareInboxItem.getItemId());
         inboxItemMap.put("notification", notificareInboxItem.getNotification().getNotificationId());
         inboxItemMap.put("message", notificareInboxItem.getNotification().getMessage());
@@ -426,8 +356,8 @@ public class NotificareUtils {
      * @param user
      * @return
      */
-    public static Map<String, Object> mapUser(NotificareUser user) {
-        Map<String, Object> userMap = new HashMap<>();
+    public static JSONObject mapUser(NotificareUser user) throws JSONException {
+        JSONObject userMap = new JSONObject();
         userMap.put("userID", user.getUserId());
         userMap.put("userName", user.getUserName());
         userMap.put("segments", user.getSegments());
@@ -439,8 +369,8 @@ public class NotificareUtils {
      * @param userSegment
      * @return
      */
-    public static Map<String, Object> mapUserSegment(NotificareUserSegment userSegment) {
-        Map<String, Object> userSegmentMap = new HashMap<>();
+    public static JSONObject mapUserSegment(NotificareUserSegment userSegment) throws JSONException {
+        JSONObject userSegmentMap = new JSONObject();
         userSegmentMap.put("segmentId", userSegment.getId());
         userSegmentMap.put("segmentLabel", userSegment.getName());
         return userSegmentMap;
@@ -451,10 +381,14 @@ public class NotificareUtils {
      * @param userSegments
      * @return
      */
-    public static List<Map<String, Object>> mapUserSegments(List<NotificareUserSegment> userSegments) {
-        List<Map<String, Object>> userSegmentsArray = new ArrayList<>();
-        for (NotificareUserSegment userSegment : userSegments) {
-            userSegmentsArray.add(mapUserSegment(userSegment));
+    public static JSONArray mapUserSegments(List<NotificareUserSegment> userSegments) {
+        JSONArray userSegmentsArray = new JSONArray();
+        try {
+            for (NotificareUserSegment userSegment : userSegments) {
+                userSegmentsArray.put(mapUserSegment(userSegment));
+            }
+        } catch (JSONException e) {
+            // ignore, send list as is
         }
         return userSegmentsArray;
     }
@@ -464,7 +398,7 @@ public class NotificareUtils {
      * @param userSegmentMap
      * @return
      */
-    public static NotificareUserSegment createUserSegment(Map<String, Object> userSegmentMap) {
+    public static NotificareUserSegment createUserSegment(JSONObject userSegmentMap) {
         try {
             JSONObject json = new JSONObject();
             json.put("_id", userSegmentMap.get("segmentId"));
@@ -480,18 +414,18 @@ public class NotificareUtils {
      * @param userPreference
      * @return
      */
-    public static Map<String, Object> mapUserPreference(NotificareUserPreference userPreference) {
-        Map<String, Object> userPreferenceMap = new HashMap<>();
+    public static JSONObject mapUserPreference(NotificareUserPreference userPreference) throws JSONException {
+       JSONObject userPreferenceMap = new JSONObject();
         userPreferenceMap.put("preferenceId", userPreference.getId());
         userPreferenceMap.put("preferenceLabel", userPreference.getLabel());
         userPreferenceMap.put("preferenceType", userPreference.getPreferenceType());
-        List<Map<String, Object>> options = new ArrayList<>();
+        JSONArray options = new JSONArray();
         for (NotificareUserPreferenceOption option : userPreference.getPreferenceOptions()) {
-            Map<String, Object> optionMap = new HashMap<>();
+            JSONObject optionMap = new JSONObject();
             optionMap.put("segmentId", option.getUserSegmentId());
             optionMap.put("segmentLabel", option.getLabel());
             optionMap.put("selected", option.isSelected());
-            options.add(optionMap);
+            options.put(optionMap);
         }
         userPreferenceMap.put("preferenceOptions", options);
         return userPreferenceMap;
@@ -502,7 +436,7 @@ public class NotificareUtils {
      * @param userPreferenceMap
      * @return
      */
-    public static NotificareUserPreference createUserPreference(Map<String, Object> userPreferenceMap) {
+    public static NotificareUserPreference createUserPreference(JSONObject userPreferenceMap) {
         try {
             JSONObject json = new JSONObject();
             json.put("_id", userPreferenceMap.get("preferenceId"));
@@ -519,18 +453,13 @@ public class NotificareUtils {
      * @param scannable
      * @return
      */
-    public static Map<String, Object> mapScannable(NotificareScannable scannable) {
-        Map<String, Object> result = new HashMap<>();
+    public static JSONObject mapScannable(NotificareScannable scannable) throws JSONException {
+        JSONObject result = new JSONObject();
         result.put("scannableId", scannable.getScannableId());
         result.put("name", scannable.getName());
         result.put("type", scannable.getType());
         result.put("tag", scannable.getTag());
-        try {
-            result.put("data", mapJSONObject(scannable.getData()));
-        } catch (JSONException e) {
-            // ignore the data
-            result.put("data", new HashMap<String, Object>());
-        }
+        result.put("data", scannable.getData());
         result.put("notification", mapNotification(scannable.getNotification()));
         return result;
     }

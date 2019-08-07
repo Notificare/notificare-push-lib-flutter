@@ -122,11 +122,6 @@ class _MyAppState extends State<MyApp> {
           print("Notification: " + event.body['message']);
         }
         break;
-        case "urlClickedInNotification": {
-          print("URL: " + event.body['url']);
-          //Handle Deep Link
-        }
-        break;
         case "actionWillExecute": {
           print("Action: " + event.body['label']);
         }

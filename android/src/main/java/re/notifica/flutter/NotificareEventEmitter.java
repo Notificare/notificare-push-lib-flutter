@@ -3,6 +3,8 @@ package re.notifica.flutter;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

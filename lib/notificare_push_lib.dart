@@ -3,12 +3,16 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show visibleForTesting;
 
+import 'notificare_inbox_item.dart';
+import 'notificare_user.dart';
+import 'notificare_user_segment.dart';
+
 class NotificarePushLib {
 
   factory NotificarePushLib() {
     if (_instance == null) {
-      final MethodChannel methodChannel = const MethodChannel('notificare_push_lib');
-      final EventChannel eventChannel = const EventChannel('notificare_push_lib/events');
+      final MethodChannel methodChannel = const MethodChannel('notificare_push_lib', JSONMethodCodec());
+      final EventChannel eventChannel = const EventChannel('notificare_push_lib/events', JSONMethodCodec());
       _instance = NotificarePushLib.private(methodChannel, eventChannel);
     }
     return _instance;
@@ -164,28 +168,21 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<Map<String, dynamic>> clearPrivateNotification(Map<String, dynamic> notification) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('clearPrivateNotification', {'notification': notification});
-    return response.cast<String, dynamic>();
-  }
-
   Future<void> presentNotification(Map<String, dynamic> notification) async {
     await _methodChannel.invokeMethod('presentNotification', {'notification': notification});
   }
 
-  Future<List> fetchInbox() async {
+  Future<List<NotificareInboxItem>> fetchInbox() async {
     List response = await _methodChannel.invokeListMethod('fetchInbox');
-    return response;
-    //return response.map(NotificareInboxItem.fromJSON).toList();
+    return response.map((value) => NotificareInboxItem.fromJson(value)).toList();
   }
 
-  Future<void> presentInboxItem(Map<dynamic, dynamic> inboxItem) async {
+  Future<void> presentInboxItem(NotificareInboxItem inboxItem) async {
     await _methodChannel.invokeMapMethod('presentInboxItem', {'inboxItem': inboxItem});
   }
 
-  Future<Map<String, dynamic>> removeFromInbox(Map<dynamic, dynamic> inboxItem) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('removeFromInbox', {'inboxItem': inboxItem});
-    return response.cast<String, dynamic>();
+  Future<NotificareInboxItem> removeFromInbox(Map<dynamic, dynamic> inboxItem) async {
+    return NotificareInboxItem.fromJson(await _methodChannel.invokeMapMethod('removeFromInbox', {'inboxItem': inboxItem}));
   }
 
   Future<Map<String, dynamic>> markAsRead(Map<dynamic, dynamic> inboxItem) async {
@@ -231,20 +228,20 @@ class NotificarePushLib {
     await _methodChannel.invokeMethod('buyProduct', {'product': product});
   }
 
-  Future<dynamic> logCustomEvent(String name, Map<String, dynamic> data) async {
-    return await _methodChannel.invokeMapMethod('logCustomEvent', {'name': name, 'data': data});
+  Future<void> logCustomEvent(String name, Map<String, dynamic> data) async {
+    await _methodChannel.invokeMapMethod('logCustomEvent', {'name': name, 'data': data});
   }
 
-  Future<dynamic> logOpenNotification(Map<dynamic, dynamic> notification) async {
-    return await _methodChannel.invokeMapMethod('logOpenNotification', {'notification': notification});
+  Future<void> logOpenNotification(Map<dynamic, dynamic> notification) async {
+    await _methodChannel.invokeMapMethod('logOpenNotification', {'notification': notification});
   }
 
-  Future<dynamic> logInfluencedNotification(Map<dynamic, dynamic> notification) async {
-    return  await _methodChannel.invokeMapMethod('logInfluencedNotification', {'notification': notification});
+  Future<void> logInfluencedNotification(Map<dynamic, dynamic> notification) async {
+    await _methodChannel.invokeMapMethod('logInfluencedNotification', {'notification': notification});
   }
 
-  Future<dynamic> logReceiveNotification(Map<dynamic, dynamic> notification) async {
-    return await _methodChannel.invokeMapMethod('logReceiveNotification', {'notification': notification});
+  Future<void> logReceiveNotification(Map<dynamic, dynamic> notification) async {
+    await _methodChannel.invokeMapMethod('logReceiveNotification', {'notification': notification});
   }
 
   Future<Map<String, dynamic>> doCloudHostOperation(String verb, String path, Map<String, String> params, Map<String, String> headers, Map<String, dynamic> body) async {
@@ -252,24 +249,24 @@ class NotificarePushLib {
     return response.cast<String, dynamic>();
   }
 
-  Future<dynamic> createAccount(String email, String name, String password) async {
-    return await _methodChannel.invokeMapMethod('createAccount', {'email': email, 'name': name, 'password': password});
+  Future<void> createAccount(String email, String name, String password) async {
+    await _methodChannel.invokeMapMethod('createAccount', {'email': email, 'name': name, 'password': password});
   }
 
-  Future<dynamic> validateAccount(String token) async {
-    return await _methodChannel.invokeMapMethod('validateAccount', {'token': token});
+  Future<void> validateAccount(String token) async {
+    await _methodChannel.invokeMapMethod('validateAccount', {'token': token});
   }
 
-  Future<dynamic> resetPassword(String password, String token) async {
-    return await _methodChannel.invokeMapMethod('resetPassword', {'password': password, 'token': token});
+  Future<void> resetPassword(String password, String token) async {
+    await _methodChannel.invokeMapMethod('resetPassword', {'password': password, 'token': token});
   }
 
-  Future<dynamic> login(String email, String password) async {
-    return await _methodChannel.invokeMapMethod('login', {'email': email, 'password': password});
+  Future<void> login(String email, String password) async {
+    await _methodChannel.invokeMapMethod('login', {'email': email, 'password': password});
   }
 
-  Future<dynamic> logout() async {
-    return await _methodChannel.invokeMethod('logout');
+  Future<void> logout() async {
+    await _methodChannel.invokeMethod('logout');
   }
 
   Future<bool> isLoggedIn() async {
@@ -277,18 +274,16 @@ class NotificarePushLib {
     return status as bool;
   }
 
-  Future<Map<String, dynamic>> generateAccessToken() async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('generateAccessToken');
-    return response.cast<String, dynamic>();
+  Future<NotificareUser> generateAccessToken() async {
+    return new NotificareUser.fromJson(await _methodChannel.invokeMapMethod('generateAccessToken'));
   }
 
   Future<dynamic> changePassword(String password) async {
     return await _methodChannel.invokeMapMethod('changePassword', {'password': password});
   }
 
-  Future<Map<String, dynamic>> fetchAccountDetails() async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod('fetchAccountDetails');
-    return response.cast<String, dynamic>();
+  Future<NotificareUser> fetchAccountDetails() async {
+    return new NotificareUser.fromJson(await _methodChannel.invokeMapMethod('fetchAccountDetails'));
   }
 
   Future<Map<String, dynamic>> fetchUserPreferences() async {
@@ -334,18 +329,3 @@ class NotificareEvent {
   final dynamic body;
   NotificareEvent(this.eventName, this.body);
 }
-
-//class NotificareInboxItem {
-//  NotificareInboxItem(this.inboxId);
-//  final String inboxId;
-//
-//  static NotificareInboxItem fromJSON(dynamic json) {
-//    return new NotificareInboxItem(json['inboxId']);
-//  }
-//
-//  dynamic toJSON() {
-//    return <String, dynamic> {
-//      'inboxId': inboxId
-//    };
-//  }
-//}

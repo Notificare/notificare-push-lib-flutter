@@ -3,6 +3,8 @@ package re.notifica.flutter;
 import android.net.Uri;
 import android.os.Bundle;
 
+import org.json.JSONException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +34,11 @@ public class NotificareReceiver extends DefaultIntentReceiver {
         payload.put("url", urlClicked.toString());
         NotificareNotification notification = extras.getParcelable(Notificare.INTENT_EXTRA_NOTIFICATION);
         if (notification != null) {
-            payload.put("notification", NotificareUtils.mapNotification(notification));
+            try {
+                payload.put("notification", NotificareUtils.mapNotification(notification));
+            } catch (JSONException e) {
+                // ignore
+            }
         }
         NotificareEventEmitter.getInstance().sendEvent("urlClickedInNotification", payload, true);
     }
@@ -40,7 +46,11 @@ public class NotificareReceiver extends DefaultIntentReceiver {
     @Override
     public void onDeviceRegistered(NotificareDevice device) {
         // emit "deviceRegistered" event with device
-        NotificareEventEmitter.getInstance().sendEvent("deviceRegistered", NotificareUtils.mapDevice(device), true);
+        try {
+            NotificareEventEmitter.getInstance().sendEvent("deviceRegistered", NotificareUtils.mapDevice(device), true);
+        } catch (JSONException e) {
+            // ignore
+        }
     }
 
 }

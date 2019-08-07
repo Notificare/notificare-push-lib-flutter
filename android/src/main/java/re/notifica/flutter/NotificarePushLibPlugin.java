@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.SortedSet;
 
 import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.JSONMethodCodec;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -70,9 +72,9 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     registrar.addActivityResultListener(plugin);
     registrar.addNewIntentListener(plugin);
     plugin.mRegistrar = registrar;
-    plugin.mChannel = new MethodChannel(registrar.messenger(), "notificare_push_lib");
+    plugin.mChannel = new MethodChannel(registrar.messenger(), "notificare_push_lib", JSONMethodCodec.INSTANCE);
     plugin.mChannel.setMethodCallHandler(plugin);
-    EventChannel eventsChannel = new EventChannel(registrar.messenger(), "notificare_push_lib/events");
+    EventChannel eventsChannel = new EventChannel(registrar.messenger(), "notificare_push_lib/events", JSONMethodCodec.INSTANCE);
     eventsChannel.setStreamHandler(plugin);
     if (registrar.activity() != null && registrar.activity().getIntent() != null) {
       plugin.handleIntent(registrar.activity().getIntent());
@@ -131,92 +133,129 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       Notificare.shared().registerDevice(new NotificareCallback<String>() {
         @Override
         public void onSuccess(String s) {
-          replySuccess(result, NotificareUtils.mapDevice(Notificare.shared().getRegisteredDevice()));
+          try {
+            replySuccess(result, NotificareUtils.mapDevice(Notificare.shared().getRegisteredDevice()));
+          } catch (JSONException e) {
+            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+          }
         }
 
         @Override
         public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          replyError(result, DEFAULT_ERROR_CODE, notificareError);
         }
       });
     } else if ("fetchDevice".equals(call.method)) {
-      replySuccess(result, NotificareUtils.mapDevice(Notificare.shared().getRegisteredDevice()));
+      try {
+        replySuccess(result, NotificareUtils.mapDevice(Notificare.shared().getRegisteredDevice()));
+      } catch (JSONException e) {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+      }
     } else if ("fetchPreferredLanguage".equals(call.method)) {
       replySuccess(result, Notificare.shared().getPreferredLanguage());
     } else if ("updatePreferredLanguage".equals(call.method)) {
-      Notificare.shared().updatePreferredLanguage(call.argument("language"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("language") && call.argument("language") instanceof String) {
+        Notificare.shared().updatePreferredLanguage(call.argument("language"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("fetchTags".equals(call.method)) {
       Notificare.shared().fetchDeviceTags(new NotificareCallback<List<String>>() {
         @Override
         public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          replyError(result, DEFAULT_ERROR_CODE, notificareError);
         }
 
         @Override
         public void onSuccess(List<String> tags) {
-          replySuccess(result, tags);
+          replySuccess(result, new JSONArray(tags));
         }
       });
     } else if ("addTag".equals(call.method)) {
-      Notificare.shared().addDeviceTag(call.argument("tag"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("tag") && call.argument("tag") instanceof String) {
+        Notificare.shared().addDeviceTag(call.argument("tag"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("addTags".equals(call.method)) {
-      Notificare.shared().addDeviceTags(call.argument("tags"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
+      JSONArray tags = call.argument("tags");
+      if (tags != null) {
+        List<String> tagsList = new ArrayList<>();
+        for (int i = 0; i < tags.length(); i++) {
+          tagsList.add(tags.optString(i));
         }
+        Notificare.shared().addDeviceTags(tagsList, new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
-        }
-      });
-      replySuccess(result, null);
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("removeTag".equals(call.method)) {
-      Notificare.shared().removeDeviceTag(call.argument("tag"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("tag") && call.argument("tag") instanceof String) {
+        Notificare.shared().removeDeviceTag(call.argument("tag"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
-        }
-      });
-      replySuccess(result, null);
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("removeTags".equals(call.method)) {
-      Notificare.shared().removeDeviceTags(call.argument("tags"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
+      JSONArray tags = call.argument("tags");
+      if (tags != null) {
+        List<String> tagsList = new ArrayList<>();
+        for (int i = 0; i < tags.length(); i++) {
+          tagsList.add(tags.optString(i));
         }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
-        }
-      });
+        Notificare.shared().removeDeviceTags(tagsList, new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
+
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("clearTags".equals(call.method)) {
       Notificare.shared().clearDeviceTags(new NotificareCallback<Boolean>() {
         @Override
@@ -233,13 +272,17 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       Notificare.shared().fetchUserData(new NotificareCallback<NotificareUserData>() {
         @Override
         public void onSuccess(NotificareUserData notificareUserData) {
-          List<Map<String, Object>> userDataFields = new ArrayList<>();
-          for (HashMap.Entry<String, NotificareUserDataField> field : Notificare.shared().getApplicationInfo().getUserDataFields().entrySet()) {
-            Map<String, Object> userDataMap = new HashMap<>();
-            userDataMap.put("key", field.getValue().getKey());
-            userDataMap.put("label", field.getValue().getLabel());
-            userDataMap.put("value", notificareUserData.getValue(field.getKey()));
-            userDataFields.add(userDataMap);
+          JSONArray userDataFields = new JSONArray();
+          try {
+            for (HashMap.Entry<String, NotificareUserDataField> field : Notificare.shared().getApplicationInfo().getUserDataFields().entrySet()) {
+              JSONObject userDataMap = new JSONObject();
+              userDataMap.put("key", field.getValue().getKey());
+              userDataMap.put("label", field.getValue().getLabel());
+              userDataMap.put("value", notificareUserData.getValue(field.getKey()));
+              userDataFields.put(userDataMap);
+            }
+          } catch (JSONException e) {
+            // ignore, send list as is
           }
           replySuccess(result, userDataFields);
         }
@@ -250,15 +293,15 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         }
       });
     } else if ("updateUserData".equals(call.method)) {
-      Map<String, Object> fields = call.argument("userData");
+      JSONObject fields = call.argument("userData");
       if (fields != null) {
         NotificareUserData data = new NotificareUserData();
-        for (String key : fields.keySet()) {
-          if (fields.get(key) != null) {
-            data.setValue(key, fields.get(key).toString());
+        while (fields.keys().hasNext()) {
+          String key = fields.keys().next();
+          if (fields.optString(key, null) != null) {
+            data.setValue(key, fields.optString(key));
           }
         }
-
         Notificare.shared().updateUserData(data, new NotificareCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean aBoolean) {
@@ -277,19 +320,23 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       Notificare.shared().fetchDoNotDisturb(new NotificareCallback<NotificareTimeOfDayRange>() {
         @Override
         public void onSuccess(NotificareTimeOfDayRange dnd) {
-          replySuccess(result, NotificareUtils.mapTimeOfDayRange(dnd));
+          try {
+            replySuccess(result, NotificareUtils.mapTimeOfDayRange(dnd));
+          } catch (JSONException e) {
+            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+          }
         }
 
         @Override
         public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          replyError(result, DEFAULT_ERROR_CODE, notificareError);
         }
       });
     } else if ("updateDoNotDisturb".equals(call.method)) {
-      Map<String, Object> deviceDnd = call.argument("dnd");
-      if (deviceDnd != null && deviceDnd.get("start") != null && deviceDnd.get("end") != null && deviceDnd.get("start") instanceof String && deviceDnd.get("end") instanceof String) {
-        String[] s = ((String)deviceDnd.get("start")).split(":");
-        String[] e = ((String)deviceDnd.get("end")).split(":");
+      JSONObject deviceDnd = call.argument("dnd");
+      if (deviceDnd != null && deviceDnd.optString("start", null) != null && deviceDnd.optString("end", null) != null) {
+        String[] s = deviceDnd.optString("start").split(":");
+        String[] e = deviceDnd.optString("end").split(":");
         final NotificareTimeOfDayRange range = new NotificareTimeOfDayRange(
                 new NotificareTimeOfDay(Integer.parseInt(s[0]),Integer.parseInt(s[1])),
                 new NotificareTimeOfDay(Integer.parseInt(e[0]),Integer.parseInt(e[1])));
@@ -297,7 +344,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         Notificare.shared().updateDoNotDisturb(range, new NotificareCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean aBoolean) {
-            replySuccess(result, NotificareUtils.mapTimeOfDayRange(range));
+            try {
+              replySuccess(result, NotificareUtils.mapTimeOfDayRange(range));
+            } catch (JSONException e) {
+              replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+            }
           }
 
           @Override
@@ -317,18 +368,22 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
 
         @Override
         public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError.getMessage(), null);
+          replyError(result, DEFAULT_ERROR_CODE, notificareError);
         }
       });
     } else if ("fetchNotification".equals(call.method)) {
       replySuccess(result, null);
     } else if ("fetchNotificationForInboxItem".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
-        Map<String, Object> inboxItem = call.argument("inboxItem");
-        if (inboxItem != null && inboxItem.get("inboxId") instanceof String && Notificare.shared().getInboxManager() != null) {
-          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem((String) inboxItem.get("inboxId"));
+        JSONObject inboxItem = call.argument("inboxItem");
+        if (inboxItem != null && inboxItem.optString("inboxId", null) != null && Notificare.shared().getInboxManager() != null) {
+          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(inboxItem.optString("inboxId"));
           if (notificareInboxItem != null) {
-            replySuccess(result, NotificareUtils.mapNotification(notificareInboxItem.getNotification()));
+            try {
+              replySuccess(result, NotificareUtils.mapNotification(notificareInboxItem.getNotification()));
+            } catch (JSONException e) {
+              replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid inbox item"));
+            }
           } else {
             replyError(result, DEFAULT_ERROR_CODE, "inbox item not found", null);
           }
@@ -339,14 +394,18 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         replyError(result, DEFAULT_ERROR_CODE, "inbox not enabled", null);
       }
     } else if ("presentNotification".equals(call.method)) {
-      Map<String, Object> notification = call.argument("notification");
+      JSONObject notification = call.argument("notification");
       presentNotification(notification);
       replySuccess(result, null);
     } else if ("fetchInbox".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
-        List<Map<String, Object>> inbox = new ArrayList<>();
-        for (NotificareInboxItem item : Notificare.shared().getInboxManager().getItems()) {
-          inbox.add(NotificareUtils.mapInboxItem(item));
+        JSONArray inbox = new JSONArray();
+        try {
+            for (NotificareInboxItem item : Notificare.shared().getInboxManager().getItems()) {
+                inbox.put(NotificareUtils.mapInboxItem(item));
+            }
+        } catch (JSONException e) {
+            // ignore exceptions, just return the list as is
         }
         replySuccess(result, inbox);
       } else {
@@ -354,9 +413,9 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       }
     } else if ("presentInboxItem".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
-        Map<String, Object> inboxItem = call.argument("inboxItem");
-        if (inboxItem != null && inboxItem.get("inboxId") instanceof String) {
-          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem((String) inboxItem.get("inboxId"));
+        JSONObject inboxItem = call.argument("inboxItem");
+        if (inboxItem != null && inboxItem.optString("inboxId", null) != null) {
+          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(inboxItem.optString("inboxId"));
           if (notificareInboxItem != null) {
             Notificare.shared().openInboxItem(mRegistrar.activity(), notificareInboxItem);
           }
@@ -364,9 +423,9 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       }
     } else if ("removeFromInbox".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
-        Map<String, Object> inboxItem = call.argument("inboxItem");
-        if (inboxItem != null && inboxItem.get("inboxId") instanceof String) {
-          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem((String) inboxItem.get("inboxId"));
+        JSONObject inboxItem = call.argument("inboxItem");
+        if (inboxItem != null && inboxItem.optString("inboxId", null) != null) {
+          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(inboxItem.optString("inboxId"));
           if (notificareInboxItem != null) {
             Notificare.shared().getInboxManager().removeItem(notificareInboxItem, new NotificareCallback<Boolean>() {
               @Override
@@ -390,9 +449,9 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       }
     } else if ("markAsRead".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
-        Map<String, Object> inboxItem = call.argument("inboxItem");
-        if (inboxItem != null && inboxItem.get("inboxId") instanceof String) {
-          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem((String) inboxItem.get("inboxId"));
+        JSONObject inboxItem = call.argument("inboxItem");
+        if (inboxItem != null && inboxItem.optString("inboxId", null) != null) {
+          NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(inboxItem.optString("inboxId"));
           if (notificareInboxItem != null) {
             Notificare.shared().getInboxManager().markItem(notificareInboxItem, new NotificareCallback<Boolean>() {
               @Override
@@ -431,26 +490,38 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         replyError(result, DEFAULT_ERROR_CODE, new NotificareError("inbox not enabled"));
       }
     } else if ("fetchAssets".equals(call.method)) {
-      Notificare.shared().fetchAssets(call.argument("group"), new NotificareCallback<List<NotificareAsset>>() {
-        @Override
-        public void onSuccess(List<NotificareAsset> notificareAssets) {
-          List<Map<String, Object>> assetsArray = new ArrayList<>();
-          for (NotificareAsset asset : notificareAssets) {
-            assetsArray.add(NotificareUtils.mapAsset(asset));
+      if (call.hasArgument("group") && call.argument("group") instanceof String) {
+        Notificare.shared().fetchAssets(call.argument("group"), new NotificareCallback<List<NotificareAsset>>() {
+          @Override
+          public void onSuccess(List<NotificareAsset> notificareAssets) {
+            JSONArray assetsArray = new JSONArray();
+            try {
+              for (NotificareAsset asset : notificareAssets) {
+                assetsArray.put(NotificareUtils.mapAsset(asset));
+              }
+            } catch (JSONException e) {
+              // ignore, send list of assets as is
+            }
+            replySuccess(result, assetsArray);
           }
-          replySuccess(result, assetsArray);
-        }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("fetchPassWithSerial".equals(call.method)) {
       Notificare.shared().fetchPass(call.argument("serial"), new NotificareCallback<NotificarePass>() {
         @Override
         public void onSuccess(NotificarePass notificarePass) {
-          replySuccess(result, NotificareUtils.mapPass(notificarePass));
+          try {
+            replySuccess(result, NotificareUtils.mapPass(notificarePass));
+          } catch (JSONException e) {
+            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+          }
         }
 
         @Override
@@ -462,7 +533,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       Notificare.shared().fetchPass(call.argument("barcode"), new NotificareCallback<NotificarePass>() {
         @Override
         public void onSuccess(NotificarePass notificarePass) {
-          replySuccess(result, NotificareUtils.mapPass(notificarePass));
+          try {
+            replySuccess(result, NotificareUtils.mapPass(notificarePass));
+          } catch (JSONException e) {
+            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+          }
         }
 
         @Override
@@ -492,11 +567,15 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       }
     } else if ("fetchProduct".equals(call.method)) {
       if (Notificare.shared().getBillingManager() != null) {
-        Map<String, Object> product = call.argument("product");
-        if (product != null && product.get("productIdentifier") instanceof String) {
-          NotificareProduct theProduct = Notificare.shared().getBillingManager().getProduct((String) product.get("productIdentifier"));
+        JSONObject product = call.argument("product");
+        if (product != null && product.optString("productIdentifier", null) != null) {
+          NotificareProduct theProduct = Notificare.shared().getBillingManager().getProduct(product.optString("productIdentifier"));
           if (theProduct != null) {
-            replySuccess(result, NotificareUtils.mapProduct(theProduct));
+            try {
+              replySuccess(result, NotificareUtils.mapProduct(theProduct));
+            } catch (JSONException e) {
+              replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+            }
           } else {
             replyError(result, DEFAULT_ERROR_CODE, new NotificareError("product not found"));
           }
@@ -508,31 +587,35 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       }
     } else if ("buyProduct".equals(call.method)) {
       if (Notificare.shared().getBillingManager() != null && mRegistrar.activity() != null) {
-        Map<String, Object> product = call.argument("product");
-        if (product != null && product.get("productIdentifier") instanceof String) {
-          NotificareProduct notificareProduct = Notificare.shared().getBillingManager().getProduct((String) product.get("identifier"));
+        JSONObject product = call.argument("product");
+        if (product != null && product.optString("productIdentifier", null) != null) {
+          NotificareProduct notificareProduct = Notificare.shared().getBillingManager().getProduct(product.optString("identifier"));
           final Activity activity = mRegistrar.activity();
           activity.runOnUiThread(() -> Notificare.shared().getBillingManager().launchPurchaseFlow(activity, notificareProduct, this));
         }
       }
       replySuccess(result, null);
     } else if ("logCustomEvent".equals(call.method)) {
-      Map<String, Object> data = call.argument("data");
-      Notificare.shared().getEventLogger().logCustomEvent(call.argument("name"), data, new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      JSONObject data = call.argument("data");
+      if (call.hasArgument("name") && call.argument("name") != null && call.argument("name") instanceof String) {
+        Notificare.shared().getEventLogger().logCustomEvent(call.argument("name"), data, new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("logOpenNotification".equals(call.method)) {
-      Map<String, Object> notification = call.argument("notification");
-      if (notification != null && notification.get("id") != null && notification.get("id") instanceof String) {
-        Notificare.shared().getEventLogger().logOpenNotification((String)notification.get("id"), new NotificareCallback<Boolean>() {
+      JSONObject notification = call.argument("notification");
+      if (notification != null && notification.optString("id", null) != null) {
+        Notificare.shared().getEventLogger().logOpenNotification(notification.optString("id"), new NotificareCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean aBoolean) {
             replySuccess(result, null);
@@ -547,9 +630,9 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid notification"));
       }
     } else if ("logInfluencedNotification".equals(call.method)) {
-      Map<String, Object> notification = call.argument("notification");
-      if (notification != null && notification.get("id") != null && notification.get("id") instanceof String) {
-        Notificare.shared().getEventLogger().logOpenNotificationInfluenced((String)notification.get("id"), new NotificareCallback<Boolean>() {
+      JSONObject notification = call.argument("notification");
+      if (notification != null && notification.optString("id", null) != null) {
+        Notificare.shared().getEventLogger().logOpenNotificationInfluenced(notification.optString("id"), new NotificareCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean aBoolean) {
             replySuccess(result, null);
@@ -564,98 +647,119 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid notification"));
       }
     } else if ("doCloudHostOperation".equals(call.method)) {
-      Map<String, Object> body  = call.argument("body");
-      Map<String, Object> params = call.argument("params");
-      Map<String, Object> headers = call.argument("headers");
+      if (call.hasArgument("verb") && call.hasArgument("path") && call.argument("verb") != null && call.argument("path") != null) {
+        JSONObject body = call.argument("body");
+        JSONObject params = call.argument("params");
+        JSONObject headers = call.argument("headers");
 
-      JSONObject jsonData = new JSONObject(body);
-      Map<String,String> paramsMap = new HashMap<>();
-      if (params != null) {
-        for (String key : params.keySet()) {
-          paramsMap.put(key, (String)params.get(key));
-        }
-      }
-      Map<String,String> headersMap = new HashMap<>();
-      if (headers != null) {
-        for (String key : headers.keySet()) {
-          headersMap.put(key, (String)headers.get(key));
-        }
-      }
-      Notificare.shared().doCloudRequest(call.argument("verb"), call.argument("path"), paramsMap, jsonData, headersMap, new NotificareCallback<JSONObject>() {
-        @Override
-        public void onSuccess(JSONObject jsonObject) {
-          try {
-            replySuccess(result, NotificareUtils.mapJSONObject(jsonObject));
-          } catch (JSONException e) {
-            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+        Map<String, String> paramsMap = new HashMap<>();
+        if (params != null) {
+          while (params.keys().hasNext()) {
+            String key = params.keys().next();
+            paramsMap.put(key, params.optString(key, null));
           }
         }
-
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
+        Map<String, String> headersMap = new HashMap<>();
+        if (headers != null) {
+          while (headers.keys().hasNext()) {
+            String key = headers.keys().next();
+            headersMap.put(key, headers.optString(key, null));
+          }
         }
-      });
+        Notificare.shared().doCloudRequest(call.argument("verb"), call.argument("path"), paramsMap, body, headersMap, new NotificareCallback<JSONObject>() {
+          @Override
+          public void onSuccess(JSONObject jsonObject) {
+            replySuccess(result, jsonObject);
+          }
+
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("createAccount".equals(call.method)) {
-      Notificare.shared().createAccount(call.argument("email"), call.argument("password"), call.argument("name"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("email") && call.hasArgument("password") && call.hasArgument("name") && call.argument("email") != null && call.argument("password") != null && call.argument("name") != null) {
+        Notificare.shared().createAccount(call.argument("email"), call.argument("password"), call.argument("name"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("validateAccount".equals(call.method)) {
-      Notificare.shared().validateUser(call.argument("token"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("token") && call.argument("token") != null) {
+        Notificare.shared().validateUser(call.argument("token"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("resetPassword".equals(call.method)) {
-      Notificare.shared().resetPassword(call.argument("password"), call.argument("token"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("token") && call.hasArgument("password") && call.argument("token") != null && call.argument("password") != null) {
+        Notificare.shared().resetPassword(call.argument("password"), call.argument("token"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("sendPassword".equals(call.method)) {
-      Notificare.shared().sendPassword(call.argument("email"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("email") && call.argument("email") != null) {
+        Notificare.shared().sendPassword(call.argument("email"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("login".equals(call.method)) {
-      Notificare.shared().userLogin(call.argument("email"), call.argument("password"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("email") && call.hasArgument("password") && call.argument("email") != null && call.argument("password") != null) {
+        Notificare.shared().userLogin(call.argument("email"), call.argument("password"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("logout".equals(call.method)) {
       Notificare.shared().userLogout(new NotificareCallback<Boolean>() {
         @Override
@@ -674,7 +778,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       Notificare.shared().generateAccessToken(new NotificareCallback<NotificareUser>() {
         @Override
         public void onSuccess(NotificareUser notificareUser) {
-          replySuccess(result, NotificareUtils.mapUser(notificareUser));
+          try {
+            replySuccess(result, NotificareUtils.mapUser(notificareUser));
+          } catch (JSONException e) {
+            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+          }
         }
 
         @Override
@@ -683,22 +791,30 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         }
       });
     } else if ("changePassword".equals(call.method)) {
-      Notificare.shared().changePassword(call.argument("password"), new NotificareCallback<Boolean>() {
-        @Override
-        public void onSuccess(Boolean aBoolean) {
-          replySuccess(result, null);
-        }
+      if (call.hasArgument("email") && call.hasArgument("password") && call.argument("email") != null && call.argument("password") != null) {
+        Notificare.shared().changePassword(call.argument("password"), new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
 
-        @Override
-        public void onError(NotificareError notificareError) {
-          replyError(result, DEFAULT_ERROR_CODE, notificareError);
-        }
-      });
+          @Override
+          public void onError(NotificareError notificareError) {
+            replyError(result, DEFAULT_ERROR_CODE, notificareError);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
+      }
     } else if ("fetchAccountDetails".equals(call.method)) {
       Notificare.shared().fetchUserDetails(new NotificareCallback<NotificareUser>() {
         @Override
         public void onSuccess(NotificareUser notificareUser) {
-          replySuccess(result, NotificareUtils.mapUser(notificareUser));
+          try {
+            replySuccess(result, NotificareUtils.mapUser(notificareUser));
+          } catch (JSONException e) {
+            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+          }
         }
 
         @Override
@@ -710,9 +826,13 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       Notificare.shared().fetchUserPreferences(new NotificareCallback<List<NotificareUserPreference>>() {
         @Override
         public void onSuccess(List<NotificareUserPreference> notificareUserPreferences) {
-          List<Map<String, Object>> preferencesArray = new ArrayList<>();
-          for (NotificareUserPreference preference : notificareUserPreferences) {
-            preferencesArray.add(NotificareUtils.mapUserPreference(preference));
+          JSONArray preferencesArray = new JSONArray();
+          try {
+            for (NotificareUserPreference preference : notificareUserPreferences) {
+              preferencesArray.put(NotificareUtils.mapUserPreference(preference));
+            }
+          } catch (JSONException e) {
+            // ignore, send list as is
           }
           replySuccess(result, preferencesArray);
         }
@@ -723,8 +843,8 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         }
       });
     } else if ("addSegmentToUserPreference".equals(call.method)) {
-      Map<String, Object> segment = call.argument("segment");
-      Map<String, Object> preference = call.argument("userPreference");
+      JSONObject segment = call.argument("segment");
+      JSONObject preference = call.argument("userPreference");
       if (segment != null && preference != null) {
         NotificareUserSegment userSegment = NotificareUtils.createUserSegment(segment);
         NotificareUserPreference userPreference = NotificareUtils.createUserPreference(preference);
@@ -747,8 +867,8 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid parameters"));
       }
     } else if ("removeSegmentFromUserPreference".equals(call.method)) {
-      Map<String, Object> segment = call.argument("segment");
-      Map<String, Object> preference = call.argument("userPreference");
+      JSONObject segment = call.argument("segment");
+      JSONObject preference = call.argument("userPreference");
       if (segment != null && preference != null) {
         NotificareUserSegment userSegment = NotificareUtils.createUserSegment(segment);
         NotificareUserPreference userPreference = NotificareUtils.createUserPreference(preference);
@@ -776,22 +896,21 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       }
       replySuccess(result, null);
     } else if ("presentScannable".equals(call.method)) {
-      Map<String, Object> scannable = call.argument("scannable");
-      if (scannable != null && scannable.get("notification") != null && scannable.get("notification") instanceof Map) {
-        Map notification = (Map)scannable.get("notification");
-        presentNotification(notification);
+      JSONObject scannable = call.argument("scannable");
+      if (scannable != null && scannable.optJSONObject("notification") != null) {
+        presentNotification(scannable.optJSONObject("notification"));
       }
     } else {
       replyNotImplemented(result);
     }
   }
 
-  private void presentNotification(Map<String, Object> notification) {
-    if (notification != null && notification.containsKey("id")) {
-      String notificationId = (String) notification.get("id");
-      if (notification.containsKey("inboxItemId") && notification.get("inboxItemId") != null && Notificare.shared().getInboxManager() != null) {
+  private void presentNotification(JSONObject notification) {
+    if (notification != null && notification.has("id")) {
+      String notificationId = notification.optString("id");
+      if (notification.has("inboxItemId") && notification.optString("inboxItemId", null) != null && Notificare.shared().getInboxManager() != null) {
         // This is an item opened with inboxItemId, so coming from NotificationManager open
-        NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem((String) notification.get("inboxItemId"));
+        NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(notification.optString("inboxItemId"));
         if (notificareInboxItem != null) {
           Notificare.shared().openInboxItem(mRegistrar.activity(), notificareInboxItem);
         }
@@ -900,9 +1019,13 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
    */
   private void sendValidateUserToken(String token) {
     if (token != null && !token.isEmpty()) {
-      Map<String, Object> tokenMap = new HashMap<>();
-      tokenMap.put("token", token);
-      sendEvent("activationTokenReceived", tokenMap, true);
+      JSONObject tokenMap = new JSONObject();
+      try {
+        tokenMap.put("token", token);
+        sendEvent("activationTokenReceived", tokenMap, true);
+      } catch (JSONException e) {
+        // ignore
+      }
     }
   }
 
@@ -912,27 +1035,35 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
    */
   private void sendResetPasswordToken(String token) {
     if (token != null && !token.isEmpty()) {
-      Map<String, Object> tokenMap = new HashMap<>();
-      tokenMap.put("token", token);
-      sendEvent("resetPasswordTokenReceived", tokenMap, true);
+      JSONObject tokenMap = new JSONObject();
+      try {
+        tokenMap.put("token", token);
+        sendEvent("resetPasswordTokenReceived", tokenMap, true);
+      } catch (JSONException e) {
+        // ignore
+      }
     }
   }
 
-  protected Map<String, Object> parseNotificationIntent(Intent intent) {
+  protected JSONObject parseNotificationIntent(Intent intent) {
     NotificareNotification notification = intent.getParcelableExtra(Notificare.INTENT_EXTRA_NOTIFICATION);
     if (notification != null) {
-      Map<String, Object> notificationMap = NotificareUtils.mapNotification(notification);
-      // Add inbox item id if present
-      if (intent.hasExtra(Notificare.INTENT_EXTRA_INBOX_ITEM_ID)) {
-        notificationMap.put("inboxItemId", intent.getStringExtra(Notificare.INTENT_EXTRA_INBOX_ITEM_ID));
+      try {
+        JSONObject notificationMap = NotificareUtils.mapNotification(notification);
+        // Add inbox item id if present
+        if (intent.hasExtra(Notificare.INTENT_EXTRA_INBOX_ITEM_ID)) {
+          notificationMap.put("inboxItemId", intent.getStringExtra(Notificare.INTENT_EXTRA_INBOX_ITEM_ID));
+        }
+        return notificationMap;
+      } catch (JSONException e) {
+        return null;
       }
-      return notificationMap;
     }
     return null;
   }
 
   protected void handleIntent(Intent intent) {
-    Map<String, Object> notificationMap = parseNotificationIntent(intent);
+    JSONObject notificationMap = parseNotificationIntent(intent);
     if (notificationMap != null) {
       sendEvent("remoteNotificationReceivedInBackground", notificationMap, true);
     } else {
@@ -969,16 +1100,23 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
 
   @Override
   public void onNotificareReady(NotificareApplicationInfo notificareApplicationInfo) {
-    Log.i(TAG, "ready");
-    sendEvent("ready", NotificareUtils.mapApplicationInfo(notificareApplicationInfo), true);
+    try {
+      sendEvent("ready", NotificareUtils.mapApplicationInfo(notificareApplicationInfo), true);
+    } catch (JSONException e) {
+      // ignore
+    }
   }
 
   @Override
   public void onChanged(@Nullable SortedSet<NotificareInboxItem> notificareInboxItems) {
-    List<Map<String, Object>> inbox = new ArrayList<>();
+    JSONArray inbox = new JSONArray();
     if (notificareInboxItems != null) {
-      for (NotificareInboxItem item : notificareInboxItems) {
-        inbox.add(NotificareUtils.mapInboxItem(item));
+      try {
+        for (NotificareInboxItem item : notificareInboxItems) {
+          inbox.put(NotificareUtils.mapInboxItem(item));
+        }
+      } catch (JSONException e) {
+        // ignore, send list as is
       }
       sendEvent("inboxLoaded", inbox, false);
       sendEvent("badgeUpdated", Notificare.shared().getInboxManager().getUnreadCount(), false);
@@ -995,7 +1133,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
   @Override
   public void onNotificationReceived(NotificareNotification notification) {
     if (notification != null) {
-      sendEvent("remoteNotificationReceivedInForeground", NotificareUtils.mapNotification(notification), true);
+      try {
+        sendEvent("remoteNotificationReceivedInForeground", NotificareUtils.mapNotification(notification), true);
+      } catch (JSONException e) {
+        // ignore
+      }
     }
   }
 
@@ -1009,34 +1151,42 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
 
   @Override
   public void onRangingBeacons(List<NotificareBeacon> beacons) {
-    Map<String, Object> payload = new HashMap<>();
-    List<Map<String,Object>> beaconsArray = new ArrayList<>();
-    for (NotificareBeacon beacon : beacons) {
-      beaconsArray.add(NotificareUtils.mapBeacon(beacon));
-    }
-    payload.put("beacons", beaconsArray);
-    if (beacons.size() > 0) {
-      NotificareRegion region = beacons.get(0).getRegion();
-      if (region != null) {
-        payload.put("region", NotificareUtils.mapRegion(region));
+    try {
+      JSONObject payload = new JSONObject();
+      JSONArray beaconsArray = new JSONArray();
+        for (NotificareBeacon beacon : beacons) {
+          beaconsArray.put(NotificareUtils.mapBeacon(beacon));
+        }
+      payload.put("beacons", beaconsArray);
+      if (beacons.size() > 0) {
+        NotificareRegion region = beacons.get(0).getRegion();
+        if (region != null) {
+          payload.put("region", NotificareUtils.mapRegion(region));
+        }
       }
+      sendEvent("beaconsInRangeForRegion", payload, false);
+    } catch (JSONException e) {
+      // ignore
     }
-    sendEvent("beaconsInRangeForRegion", payload, false);
   }
 
   @Override
   public void onPurchaseFinished(BillingResult billingResult, Purchase purchase) {
     mIsBillingReady = false;
-    Map<String, Object> payload = new HashMap<>();
+    JSONObject payload = new JSONObject();
     NotificareProduct product = Notificare.shared().getBillingManager().getProduct(purchase.getProductId());
-    if (product != null) {
-      payload.put("product", NotificareUtils.mapProduct(product));
-    }
-    if (billingResult.isFailure()) {
-      payload.put("error", billingResult.getMessage());
-      sendEvent("productTransactionFailed", payload, true);
-    } else if (billingResult.isSuccess()) {
-      sendEvent("productTransactionCompleted", payload, true);
+    try {
+      if (product != null) {
+        payload.put("product", NotificareUtils.mapProduct(product));
+      }
+      if (billingResult.isFailure()) {
+        payload.put("error", billingResult.getMessage());
+        sendEvent("productTransactionFailed", payload, true);
+      } else if (billingResult.isSuccess()) {
+        sendEvent("productTransactionCompleted", payload, true);
+      }
+    } catch (JSONException e) {
+      //ignore
     }
   }
 
@@ -1058,7 +1208,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
           if (data != null) {
             NotificareScannable scannable = Notificare.shared().extractScannableFromActivityResult(data);
             if (scannable != null) {
-              sendEvent("scannableDetected", NotificareUtils.mapScannable(scannable), true);
+              try {
+                sendEvent("scannableDetected", NotificareUtils.mapScannable(scannable), true);
+              } catch (JSONException e) {
+                // ignore
+              }
             } else {
               sendEvent("scannableSessionInvalidatedWithError", createErrorPayload("scannable not found"), true);
             }
@@ -1082,7 +1236,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
 
   @Override
   public boolean onNewIntent(Intent intent) {
-    Map<String, Object> notificationMap = parseNotificationIntent(intent);
+    JSONObject notificationMap = parseNotificationIntent(intent);
     if (notificationMap != null) {
       sendEvent("remoteNotificationReceivedInBackground", notificationMap, true);
       return true;

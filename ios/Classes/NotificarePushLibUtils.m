@@ -37,7 +37,6 @@ static NotificarePushLibUtils *utils;
 
 -(NSDictionary *)dictionaryFromDevice:(NotificareDevice *)device{
     NSMutableDictionary * data = [NSMutableDictionary dictionary];
-    [data setValue:[device deviceTokenData] forKey:@"deviceTokenData"];
     [data setValue:[device deviceID] forKey:@"deviceID"];
     [data setValue:[device userID] forKey:@"userID"];
     [data setValue:[device userName] forKey:@"userName"];
@@ -450,8 +449,8 @@ static NotificarePushLibUtils *utils;
     [data setValue:[beacon beaconName] forKey:@"beaconName"];
     [data setValue:[beacon beaconRegion] forKey:@"beaconRegion"];
     [data setValue:[[beacon beaconUUID] UUIDString] forKey:@"beaconUUID"];
-    [data setValue:[beacon beaconRegion] forKey:@"beaconMajor"];
-    [data setValue:[beacon beaconRegion] forKey:@"beaconMinor"];
+    [data setValue:[beacon beaconMajor] forKey:@"beaconMajor"];
+    [data setValue:[beacon beaconMinor] forKey:@"beaconMinor"];
     //[data setValue:[beacon beacon] forKey:@"beacon"];
     [data setObject:[NSNumber numberWithBool:[beacon beaconTriggers]] forKey:@"beaconTriggers"];
     return data;

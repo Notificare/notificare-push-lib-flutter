@@ -17,7 +17,8 @@
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                      methodChannelWithName:@"notificare_push_lib"
-                                     binaryMessenger:[registrar messenger]];
+                                     binaryMessenger:[registrar messenger]
+                                     codec:[FlutterJSONMethodCodec sharedInstance]];
 
     NotificarePushLibPlugin* instance = [[NotificarePushLibPlugin alloc] initWithChannel:channel];
     [registrar addApplicationDelegate:instance];
@@ -25,7 +26,8 @@
     
     FlutterEventChannel* eventsChannel = [FlutterEventChannel
                                           eventChannelWithName:@"notificare_push_lib/events"
-                                          binaryMessenger:[registrar messenger]];
+                                          binaryMessenger:[registrar messenger]
+                                          codec: [FlutterJSONMethodCodec sharedInstance]];
     [eventsChannel setStreamHandler:instance];
 }
 
@@ -43,13 +45,13 @@
       [[NotificarePushLib shared] launch];
       [[NotificarePushLib shared] setDelegate:self];
       [[NotificarePushLib shared] didFinishLaunchingWithOptions:_launchOptions];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"registerForNotifications" isEqualToString:call.method]) {
       [[NotificarePushLib shared] registerForNotifications];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"unregisterForNotifications" isEqualToString:call.method]) {
       [[NotificarePushLib shared] unregisterForNotifications];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"isRemoteNotificationsEnabled" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[NotificarePushLib shared] remoteNotificationsEnabled]]);
   } else if ([@"isAllowedUIEnabled" isEqualToString:call.method]) {
@@ -62,14 +64,14 @@
               result([[NotificarePushLibUtils shared] dictionaryFromNotificationSettings:settings]);
           }];
       } else {
-          result([NSNull null]);
+          result(nil);
       }
   } else if ([@"startLocationUpdates" isEqualToString:call.method]) {
       [[NotificarePushLib shared] startLocationUpdates];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"stopLocationUpdates" isEqualToString:call.method]) {
       [[NotificarePushLib shared] stopLocationUpdates];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"isLocationServicesEnabled" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[NotificarePushLib shared] locationServicesEnabled]]);
   } else if ([@"registerDevice" isEqualToString:call.method]) {
@@ -262,7 +264,7 @@
       } else {
           [[NotificarePushLib shared] presentNotification:item inNavigationController:[self navigationControllerForRootViewController] withController:controller];
       }
-      result([NSNull null]);
+      result(nil);
   } else if ([@"fetchInbox" isEqualToString:call.method]) {
       [[[NotificarePushLib shared] inboxManager] fetchInbox:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
@@ -292,7 +294,7 @@
               }
           }
       }];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"removeFromInbox" isEqualToString:call.method]) {
       NSDictionary* inboxItem = call.arguments[@"inboxItem"];
       [[[NotificarePushLib shared] inboxManager] removeFromInbox:[[NotificarePushLibUtils shared] deviceInboxFromDictionary:inboxItem] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
@@ -408,7 +410,7 @@
               [[NotificarePushLib shared] buyProduct:response];
           }
       }];
-      result([NSNull null]);
+      result(nil);
   } else if ([@"logCustomEvent" isEqualToString:call.method]) {
       NSString* name = call.arguments[@"name"];
       NSDictionary* data = (call.arguments[@"data"]) ? call.arguments[@"data"] : nil;
@@ -626,7 +628,7 @@
               }
           }
       }];
-      result([NSNull null]);
+      result(nil);
   } else {
     result(FlutterMethodNotImplemented);
   }
