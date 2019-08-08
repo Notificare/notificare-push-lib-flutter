@@ -3,7 +3,9 @@ package re.notifica.flutter;
 import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -58,6 +60,10 @@ import re.notifica.util.Log;
 public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.StreamHandler, Observer<SortedSet<NotificareInboxItem>>, Notificare.OnNotificareReadyListener, Notificare.OnServiceErrorListener, Notificare.OnNotificationReceivedListener, BeaconRangingListener, Notificare.OnBillingReadyListener, BillingManager.OnRefreshFinishedListener, BillingManager.OnPurchaseFinishedListener, PluginRegistry.ActivityResultListener, PluginRegistry.NewIntentListener {
 
   private static final String TAG = NotificarePushLibPlugin.class.getSimpleName();
+
+  private static NotificarePushLibPlugin INSTANCE = null;
+  private static final Object lock = new Object();
+
   private static final int SCANNABLE_REQUEST_CODE = 9004;
   private static final String DEFAULT_ERROR_CODE = "notificare_error";
   private Registrar mRegistrar;
@@ -65,10 +71,25 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
   private LiveData<SortedSet<NotificareInboxItem>> mInboxItems;
   private boolean mIsBillingReady = false;
 
+  /**
+   * Shared prefs name for settings
+   */
+  private static final String SETTINGS_PREFERENCES = "re.notifica.flutter.preferences.Settings";
+
+  public static NotificarePushLibPlugin getInstance() {
+
+    synchronized (lock) {
+      if (INSTANCE == null) {
+        INSTANCE = new NotificarePushLibPlugin();
+      }
+      return INSTANCE;
+    }
+  }
+
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     Log.i(TAG, "registering Notificare plugin with registrar");
-    NotificarePushLibPlugin plugin = new NotificarePushLibPlugin();
+    NotificarePushLibPlugin plugin = NotificarePushLibPlugin.getInstance();
     registrar.addActivityResultListener(plugin);
     registrar.addNewIntentListener(plugin);
     plugin.mRegistrar = registrar;
@@ -76,6 +97,10 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     plugin.mChannel.setMethodCallHandler(plugin);
     EventChannel eventsChannel = new EventChannel(registrar.messenger(), "notificare_push_lib/events", JSONMethodCodec.INSTANCE);
     eventsChannel.setStreamHandler(plugin);
+
+    EventChannel systemEventsChannel = new EventChannel(registrar.messenger(), "system");
+    systemEventsChannel.setStreamHandler(plugin);
+
     if (registrar.activity() != null && registrar.activity().getIntent() != null) {
       plugin.handleIntent(registrar.activity().getIntent());
     }
@@ -88,10 +113,6 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       replySuccess(result, null);
     } else if ("launch".equals(call.method)) {
       Notificare.shared().addNotificareReadyListener(this);
-      if (Notificare.shared().getInboxManager() != null) {
-        mInboxItems = Notificare.shared().getInboxManager().getObservableItems();
-        mInboxItems.observeForever(this);
-      }
       replySuccess(result, null);
     } else if ("registerForNotifications".equals(call.method)) {
       Notificare.shared().enableNotifications();
@@ -117,9 +138,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       replySuccess(result, Notificare.shared().isLocationUpdatesEnabled());
     } else if ("enableBeacons".equals(call.method)) {
       Notificare.shared().enableBeacons();
+      setPluginSetting("enableBeacons", true);
       replySuccess(result, null);
     } else if ("disableBeacons".equals(call.method)) {
       Notificare.shared().disableBeacons();
+      setPluginSetting("enableBeacons", false);
       replySuccess(result, null);
     } else if ("enableBilling".equals(call.method)) {
       Notificare.shared().enableBilling();
@@ -904,6 +927,21 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
   }
 
   /**
+   * @return the settings preferences
+   */
+  private SharedPreferences getSettings() {
+    return Notificare.shared().getApplicationContext().getSharedPreferences(SETTINGS_PREFERENCES, Context.MODE_PRIVATE);
+  }
+
+  public Boolean getPluginSetting(String name) {
+    return getSettings().getBoolean(name, false);
+  }
+
+  private void setPluginSetting(String name, Boolean value) {
+    getSettings().edit().putBoolean(name, value).apply();
+  }
+
+  /**
    * Present the notification in NotificationActivity, check if there was an inboxItemId
    * @param notification
    */
@@ -937,6 +975,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       }
     }
   }
+
   /**
    * Reply as success on main thread
    * @param reply
@@ -1076,6 +1115,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
 
   @Override
   public void onListen(Object o, EventChannel.EventSink eventSink) {
+    NotificareEventEmitter.getInstance().onListen(eventSink);
     Notificare.shared().addServiceErrorListener(this);
     Notificare.shared().setForeground(true);
     Notificare.shared().addNotificationReceivedListener(this);
@@ -1083,8 +1123,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     if (Notificare.shared().getBeaconClient() != null) {
       Notificare.shared().getBeaconClient().addRangingListener(this);
     }
+    if (Notificare.shared().getInboxManager() != null) {
+      mInboxItems = Notificare.shared().getInboxManager().getObservableItems();
+      mInboxItems.observeForever(this);
+    }
     Notificare.shared().addBillingReadyListener(this);
-    NotificareEventEmitter.getInstance().onListen(eventSink);
   }
 
   @Override
@@ -1095,6 +1138,10 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     Notificare.shared().getEventLogger().logEndSession();
     if (Notificare.shared().getBeaconClient() != null) {
       Notificare.shared().getBeaconClient().removeRangingListener(this);
+    }
+    if (mInboxItems != null) {
+      Handler handler = new Handler(Looper.getMainLooper());
+      handler.post(() -> mInboxItems.removeObserver(this));
     }
     Notificare.shared().removeBillingReadyListener(this);
     NotificareEventEmitter.getInstance().onCancel();

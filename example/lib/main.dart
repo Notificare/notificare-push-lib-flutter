@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:notificare_push_lib/notificare_push_lib.dart';
 import 'package:notificare_push_lib/notificare_models.dart';
+import 'package:notificare_push_lib/notificare_events.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,10 +25,10 @@ class _MyAppState extends State<MyApp> {
     notificare.launch();
 
     notificare.onEventReceived.listen((NotificareEvent event) async {
-      switch (event.eventName) {
+      switch (event.name) {
         case "ready": {
-          NotificareApplication application = NotificareApplication.fromJson(event.body);
-          print("Application is Ready: " + application.name);
+          NotificareReadyEvent readyEvent = event.data as NotificareReadyEvent;
+          print("Application is Ready: " + readyEvent.application.name);
           await notificare.registerForNotifications();
           await _registerDevice("1234567890", "Joel Oliveira");
           List inbox = await _fetchInbox();
@@ -49,17 +50,20 @@ class _MyAppState extends State<MyApp> {
         }
         break;
         case "urlOpened": {
-          print("URL: " + event.body['url']);
+          NotificareUrlOpenedEvent urlOpenedEvent = event.data as NotificareUrlOpenedEvent;
+          print("URL: " + urlOpenedEvent.url);
           //Handle Deep Link
         }
         break;
         case "launchUrlReceived": {
-          print("URL: " + event.body['url']);
+          NotificareLaunchUrlReceivedEvent launchUrlReceivedEvent = event.data as NotificareLaunchUrlReceivedEvent;
+          print("URL: " + launchUrlReceivedEvent.url);
           //Handle Deep Link
         }
         break;
         case "deviceRegistered": {
-          print("Device: " + event.body['deviceID']);
+          NotificareDeviceRegisteredEvent deviceRegisteredEvent = event.data as NotificareDeviceRegisteredEvent;
+          print("Device: " + deviceRegisteredEvent.device.deviceID);
           _fetchNotificationSettings();
           _fetchTags();
           _addTag("tag_flutter");
@@ -67,7 +71,8 @@ class _MyAppState extends State<MyApp> {
         }
         break;
         case "notificationSettingsChanged": {
-          if (event.body['granted']) {
+          NotificareNotificationSettingsChangedEvent notificationSettingsChangedEvent = event.data as NotificareNotificationSettingsChangedEvent;
+          if (notificationSettingsChangedEvent.granted) {
             print("Allowed UI: Granted");
           } else {
             print("Allowed UI: Not Granted");
@@ -75,195 +80,222 @@ class _MyAppState extends State<MyApp> {
         }
         break;
         case "remoteNotificationReceivedInBackground": {
-          print("Notification: " + event.body['message']);
-          notificare.presentNotification(event.body);
+          NotificareRemoteNotificationReceivedInBackgroundEvent remoteNotificationReceivedInBackgroundEvent = event.data as NotificareRemoteNotificationReceivedInBackgroundEvent;
+          print("Notification: " + remoteNotificationReceivedInBackgroundEvent.notification.message);
+          notificare.presentNotification(remoteNotificationReceivedInBackgroundEvent.notification);
         }
         break;
         case "remoteNotificationReceivedInForeground": {
-          print("Notification: " + event.body['message']);
+          NotificareRemoteNotificationReceivedInForegroundEvent remoteNotificationReceivedInForegroundEvent = event.data as NotificareRemoteNotificationReceivedInForegroundEvent;
+          print("Notification: " + remoteNotificationReceivedInForegroundEvent.notification.message);
         }
         break;
         case "systemNotificationReceivedInBackground": {
-          print("System Notification: " + event.body['notificationID']);
+          NotificareSystemNotificationReceivedInBackgroundEvent systemNotificationReceivedInBackgroundEvent = event.data as NotificareSystemNotificationReceivedInBackgroundEvent;
+          print("System Notification: " + systemNotificationReceivedInBackgroundEvent.notification.type);
         }
         break;
         case "systemNotificationReceivedInForeground": {
-          print("System Notification: " + event.body['notificationID']);
+          NotificareSystemNotificationReceivedInForegroundEvent systemNotificationReceivedInForegroundEvent = event.data as NotificareSystemNotificationReceivedInForegroundEvent;
+          print("System Notification: " + systemNotificationReceivedInForegroundEvent.notification.type);
         }
         break;
         case "unknownNotificationReceived": {
-          print("Unknown Notification: " + event.body.toString());
+          NotificareUnknownNotificationReceivedEvent unknownNotificationReceivedEvent = event.data as NotificareUnknownNotificationReceivedEvent;
+          print("Unknown Notification: " + unknownNotificationReceivedEvent.notification.toString());
         }
         break;
         case "unknownActionForNotificationReceived": {
-          print("Unknown Notification: " + event.body.toString());
+          print("Unknown Notification: " + event.data.toString());
         }
         break;
         case "notificationWillOpen": {
-          print("Notification: " + event.body['message']);
+          NotificareNotificationWillOpenEvent notificationWillOpenEvent = event.data as NotificareNotificationWillOpenEvent;
+          print("Notification: " + notificationWillOpenEvent.notification.message);
         }
         break;
         case "notificationOpened": {
-          print("Notification: " + event.body['message']);
+          NotificareNotificationOpenedEvent notificationOpenedEvent = event.data as NotificareNotificationOpenedEvent;
+          print("Notification: " + notificationOpenedEvent.notification.message);
         }
         break;
         case "notificationClosed": {
-          print("Notification: " + event.body['message']);
+          NotificareNotificationClosedEvent notificationClosedEvent = event.data as NotificareNotificationClosedEvent;
+          print("Notification: " + notificationClosedEvent.notification.message);
         }
         break;
         case "notificationFailedToOpen": {
-          print("Notification: " + event.body['message']);
+          NotificareNotificationFailedToOpenEvent notificationFailedToOpenEvent = event.data as NotificareNotificationFailedToOpenEvent;
+          print("Notification: " + notificationFailedToOpenEvent.notification.message);
         }
         break;
         case "urlClickedInNotification": {
-          print("URL: " + event.body['url']);
+          NotificareUrlClickedInNotificationEvent urlClickedInNotificationEvent = event.data as NotificareUrlClickedInNotificationEvent;
+          print("URL: " + urlClickedInNotificationEvent.url);
           //Handle Deep Link
         }
         break;
-        case "notificationFailedToOpen": {
-          print("Notification: " + event.body['message']);
-        }
-        break;
         case "actionWillExecute": {
-          print("Action: " + event.body['label']);
+          NotificareActionWillExecuteEvent actionWillExecuteEvent = event.data as NotificareActionWillExecuteEvent;
+          print("Action: " + actionWillExecuteEvent.action.label);
         }
         break;
         case "actionExecuted": {
-          print("Action: " + event.body['label']);
+          NotificareActionWillExecuteEvent actionWillExecuteEvent = event.data as NotificareActionWillExecuteEvent;
+          print("Action: " + actionWillExecuteEvent.action.label);
         }
         break;
         case "shouldPerformSelectorWithUrl": {
-          print("URL: " + event.body['url']);
+          NotificareShouldPerformSelectorWithUrlEvent shouldPerformSelectorWithUrlEvent = event.data as NotificareShouldPerformSelectorWithUrlEvent;
+          print("URL: " + shouldPerformSelectorWithUrlEvent.url);
           //Handle Deep Link
         }
         break;
         case "actionNotExecuted": {
-          print("Action: " + event.body['label']);
+          NotificareActionNotExecutedEvent actionNotExecutedEvent = event.data as NotificareActionNotExecutedEvent;
+          print("Action: " + actionNotExecutedEvent.action.label);
         }
         break;
         case "actionFailedToExecute": {
-          print("Action: " + event.body['label']);
+          NotificareActionFailedToExecuteEvent actionFailedToExecuteEvent = event.data as NotificareActionFailedToExecuteEvent;
+          print("Action: " + actionFailedToExecuteEvent.action.label);
         }
         break;
         case "shouldOpenSettings": {
-          print("Notification: " + event.body.toString());
+          NotificareShouldOpenSettingsEvent shouldOpenSettingsEvent = event.data as NotificareShouldOpenSettingsEvent;
+          print("Notification: " + shouldOpenSettingsEvent.notification.message);
           //Go to settings
         }
         break;
         case "inboxLoaded": {
+          NotificareInboxLoadedEvent inboxLoadedEvent = event.data as NotificareInboxLoadedEvent;
+          print("Inbox loaded with size " + inboxLoadedEvent.inbox.length.toString());
           _fetchInbox();
         }
         break;
         case "badgeUpdated": {
-          print("Unread Count: " + event.body.toString());
+          NotificareBadgeUpdatedEvent badgeUpdatedEvent = event.data as NotificareBadgeUpdatedEvent;
+          print("Unread Count: " + badgeUpdatedEvent.unreadCount.toString());
         }
         break;
         case "locationServiceAuthorizationStatusReceived": {
-          print("Location Services Authorization Status: " + event.body.toString());
+          print("Location Services Authorization Status: " + event.data.toString());
         }
         break;
         case "locationServiceFailedToStart": {
-          print("Location Services Error: " + event.body.toString());
+          print("Location Services Error: " + event.data.toString());
         }
         break;
         case "locationsUpdated": {
-          print("Locations Updated: " + event.body.toString());
+          print("Locations Updated: " + event.data.toString());
         }
         break;
         case "monitoringForRegionStarted": {
-          print("Monitoring For Region: " + event.body.toString());
+          print("Monitoring For Region: " + event.data.toString());
         }
         break;
         case "monitoringForRegionFailed": {
-          print("Monitoring for Region Failed: " + event.body.toString());
+          print("Monitoring for Region Failed: " + event.data.toString());
         }
         break;
         case "stateForRegionChanged": {
-          print("State for Region: " + event.body.toString());
+          print("State for Region: " + event.data.toString());
+        }
+        break;
+        case "stateForBeaconRegionChanged": {
+          print("State for Region: " + event.data.toString());
         }
         break;
         case "regionEntered": {
-          print("Enter Region: " + event.body.toString());
+          print("Enter Region: " + event.data.toString());
+        }
+        break;
+        case "beaconRegionEntered": {
+          print("Enter Region: " + event.data.toString());
         }
         break;
         case "regionExited": {
-          print("Exit Region: " + event.body.toString());
+          print("Exit Region: " + event.data.toString());
+        }
+        break;
+        case "beaconRegionExited": {
+          print("Exit Region: " + event.data.toString());
         }
         break;
         case "beaconsInRangeForRegion": {
-          print("Beacons in Range for Region: " + event.body.toString());
+          print("Beacons in Range for Region: " + event.data.toString());
         }
         break;
         case "rangingBeaconsFailed": {
-          print("Ranging Beacons Failed: " + event.body.toString());
+          print("Ranging Beacons Failed: " + event.data.toString());
         }
         break;
         case "headingUpdated": {
-          print("Heading: " + event.body.toString());
+          print("Heading: " + event.data.toString());
         }
         break;
         case "visitReceived": {
-          print("Visit Received: " + event.body.toString());
+          print("Visit Received: " + event.data.toString());
         }
         break;
         case "accountStateChanged": {
-          print("Account State Changed: " + event.body.toString());
+          print("Account State Changed: " + event.data.toString());
         }
         break;
         case "accountSessionFailedToRenewWithError": {
-          print("Account Session Failed to Renew: " + event.body.toString());
+          print("Account Session Failed to Renew: " + event.data.toString());
         }
         break;
         case "activationTokenReceived": {
-          print("Activation Token: " + event.body.toString());
+          print("Activation Token: " + event.data.toString());
         }
         break;
         case "resetPasswordTokenReceived": {
-          print("Reset Pass Token: " + event.body.toString());
+          print("Reset Pass Token: " + event.data.toString());
         }
         break;
         case "storeLoaded": {
-          print("In-App Store Loaded: " + event.body.toString());
+          print("In-App Store Loaded: " + event.data.toString());
         }
         break;
         case "storeFailedToLoad": {
-          print("In-App Store Failed to Load: " + event.body.toString());
+          print("In-App Store Failed to Load: " + event.data.toString());
         }
         break;
         case "productTransactionCompleted": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productTransactionRestored": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productTransactionFailed": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productContentDownloadStarted": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productContentDownloadPaused": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productContentDownloadCancelled": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productContentDownloadProgress": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productContentDownloadFailed": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "productContentDownloadFinished": {
-          print("Product: " + event.body.toString());
+          print("Product: " + event.data.toString());
         }
         break;
         case "qrCodeScannerStarted": {
@@ -271,11 +303,11 @@ class _MyAppState extends State<MyApp> {
         }
         break;
         case "scannableDetected": {
-          print("Scannable: " + event.body.toString());
+          print("Scannable: " + event.data.toString());
         }
         break;
         case "scannableSessionInvalidatedWithError": {
-          print("Scannable Session Failed: " + event.body.toString());
+          print("Scannable Session Failed: " + event.data.toString());
         }
         break;
       }
@@ -295,8 +327,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _fetchNotificationSettings() async {
-    Map<String, dynamic> settings = await notificare.fetchNotificationSettings();
-    print("Settings: " + settings.toString());
+    NotificareNotificationSettings settings = await notificare.fetchNotificationSettings();
+    print("Settings: " + settings.toJson().toString());
   }
 
   Future<void> _fetchPreferredLanguage() async {

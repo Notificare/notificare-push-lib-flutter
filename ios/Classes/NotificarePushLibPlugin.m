@@ -223,7 +223,7 @@
   } else if ([@"clearDoNotDisturb" isEqualToString:call.method]) {
       [[NotificarePushLib shared] clearDoNotDisturb:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              result([[NotificarePushLibUtils shared] dictionaryFromDeviceDnD:response]);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:NOTIFICARE_ERROR
                                          message:error.localizedDescription
@@ -876,7 +876,7 @@
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromRegion:region] forKey:@"region"];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
     }
     
     _eventSink(@{@"event":@"stateForRegionChanged", @"body": payload});

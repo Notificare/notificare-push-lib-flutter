@@ -67,6 +67,38 @@ Map<String, dynamic> _$NotificareUserDataFieldsToJson(
         NotificareUserDataFields instance) =>
     <String, dynamic>{};
 
+NotificareNotificationSettings _$NotificareNotificationSettingsFromJson(
+    Map<String, dynamic> json) {
+  return NotificareNotificationSettings()
+    ..authorizationStatus = json['authorizationStatus'] as String
+    ..alertSetting = json['alertSetting'] as String
+    ..badgeSetting = json['badgeSetting'] as String
+    ..soundSetting = json['soundSetting'] as String
+    ..notificationCenterSetting = json['notificationCenterSetting'] as String
+    ..lockScreenSetting = json['lockScreenSetting'] as String
+    ..criticalAlertSetting = json['criticalAlertSetting'] as String
+    ..alertStyle = json['alertStyle'] as String
+    ..showPreviewsSetting = json['showPreviewsSetting'] as String
+    ..providesAppNotificationSettings =
+        json['providesAppNotificationSettings'] as bool;
+}
+
+Map<String, dynamic> _$NotificareNotificationSettingsToJson(
+        NotificareNotificationSettings instance) =>
+    <String, dynamic>{
+      'authorizationStatus': instance.authorizationStatus,
+      'alertSetting': instance.alertSetting,
+      'badgeSetting': instance.badgeSetting,
+      'soundSetting': instance.soundSetting,
+      'notificationCenterSetting': instance.notificationCenterSetting,
+      'lockScreenSetting': instance.lockScreenSetting,
+      'criticalAlertSetting': instance.criticalAlertSetting,
+      'alertStyle': instance.alertStyle,
+      'showPreviewsSetting': instance.showPreviewsSetting,
+      'providesAppNotificationSettings':
+          instance.providesAppNotificationSettings
+    };
+
 NotificareDevice _$NotificareDeviceFromJson(Map<String, dynamic> json) {
   return NotificareDevice()
     ..deviceID = json['deviceID'] as String
@@ -119,6 +151,16 @@ Map<String, dynamic> _$NotificareDeviceToJson(NotificareDevice instance) =>
       'bluetoothON': instance.bluetoothON
     };
 
+NotificareDeviceDnD _$NotificareDeviceDnDFromJson(Map<String, dynamic> json) {
+  return NotificareDeviceDnD()
+    ..start = json['start'] as String
+    ..end = json['end'] as String;
+}
+
+Map<String, dynamic> _$NotificareDeviceDnDToJson(
+        NotificareDeviceDnD instance) =>
+    <String, dynamic>{'start': instance.start, 'end': instance.end};
+
 NotificareNotification _$NotificareNotificationFromJson(
     Map<String, dynamic> json) {
   return NotificareNotification()
@@ -161,6 +203,22 @@ Map<String, dynamic> _$NotificareNotificationToJson(
       'content': instance.content,
       'actions': instance.actions,
       'attachments': instance.attachments
+    };
+
+NotificareSystemNotification _$NotificareSystemNotificationFromJson(
+    Map<String, dynamic> json) {
+  return NotificareSystemNotification()
+    ..notificationID = json['notificationID'] as String
+    ..type = json['type'] as String
+    ..extra = json['extra'] as Map<String, dynamic>;
+}
+
+Map<String, dynamic> _$NotificareSystemNotificationToJson(
+        NotificareSystemNotification instance) =>
+    <String, dynamic>{
+      'notificationID': instance.notificationID,
+      'type': instance.type,
+      'extra': instance.extra
     };
 
 NotificareContent _$NotificareContentFromJson(Map<String, dynamic> json) {
@@ -215,6 +273,147 @@ Map<String, dynamic> _$NotificareInboxItemToJson(
       'opened': instance.opened
     };
 
+NotificareLocation _$NotificareLocationFromJson(Map<String, dynamic> json) {
+  return NotificareLocation()
+    ..latitude = (json['latitude'] as num)?.toDouble()
+    ..longitude = (json['longitude'] as num)?.toDouble()
+    ..altitude = (json['altitude'] as num)?.toDouble()
+    ..horizontalAccuracy = (json['horizontalAccuracy'] as num)?.toDouble()
+    ..verticalAccuracy = (json['verticalAccuracy'] as num)?.toDouble()
+    ..floor = json['floor'] as int
+    ..speed = (json['speed'] as num)?.toDouble()
+    ..course = (json['course'] as num)?.toDouble()
+    ..timestamp = json['timestamp'] as String;
+}
+
+Map<String, dynamic> _$NotificareLocationToJson(NotificareLocation instance) =>
+    <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'altitude': instance.altitude,
+      'horizontalAccuracy': instance.horizontalAccuracy,
+      'verticalAccuracy': instance.verticalAccuracy,
+      'floor': instance.floor,
+      'speed': instance.speed,
+      'course': instance.course,
+      'timestamp': instance.timestamp
+    };
+
+NotificareBeacon _$NotificareBeaconFromJson(Map<String, dynamic> json) {
+  return NotificareBeacon()
+    ..beaconId = json['beaconId'] as String
+    ..beaconName = json['beaconName'] as String
+    ..beaconRegion = json['beaconRegion'] as String
+    ..beaconUUID = json['beaconUUID'] as String
+    ..beaconMajor = json['beaconMajor'] as int
+    ..beaconMinor = json['beaconMinor'] as int
+    ..beaconTriggers = json['beaconTriggers'] as bool;
+}
+
+Map<String, dynamic> _$NotificareBeaconToJson(NotificareBeacon instance) =>
+    <String, dynamic>{
+      'beaconId': instance.beaconId,
+      'beaconName': instance.beaconName,
+      'beaconRegion': instance.beaconRegion,
+      'beaconUUID': instance.beaconUUID,
+      'beaconMajor': instance.beaconMajor,
+      'beaconMinor': instance.beaconMinor,
+      'beaconTriggers': instance.beaconTriggers
+    };
+
+NotificareRegion _$NotificareRegionFromJson(Map<String, dynamic> json) {
+  return NotificareRegion()
+    ..regionId = json['regionId'] as String
+    ..regionName = json['regionName'] as String
+    ..regionMajor = json['regionMajor'] as int
+    ..regionGeometry = json['regionGeometry'] == null
+        ? null
+        : NotificarePoint.fromJson(json['regionGeometry'])
+    ..regionAdvancedGeometry = json['regionAdvancedGeometry'] == null
+        ? null
+        : NotificarePolygon.fromJson(json['regionAdvancedGeometry'])
+    ..regionDistance = (json['regionDistance'] as num)?.toDouble()
+    ..regionTimezone = json['regionTimezone'] as String;
+}
+
+Map<String, dynamic> _$NotificareRegionToJson(NotificareRegion instance) =>
+    <String, dynamic>{
+      'regionId': instance.regionId,
+      'regionName': instance.regionName,
+      'regionMajor': instance.regionMajor,
+      'regionGeometry': instance.regionGeometry,
+      'regionAdvancedGeometry': instance.regionAdvancedGeometry,
+      'regionDistance': instance.regionDistance,
+      'regionTimezone': instance.regionTimezone
+    };
+
+NotificarePolygon _$NotificarePolygonFromJson(Map<String, dynamic> json) {
+  return NotificarePolygon()
+    ..type = json['type'] as String
+    ..coordinates = (json['coordinates'] as List)
+        ?.map((e) => (e as List)
+            ?.map((e) =>
+                (e as List)?.map((e) => (e as num)?.toDouble())?.toList())
+            ?.toList())
+        ?.toList();
+}
+
+Map<String, dynamic> _$NotificarePolygonToJson(NotificarePolygon instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'coordinates': instance.coordinates
+    };
+
+NotificarePoint _$NotificarePointFromJson(Map<String, dynamic> json) {
+  return NotificarePoint()
+    ..type = json['type'] as String
+    ..coordinates = (json['coordinates'] as List)
+        ?.map((e) => (e as num)?.toDouble())
+        ?.toList();
+}
+
+Map<String, dynamic> _$NotificarePointToJson(NotificarePoint instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'coordinates': instance.coordinates
+    };
+
+NotificareHeading _$NotificareHeadingFromJson(Map<String, dynamic> json) {
+  return NotificareHeading()
+    ..magneticHeading = (json['magneticHeading'] as num)?.toDouble()
+    ..trueHeading = (json['trueHeading'] as num)?.toDouble()
+    ..headingAccuracy = (json['headingAccuracy'] as num)?.toDouble()
+    ..headingX = (json['headingX'] as num)?.toDouble()
+    ..headingY = (json['headingY'] as num)?.toDouble()
+    ..headingZ = (json['headingZ'] as num)?.toDouble();
+}
+
+Map<String, dynamic> _$NotificareHeadingToJson(NotificareHeading instance) =>
+    <String, dynamic>{
+      'magneticHeading': instance.magneticHeading,
+      'trueHeading': instance.trueHeading,
+      'headingAccuracy': instance.headingAccuracy,
+      'headingX': instance.headingX,
+      'headingY': instance.headingY,
+      'headingZ': instance.headingZ
+    };
+
+NotificareVisit _$NotificareVisitFromJson(Map<String, dynamic> json) {
+  return NotificareVisit()
+    ..latitude = (json['latitude'] as num)?.toDouble()
+    ..longitude = (json['longitude'] as num)?.toDouble()
+    ..departureDate = json['departureDate'] as String
+    ..arrivalDate = json['arrivalDate'] as String;
+}
+
+Map<String, dynamic> _$NotificareVisitToJson(NotificareVisit instance) =>
+    <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'departureDate': instance.departureDate,
+      'arrivalDate': instance.arrivalDate
+    };
+
 NotificareUser _$NotificareUserFromJson(Map<String, dynamic> json) {
   return NotificareUser()
     ..userID = json['userID'] as String
@@ -259,6 +458,45 @@ Map<String, dynamic> _$NotificareUserDataToJson(NotificareUserData instance) =>
       'key': instance.key,
       'label': instance.label,
       'data': instance.data
+    };
+
+NotificareUserPreference _$NotificareUserPreferenceFromJson(
+    Map<String, dynamic> json) {
+  return NotificareUserPreference()
+    ..preferenceId = json['preferenceId'] as String
+    ..preferenceLabel = json['preferenceLabel'] as String
+    ..preferenceType = json['preferenceType'] as String
+    ..preferenceOptions = (json['preferenceOptions'] as List)
+        ?.map((e) => e == null
+            ? null
+            : NotificareUserPreferenceOption.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$NotificareUserPreferenceToJson(
+        NotificareUserPreference instance) =>
+    <String, dynamic>{
+      'preferenceId': instance.preferenceId,
+      'preferenceLabel': instance.preferenceLabel,
+      'preferenceType': instance.preferenceType,
+      'preferenceOptions': instance.preferenceOptions
+    };
+
+NotificareUserPreferenceOption _$NotificareUserPreferenceOptionFromJson(
+    Map<String, dynamic> json) {
+  return NotificareUserPreferenceOption()
+    ..segmentId = json['segmentId'] as String
+    ..segmentLabel = json['segmentLabel'] as String
+    ..selected = json['selected'] as bool;
+}
+
+Map<String, dynamic> _$NotificareUserPreferenceOptionToJson(
+        NotificareUserPreferenceOption instance) =>
+    <String, dynamic>{
+      'segmentId': instance.segmentId,
+      'segmentLabel': instance.segmentLabel,
+      'selected': instance.selected
     };
 
 NotificareAsset _$NotificareAssetFromJson(Map<String, dynamic> json) {
@@ -375,6 +613,28 @@ Map<String, dynamic> _$NotificareProductToJson(NotificareProduct instance) =>
       'productCurrency': instance.productCurrency,
       'productDate': instance.productDate,
       'productActive': instance.productActive
+    };
+
+NotificareDownload _$NotificareDownloadFromJson(Map<String, dynamic> json) {
+  return NotificareDownload()
+    ..contentIdentifier = json['contentIdentifier'] as String
+    ..contentUrl = json['contentUrl'] as String
+    ..contentLength = json['contentLength'] as int
+    ..contentVersion = json['contentVersion'] as String
+    ..progress = (json['progress'] as num)?.toDouble()
+    ..timeRemaining = (json['timeRemaining'] as num)?.toDouble()
+    ..downloadState = json['downloadState'] as String;
+}
+
+Map<String, dynamic> _$NotificareDownloadToJson(NotificareDownload instance) =>
+    <String, dynamic>{
+      'contentIdentifier': instance.contentIdentifier,
+      'contentUrl': instance.contentUrl,
+      'contentLength': instance.contentLength,
+      'contentVersion': instance.contentVersion,
+      'progress': instance.progress,
+      'timeRemaining': instance.timeRemaining,
+      'downloadState': instance.downloadState
     };
 
 NotificareScannable _$NotificareScannableFromJson(Map<String, dynamic> json) {
