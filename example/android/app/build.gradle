@@ -56,6 +56,9 @@ flutter {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+    implementation "re.notifica:notificare-location:2.0.8"
+    implementation "re.notifica:notificare-beacon:2.0.8"
+    implementation "re.notifica:notificare-scannable:2.0.8"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

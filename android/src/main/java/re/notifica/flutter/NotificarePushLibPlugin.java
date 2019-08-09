@@ -97,10 +97,6 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     plugin.mChannel.setMethodCallHandler(plugin);
     EventChannel eventsChannel = new EventChannel(registrar.messenger(), "notificare_push_lib/events", JSONMethodCodec.INSTANCE);
     eventsChannel.setStreamHandler(plugin);
-
-    EventChannel systemEventsChannel = new EventChannel(registrar.messenger(), "system");
-    systemEventsChannel.setStreamHandler(plugin);
-
     if (registrar.activity() != null && registrar.activity().getIntent() != null) {
       plugin.handleIntent(registrar.activity().getIntent());
     }
@@ -108,11 +104,18 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    Log.i(TAG, call.method);
-    if ("initializeWithKeyAndSecret".equals(call.method)) {// make it a noop
-      replySuccess(result, null);
-    } else if ("launch".equals(call.method)) {
+    if ("launch".equals(call.method)) {
       Notificare.shared().addNotificareReadyListener(this);
+      replySuccess(result, null);
+    } else if ("didChangeAppLifecycleState".equals(call.method)) {
+      String lifeCycleState = call.argument("message");
+      if (lifeCycleState != null) {
+        if (lifeCycleState.equals("AppLifecycleState.paused")) {
+          onPause();
+        } else if (lifeCycleState.equals("AppLifecycleState.resumed")) {
+          onResume();
+        }
+      }
       replySuccess(result, null);
     } else if ("registerForNotifications".equals(call.method)) {
       Notificare.shared().enableNotifications();
@@ -1103,6 +1106,16 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     return null;
   }
 
+  private void onPause() {
+    Notificare.shared().setForeground(false);
+    Notificare.shared().getEventLogger().logEndSession();
+  }
+
+  private void onResume() {
+    Notificare.shared().setForeground(true);
+    Notificare.shared().getEventLogger().logStartSession();
+  }
+
   private void handleIntent(Intent intent) {
     JSONObject notificationMap = parseNotificationIntent(intent);
     if (notificationMap != null) {
@@ -1115,11 +1128,8 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
 
   @Override
   public void onListen(Object o, EventChannel.EventSink eventSink) {
-    NotificareEventEmitter.getInstance().onListen(eventSink);
     Notificare.shared().addServiceErrorListener(this);
-    Notificare.shared().setForeground(true);
     Notificare.shared().addNotificationReceivedListener(this);
-    Notificare.shared().getEventLogger().logStartSession();
     if (Notificare.shared().getBeaconClient() != null) {
       Notificare.shared().getBeaconClient().addRangingListener(this);
     }
@@ -1128,14 +1138,13 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       mInboxItems.observeForever(this);
     }
     Notificare.shared().addBillingReadyListener(this);
+    NotificareEventEmitter.getInstance().onListen(eventSink);
   }
 
   @Override
   public void onCancel(Object o) {
     Notificare.shared().removeServiceErrorListener(this);
     Notificare.shared().removeNotificationReceivedListener(this);
-    Notificare.shared().setForeground(false);
-    Notificare.shared().getEventLogger().logEndSession();
     if (Notificare.shared().getBeaconClient() != null) {
       Notificare.shared().getBeaconClient().removeRangingListener(this);
     }
@@ -1208,9 +1217,8 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         }
       payload.put("beacons", beaconsArray);
       if (beacons.size() > 0) {
-        NotificareRegion region = beacons.get(0).getRegion();
-        if (region != null) {
-          payload.put("region", NotificareUtils.mapRegion(region));
+        if (beacons.get(0).getRegion() != null) {
+          payload.put("region", NotificareUtils.mapRegionForBeacon(beacons.get(0)));
         }
       }
       sendEvent("beaconsInRangeForRegion", payload, false);

@@ -272,6 +272,22 @@ public class NotificareUtils {
     }
 
     /**
+     * Map a region for ranging beacons
+     * @param beacon
+     * @return
+     * @throws JSONException
+     */
+    public static JSONObject mapRegionForBeacon(NotificareBeacon beacon) throws JSONException {
+        JSONObject beaconMap = new JSONObject();
+        beaconMap.put("beaconId", beacon.getRegionId());
+        beaconMap.put("beaconName", beacon.getRegion().getName());
+        beaconMap.put("beaconRegion", beacon.getRegionId());
+        beaconMap.put("beaconUUID", Notificare.shared().getApplicationInfo().getRegionConfig().getProximityUUID());
+        beaconMap.put("beaconMajor", beacon.getMajor());
+        return beaconMap;
+    }
+
+    /**
      * Map a pass
      * @param pass
      * @return

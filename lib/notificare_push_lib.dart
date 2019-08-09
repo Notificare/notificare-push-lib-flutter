@@ -2,16 +2,21 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart' show visibleForTesting;
 import 'package:notificare_push_lib/notificare_events.dart';
 import 'package:notificare_push_lib/notificare_models.dart';
 
-class NotificarePushLib {
+class NotificarePushLib with WidgetsBindingObserver {
 
   factory NotificarePushLib() {
     if (_instance == null) {
       final MethodChannel methodChannel = const MethodChannel('notificare_push_lib', JSONMethodCodec());
       final EventChannel eventChannel = const EventChannel('notificare_push_lib/events', JSONMethodCodec());
+      SystemChannels.lifecycle.setMessageHandler((message) async {
+        await methodChannel.invokeMethod('didChangeAppLifecycleState', {'message': message});
+        return null;
+      });
       _instance = NotificarePushLib.private(methodChannel, eventChannel);
     }
     return _instance;
@@ -413,7 +418,7 @@ class NotificarePushLib {
         case 'stateForRegionChanged':
           if (map['body']['region']['beaconId'] != null) {
             return new NotificareEvent(eventName,
-                new NotificareStateForBeaconRegionChangedEvent(
+                new NotificareStateForRegionChangedEvent(
                     NotificareBeacon.fromJson(map['body']['region']),
                     map['body']['state']));
           } else {
@@ -426,7 +431,7 @@ class NotificarePushLib {
         case 'regionEntered':
           if (map['body']['region']['beaconId'] != null) {
             return new NotificareEvent(eventName,
-                new NotificareBeaconRegionEnteredEvent(
+                new NotificareRegionEnteredEvent(
                     NotificareBeacon.fromJson(map['body']['region'])));
           } else {
             return new NotificareEvent(eventName,
@@ -437,7 +442,7 @@ class NotificarePushLib {
         case 'regionExited':
           if (map['body']['region']['beaconId'] != null) {
             return new NotificareEvent(eventName,
-                new NotificareBeaconRegionExitedEvent(
+                new NotificareRegionExitedEvent(
                     NotificareBeacon.fromJson(map['body']['region'])));
           } else {
             return new NotificareEvent(eventName,

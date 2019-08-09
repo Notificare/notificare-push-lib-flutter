@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
           await notificare.registerForNotifications();
           await _registerDevice("1234567890", "Joel Oliveira");
           List inbox = await _fetchInbox();
-          await _fetchAssets("TEST");
+//          await _fetchAssets("TEST");
 
           if (await notificare.isRemoteNotificationsEnabled()) {
             print("Remote Notifications Enabled");

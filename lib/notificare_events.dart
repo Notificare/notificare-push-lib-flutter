@@ -338,19 +338,7 @@ class NotificareMonitoringForRegionFailedEvent {
 class NotificareStateForRegionChangedEvent {
   NotificareStateForRegionChangedEvent(this.region, this.state);
   String state;
-  NotificareRegion region;
-}
-
-///
-/// Event: state for region changed
-/// Platform: iOS
-/// Name: stateForBeaconRegionChanged
-/// Data: state, region
-///
-class NotificareStateForBeaconRegionChangedEvent {
-  NotificareStateForBeaconRegionChangedEvent(this.region, this.state);
-  String state;
-  NotificareBeacon region;
+  dynamic region;
 }
 
 ///
@@ -361,18 +349,7 @@ class NotificareStateForBeaconRegionChangedEvent {
 ///
 class NotificareRegionEnteredEvent {
   NotificareRegionEnteredEvent(this.region);
-  NotificareRegion region;
-}
-
-///
-/// Event: beacon region entered
-/// Platform: iOS
-/// Name: beaconRegionEntered
-/// Data: region
-///
-class NotificareBeaconRegionEnteredEvent {
-  NotificareBeaconRegionEnteredEvent(this.region);
-  NotificareBeacon region;
+  dynamic region;
 }
 
 ///
@@ -383,23 +360,12 @@ class NotificareBeaconRegionEnteredEvent {
 ///
 class NotificareRegionExitedEvent {
   NotificareRegionExitedEvent(this.region);
-  NotificareRegion region;
-}
-
-///
-/// Event: beacon region exited
-/// Platform: iOS
-/// Name: beaconRegionExited
-/// Data: region
-///
-class NotificareBeaconRegionExitedEvent {
-  NotificareBeaconRegionExitedEvent(this.region);
-  NotificareBeacon region;
+  dynamic region;
 }
 
 ///
 /// Event:
-/// Platform: iOS
+/// Platform: iOS, Android
 /// Name: beaconsInRangeForRegion
 /// Data: list of beacons, region
 ///
