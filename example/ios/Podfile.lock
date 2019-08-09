@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - location_permissions (2.0.2):
+    - Flutter
   - notificare-push-lib (2.1.0)
   - notificare_push_lib (1.0.0):
     - Flutter
@@ -7,6 +9,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
+  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - notificare_push_lib (from `.symlinks/plugins/notificare_push_lib/ios`)
 
 SPEC REPOS:
@@ -16,11 +19,14 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
+  location_permissions:
+    :path: ".symlinks/plugins/location_permissions/ios"
   notificare_push_lib:
     :path: ".symlinks/plugins/notificare_push_lib/ios"
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  location_permissions: 67cfaff583afbb027a9f9248196f4b79c40f3cdc
   notificare-push-lib: ddc6abbdf12a29c4419a367017a6aef56e037f4f
   notificare_push_lib: 74fd519b9b2971d569022d1f7796d55678d0cb6f
 

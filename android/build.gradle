@@ -1,5 +1,5 @@
 group 're.notifica.flutter'
-version '2.0.0'
+version '1.0.0'
 
 buildscript {
     repositories {
@@ -29,7 +29,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -45,5 +45,5 @@ dependencies {
     compileOnly "re.notifica:notificare-location:2.0.8"
     compileOnly "re.notifica:notificare-beacon:2.0.8"
     compileOnly "re.notifica:notificare-scannable:2.0.8"
-    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
 }

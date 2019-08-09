@@ -671,103 +671,105 @@
     if (!_eventSink) {
         return;
     }
-    _eventSink(event);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _eventSink(event);
+    });
 }
 
 #pragma mark Notificare Delegates
 -(void)notificarePushLib:(NotificarePushLib *)library onReady:(NotificareApplication *)application{
-    _eventSink(@{@"event":@"ready", @"body": [[NotificarePushLibUtils shared] dictionaryFromApplication:application]});
+    [self sendEvent:@{@"event":@"ready", @"body": [[NotificarePushLibUtils shared] dictionaryFromApplication:application]}];
 }
 
 
 - (void)notificarePushLib:(NotificarePushLib *)library didRegisterDevice:(nonnull NotificareDevice *)device{
-    _eventSink(@{@"event":@"deviceRegistered", @"body": [[NotificarePushLibUtils shared] dictionaryFromDevice:device]});
+    [self sendEvent:@{@"event":@"deviceRegistered", @"body": [[NotificarePushLibUtils shared] dictionaryFromDevice:device]}];
 }
 
 
 - (void)notificarePushLib:(NotificarePushLib *)library didChangeNotificationSettings:(BOOL)granted{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[NSNumber numberWithBool:granted] forKey:@"granted"];
-    _eventSink(@{@"event":@"notificationSettingsChanged", @"body": payload});
+    [self sendEvent:@{@"event":@"notificationSettingsChanged", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveLaunchURL:(NSURL *)launchURL{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[launchURL absoluteString] forKey:@"url"];
-    _eventSink(@{@"event":@"launchUrlReceived", @"body": payload});
+    [self sendEvent:@{@"event":@"launchUrlReceived", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveRemoteNotificationInBackground:(NotificareNotification *)notification withController:(id _Nullable)controller{
-    _eventSink(@{@"event":@"remoteNotificationReceivedInBackground", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
+    [self sendEvent:@{@"event":@"remoteNotificationReceivedInBackground", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveRemoteNotificationInForeground:(NotificareNotification *)notification withController:(id _Nullable)controller{
-    _eventSink(@{@"event":@"remoteNotificationReceivedInForeground", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
+    [self sendEvent:@{@"event":@"remoteNotificationReceivedInForeground", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveSystemNotificationInBackground:(NotificareSystemNotification *)notification{
-    _eventSink(@{@"event":@"systemNotificationReceivedInBackground", @"body": [[NotificarePushLibUtils shared] dictionaryFromSystemNotification:notification]});
+    [self sendEvent:@{@"event":@"systemNotificationReceivedInBackground", @"body": [[NotificarePushLibUtils shared] dictionaryFromSystemNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveSystemNotificationInForeground:(NotificareSystemNotification *)notification{
-    _eventSink(@{@"event":@"systemNotificationReceivedInForeground", @"body": [[NotificarePushLibUtils shared] dictionaryFromSystemNotification:notification]});
+    [self sendEvent:@{@"event":@"systemNotificationReceivedInForeground", @"body": [[NotificarePushLibUtils shared] dictionaryFromSystemNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveUnknownNotification:(NSDictionary *)notification{
-    _eventSink(@{@"event":@"unknownNotificationReceived", @"body": notification});
+    [self sendEvent:@{@"event":@"unknownNotificationReceived", @"body": notification}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveUnknownAction:(NSDictionary *)action forNotification:(NSDictionary *)notification{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:action forKey:@"action"];
     [payload setObject:notification forKey:@"notification"];
-    _eventSink(@{@"event":@"unknownActionForNotificationReceived", @"body": payload});
+    [self sendEvent:@{@"event":@"unknownActionForNotificationReceived", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library willOpenNotification:(NotificareNotification *)notification{
-    _eventSink(@{@"event":@"notificationWillOpen", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
+    [self sendEvent:@{@"event":@"notificationWillOpen", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didOpenNotification:(NotificareNotification *)notification{
-    _eventSink(@{@"event":@"notificationOpened", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
+    [self sendEvent:@{@"event":@"notificationOpened", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didCloseNotification:(NotificareNotification *)notification{
-    _eventSink(@{@"event":@"notificationClosed", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
+    [self sendEvent:@{@"event":@"notificationClosed", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToOpenNotification:(NotificareNotification *)notification{
-    _eventSink(@{@"event":@"notificationFailedToOpen", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
+    [self sendEvent:@{@"event":@"notificationFailedToOpen", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didClickURL:(NSURL *)url inNotification:(NotificareNotification *)notification{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[url absoluteString] forKey:@"url"];
     [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromNotification:notification] forKey:@"notification"];
-    _eventSink(@{@"event":@"urlClickedInNotification", @"body": payload});
+    [self sendEvent:@{@"event":@"urlClickedInNotification", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library willExecuteAction:(NotificareAction *)action{
-    _eventSink(@{@"event":@"actionWillExecute", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]});
+    [self sendEvent:@{@"event":@"actionWillExecute", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didExecuteAction:(NotificareAction *)action{
-    _eventSink(@{@"event":@"actionExecuted", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]});
+    [self sendEvent:@{@"event":@"actionExecuted", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library shouldPerformSelectorWithURL:(NSURL *)url inAction:(NotificareAction *)action{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[url absoluteString] forKey:@"url"];
     [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromAction:action] forKey:@"action"];
-    _eventSink(@{@"event":@"shouldPerformSelectorWithUrl", @"body": payload});
+    [self sendEvent:@{@"event":@"shouldPerformSelectorWithUrl", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didNotExecuteAction:(NotificareAction *)action{
-    _eventSink(@{@"event":@"actionNotExecuted", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]});
+    [self sendEvent:@{@"event":@"actionNotExecuted", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToExecuteAction:(NotificareAction *)action withError:(NSError *)error{
-    _eventSink(@{@"event":@"actionFailedToExecute", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]});
+    [self sendEvent:@{@"event":@"actionFailedToExecute", @"body": [[NotificarePushLibUtils shared] dictionaryFromAction:action]}];
 }
 
 /*
@@ -795,7 +797,7 @@
 */
 
 - (void)notificarePushLib:(NotificarePushLib *)library shouldOpenSettings:(NotificareNotification* _Nullable)notification{
-    _eventSink(@{@"event":@"shouldOpenSettings", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]});
+    [self sendEvent:@{@"event":@"shouldOpenSettings", @"body": [[NotificarePushLibUtils shared] dictionaryFromNotification:notification]}];
 }
 
 
@@ -804,18 +806,18 @@
     for (NotificareDeviceInbox * inboxItem in items) {
         [inboxItems addObject:[[NotificarePushLibUtils shared] dictionaryFromDeviceInbox:inboxItem]];
     }
-    _eventSink(@{@"event":@"inboxLoaded", @"body": inboxItems});
+    [self sendEvent:@{@"event":@"inboxLoaded", @"body": inboxItems}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateBadge:(int)badge{
-    _eventSink(@{@"event":@"badgeUpdated", @"body": [NSNumber numberWithInt:badge]});
+    [self sendEvent:@{@"event":@"badgeUpdated", @"body": [NSNumber numberWithInt:badge]}];
 }
 
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToStartLocationServiceWithError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    _eventSink(@{@"event":@"locationServiceFailedToStart", @"body": payload});
+    [self sendEvent:@{@"event":@"locationServiceFailedToStart", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveLocationServiceAuthorizationStatus:(NotificareGeoAuthorizationStatus)status{
@@ -833,7 +835,7 @@
         [payload setObject:@"whenInUse" forKey:@"status"];
     }
 
-    _eventSink(@{@"event":@"locationServiceAuthorizationStatusReceived", @"body": payload});
+    [self sendEvent:@{@"event":@"locationServiceAuthorizationStatusReceived", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateLocations:(NSArray<NotificareLocation*> *)locations{
@@ -841,23 +843,23 @@
     for (NotificareLocation * location in locations) {
         [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromLocation:location]];
     }
-    _eventSink(@{@"event":@"locationsUpdated", @"body": payload});
+    [self sendEvent:@{@"event":@"locationsUpdated", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library monitoringDidFailForRegion:(id)region withError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    _eventSink(@{@"event":@"monitoringForRegionFailed", @"body": payload});
+    [self sendEvent:@{@"event":@"monitoringForRegionFailed", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didStartMonitoringForRegion:(id)region{
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        _eventSink(@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]});
+        [self sendEvent:@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]}];
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        _eventSink(@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]});
+        [self sendEvent:@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]}];
     }
 }
 
@@ -881,28 +883,28 @@
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
     }
     
-    _eventSink(@{@"event":@"stateForRegionChanged", @"body": payload});
+    [self sendEvent:@{@"event":@"stateForRegionChanged", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didEnterRegion:(id)region{
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        _eventSink(@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]});
+        [self sendEvent:@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]}];
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        _eventSink(@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]});
+        [self sendEvent:@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]}];
     }
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didExitRegion:(id)region{
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        _eventSink(@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]});
+        [self sendEvent:@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]}];
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        _eventSink(@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]});
+        [self sendEvent:@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]}];
     }
     
 }
@@ -911,7 +913,7 @@
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
     [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
-    _eventSink(@{@"event":@"rangingBeaconsFailed", @"body": payload});
+    [self sendEvent:@{@"event":@"rangingBeaconsFailed", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didRangeBeacons:(NSArray<NotificareBeacon *> *)beacons inRegion:(NotificareBeacon *)region{
@@ -922,37 +924,37 @@
     }
     [payload setObject:beaconsList forKey:@"beacons"];
     [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
-    _eventSink(@{@"event":@"beaconsInRangeForRegion", @"body": payload});
+    [self sendEvent:@{@"event":@"beaconsInRangeForRegion", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateHeading:(NotificareHeading*)heading{
-    _eventSink(@{@"event":@"headingUpdated", @"body": [[NotificarePushLibUtils shared] dictionaryFromHeading:heading]});
+    [self sendEvent:@{@"event":@"headingUpdated", @"body": [[NotificarePushLibUtils shared] dictionaryFromHeading:heading]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didVisit:(NotificareVisit*)visit{
-    _eventSink(@{@"event":@"visitReceived", @"body": [[NotificarePushLibUtils shared] dictionaryFromVisit:visit]});
+    [self sendEvent:@{@"event":@"visitReceived", @"body": [[NotificarePushLibUtils shared] dictionaryFromVisit:visit]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didChangeAccountState:(NSDictionary *)info{
-    _eventSink(@{@"event":@"accountStateChanged", @"body": info});
+    [self sendEvent:@{@"event":@"accountStateChanged", @"body": info}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToRenewAccountSessionWithError:(NSError * _Nullable)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    _eventSink(@{@"event":@"accountSessionFailedToRenewWithError", @"body": payload});
+    [self sendEvent:@{@"event":@"accountSessionFailedToRenewWithError", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveActivationToken:(NSString *)token{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:token forKey:@"token"];
-    _eventSink(@{@"event":@"activationTokenReceived", @"body": payload});
+    [self sendEvent:@{@"event":@"activationTokenReceived", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveResetPasswordToken:(NSString *)token{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:token forKey:@"token"];
-    _eventSink(@{@"event":@"resetPasswordTokenReceived", @"body": payload});
+    [self sendEvent:@{@"event":@"resetPasswordTokenReceived", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didLoadStore:(NSArray<NotificareProduct *> *)products{
@@ -960,24 +962,24 @@
     for (NotificareProduct * product in products) {
         [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:product]];
     }
-    _eventSink(@{@"event":@"storeLoaded", @"body": payload});
+    [self sendEvent:@{@"event":@"storeLoaded", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToLoadStore:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    _eventSink(@{@"event":@"storeFailedToLoad", @"body": payload});
+    [self sendEvent:@{@"event":@"storeFailedToLoad", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didCompleteProductTransaction:(SKPaymentTransaction *)transaction{
     [[NotificarePushLib shared] fetchProduct:[[transaction payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-        self->_eventSink(@{@"event":@"productTransactionCompleted", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]});
+        [self sendEvent:@{@"event":@"productTransactionCompleted", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]}];
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didRestoreProductTransaction:(SKPaymentTransaction *)transaction{
     [[NotificarePushLib shared] fetchProduct:[[transaction payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-        self->_eventSink(@{@"event":@"productTransactionRestored", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]});
+        [self sendEvent:@{@"event":@"productTransactionRestored", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]}];
     }];
 }
 
@@ -986,13 +988,13 @@
         NSMutableDictionary * payload = [NSMutableDictionary new];
         [payload setObject:[error localizedDescription] forKey:@"error"];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        self->_eventSink(@{@"event":@"productTransactionFailed", @"body": payload});
+        [self sendEvent:@{@"event":@"productTransactionFailed", @"body": payload}];
     }];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didStartDownloadContent:(SKPaymentTransaction *)transaction{
     [[NotificarePushLib shared] fetchProduct:[[transaction payment] productIdentifier] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
-        self->_eventSink(@{@"event":@"productContentDownloadStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]});
+        [self sendEvent:@{@"event":@"productContentDownloadStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromProduct:response]}];
     }];
 }
 
@@ -1001,7 +1003,7 @@
         NSMutableDictionary * payload = [NSMutableDictionary new];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        self->_eventSink(@{@"event":@"productContentDownloadPaused", @"body": payload});
+        [self sendEvent:@{@"event":@"productContentDownloadPaused", @"body": payload}];
     }];
 }
 
@@ -1010,7 +1012,7 @@
         NSMutableDictionary * payload = [NSMutableDictionary new];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        self->_eventSink(@{@"event":@"productContentDownloadCancelled", @"body": payload});
+        [self sendEvent:@{@"event":@"productContentDownloadCancelled", @"body": payload}];
     }];
 }
 
@@ -1019,7 +1021,7 @@
         NSMutableDictionary * payload = [NSMutableDictionary new];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        self->_eventSink(@{@"event":@"productContentDownloadProgress", @"body": payload});
+        [self sendEvent:@{@"event":@"productContentDownloadProgress", @"body": payload}];
     }];
 }
 
@@ -1028,7 +1030,7 @@
         NSMutableDictionary * payload = [NSMutableDictionary new];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download] forKey:@"download"];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        self->_eventSink(@{@"event":@"productContentDownloadFailed", @"body": payload});
+        [self sendEvent:@{@"event":@"productContentDownloadFailed", @"body": payload}];
     }];
 }
 
@@ -1037,23 +1039,23 @@
         NSMutableDictionary * payload = [NSMutableDictionary new];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromSKDownload:download]forKey:@"download"];
         [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromProduct:response] forKey:@"product"];
-        self->_eventSink(@{@"event":@"productContentDownloadFinished", @"body": payload});
+        [self sendEvent:@{@"event":@"productContentDownloadFinished", @"body": payload}];
     }];
 }
 
 
 - (void)notificarePushLib:(NotificarePushLib *)library didStartQRCodeScanner:(UIViewController*)scanner{
-    _eventSink(@{@"event":@"qrCodeScannerStarted", @"body": [NSNull null]});
+    [self sendEvent:@{@"event":@"qrCodeScannerStarted", @"body": [NSNull null]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didInvalidateScannableSessionWithError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[error localizedDescription] forKey:@"error"];
-    _eventSink(@{@"event":@"scannableSessionInvalidatedWithError", @"body": payload});
+    [self sendEvent:@{@"event":@"scannableSessionInvalidatedWithError", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didDetectScannable:(NotificareScannable *)scannable{
-    _eventSink(@{@"event":@"scannableDetected", @"body": [[NotificarePushLibUtils shared] dictionaryFromScannable:scannable]});
+    [self sendEvent:@{@"event":@"scannableDetected", @"body": [[NotificarePushLibUtils shared] dictionaryFromScannable:scannable]}];
 }
 
 #pragma mark AppDelegate implementation
@@ -1069,7 +1071,7 @@
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[url absoluteString] forKey:@"url"];
     [payload setObject:options forKey:@"options"];
-    _eventSink(@{@"event":@"urlOpened", @"body": payload});
+    [self sendEvent:@{@"event":@"urlOpened", @"body": payload}];
     return YES;
 }
 

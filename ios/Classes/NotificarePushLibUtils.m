@@ -19,6 +19,13 @@ static NotificarePushLibUtils *utils;
     return utils;
 }
 
+- (NSString *) dateToString:(NSDate *)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'"];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    return [dateFormatter stringFromDate:date];
+}
+
 -(NSDictionary *)dictionaryFromApplication:(NotificareApplication *)application{
     NSMutableDictionary * data = [NSMutableDictionary dictionary];
     [data setValue:[application application] forKey:@"application"];
@@ -56,12 +63,9 @@ static NotificarePushLibUtils *utils;
     [data setValue:[device altitude] forKey:@"altitude"];
     [data setValue:[device floor] forKey:@"floor"];
     [data setValue:[device course] forKey:@"course"];
-    
-//    if ([device lastRegistered] && [[device lastRegistered] isKindOfClass:[NSDate class]]) {
-//        NSTimeInterval interval = [[device lastRegistered] timeIntervalSince1970];
-//        [data setValue:[NSNumber numberWithDouble:interval] forKey:@"lastRegistered"];
-//    }
-    
+    if ([device lastRegistered] && [[device lastRegistered] isKindOfClass:[NSDate class]]) {
+        [data setValue:[self dateToString:[device lastRegistered]] forKey:@"lastRegistered"];
+    }
     [data setValue:[device locationServicesAuthStatus] forKey:@"locationServicesAuthStatus"];
     [data setValue:[NSNumber numberWithBool:[device registeredForNotifications]] forKey:@"registeredForNotifications"];
     [data setValue:[NSNumber numberWithBool:[device allowedLocationServices]] forKey:@"allowedLocationServices"];
@@ -90,14 +94,17 @@ static NotificarePushLibUtils *utils;
 }
 
 -(NSDictionary *)dictionaryFromDeviceDnD:(NotificareDeviceDnD *)deviceDnD{
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"HH:mm"];
+
     NSMutableDictionary * data = [NSMutableDictionary dictionary];
     if ([deviceDnD start]) {
-        [data setValue:[deviceDnD start] forKey:@"start"];
+        [data setValue:[dateFormat stringFromDate:[deviceDnD start]] forKey:@"start"];
     } else {
         [data setValue:[NSNull null] forKey:@"start"];
     }
     if ([deviceDnD end]) {
-        [data setValue:[deviceDnD end] forKey:@"end"];
+        [data setValue:[dateFormat stringFromDate:[deviceDnD end]] forKey:@"end"];
     } else {
         [data setValue:[NSNull null] forKey:@"end"];
     }
@@ -330,7 +337,7 @@ static NotificarePushLibUtils *utils;
     [data setValue:[pass redeem] forKey:@"redeem"];
     [data setValue:[pass token] forKey:@"token"];
     [data setValue:[pass passURL] forKey:@"passURL"];
-    [data setValue:[pass date] forKey:@"date"];
+    [data setValue:[self dateToString:[pass date]] forKey:@"date"];
     [data setValue:[pass data] forKey:@"data"];
     [data setValue:[pass limit] forKey:@"limit"];
     [data setValue:[pass redeemHistory] forKey:@"redeemHistory"];
@@ -438,7 +445,7 @@ static NotificarePushLibUtils *utils;
     [data setValue:[location floor] forKey:@"floor"];
     [data setValue:[location speed] forKey:@"speed"];
     [data setValue:[location course] forKey:@"course"];
-    [data setValue:[location timestamp] forKey:@"timestamp"];
+    [data setValue:[self dateToString:[location timestamp]] forKey:@"timestamp"];
     return data;
 }
 
@@ -491,8 +498,8 @@ static NotificarePushLibUtils *utils;
     NSMutableDictionary * data = [NSMutableDictionary dictionary];
     [data setValue:[visit latitude] forKey:@"latitude"];
     [data setValue:[visit longitude] forKey:@"longitude"];
-    [data setValue:[visit departureDate] forKey:@"departureDate"];
-    [data setValue:[visit arrivalDate] forKey:@"arrivalDate"];
+    [data setValue:[self dateToString:[visit departureDate]] forKey:@"departureDate"];
+    [data setValue:[self dateToString:[visit arrivalDate]] forKey:@"arrivalDate"];
     return data;
 }
 

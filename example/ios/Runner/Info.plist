@@ -47,5 +47,19 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    <key>NSCameraUsageDescription</key>
+    <string>We will need access to the device&apos;s camera to reply to notifications or scan QR codes</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We will need to access you microphone to allow you to make a video with sound as a reply to a notification</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>You will need to select the Always Allow option if you wish to receive geo-fencing and beacon notifications. Selecting the option Only While Using the App will prevent us from sending you these messages.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We will need to make use of your location to present relevant information about offers around you.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>We will need to make use of your location to present relevant information about offers around you.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We will need to make use of your location to present relevant information about offers around you.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We may need to access your photos to reply to notifications</string>
 </dict>
 </plist>

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
 import 'package:notificare_push_lib/notificare_push_lib.dart';
 import 'package:notificare_push_lib/notificare_models.dart';
 import 'package:notificare_push_lib/notificare_events.dart';
+import 'package:location_permissions/location_permissions.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -47,6 +50,19 @@ class _MyAppState extends State<MyApp> {
             notificare.presentInboxItem(inbox[0]);
           }
 
+          if (Platform.isAndroid) {
+            try {
+              PermissionStatus permission = await LocationPermissions()
+                  .requestPermissions();
+              if (permission == PermissionStatus.granted) {
+                notificare.startLocationUpdates();
+              }
+            } catch (err) {
+              //Handle error
+            }
+          } else {
+            notificare.startLocationUpdates();
+          }
         }
         break;
         case "urlOpened": {

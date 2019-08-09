@@ -1,8 +1,8 @@
 name: notificare_push_lib
-description: A new flutter plugin project.
-version: 0.0.1
-author:
-homepage:
+description: Official Notificare Flutter plugin
+version: 1.0.0
+author: Notificare
+homepage: https://notificare.com
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

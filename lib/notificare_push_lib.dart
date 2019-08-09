@@ -407,7 +407,7 @@ class NotificarePushLib with WidgetsBindingObserver {
           break;
         case 'locationsUpdated':
           List locations = map['body'] as List;
-          return new NotificareEvent(eventName, new NotificareLocationsUpdatedEvent(locations.map((value) => NotificareLocation.fromJson(value))));
+          return new NotificareEvent(eventName, new NotificareLocationsUpdatedEvent(locations.map((value) => NotificareLocation.fromJson(value)).toList()));
           break;
         case 'monitoringForRegionStarted':
           return new NotificareEvent(eventName, new NotificareMonitoringForRegionStartedEvent(map['body']));
@@ -452,7 +452,7 @@ class NotificarePushLib with WidgetsBindingObserver {
           break;
         case 'beaconsInRangeForRegion':
           List beacons = map['body']['beacons'] as List;
-          return new NotificareEvent(eventName, new NotificareBeaconsInRangeForRegionEvent(beacons.map((value) => NotificareBeacon.fromJson(value)), NotificareBeacon.fromJson(map['body']['region'])));
+          return new NotificareEvent(eventName, new NotificareBeaconsInRangeForRegionEvent(beacons.map((value) => NotificareBeacon.fromJson(value)).toList(), NotificareBeacon.fromJson(map['body']['region'])));
           break;
         case 'headingUpdated':
           return new NotificareEvent(eventName, new NotificareHeadingUpdatedEvent(NotificareHeading.fromJson(map['body'])));
@@ -474,7 +474,7 @@ class NotificarePushLib with WidgetsBindingObserver {
           break;
         case 'storeLoaded':
           List products = map['body'] as List;
-          return new NotificareEvent(eventName, new NotificareStoreLoadedEvent(products.map((value) => NotificareProduct.fromJson(value))));
+          return new NotificareEvent(eventName, new NotificareStoreLoadedEvent(products.map((value) => NotificareProduct.fromJson(value)).toList()));
           break;
         case 'storeFailedToLoad':
           return new NotificareEvent(eventName, new NotificareStoreFailedToLoadEvent(map['body']['error']));
