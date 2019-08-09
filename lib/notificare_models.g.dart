@@ -31,7 +31,7 @@ Map<String, dynamic> _$NotificareApplicationToJson(
       'name': instance.name,
       'services': instance.services,
       'inboxConfig': instance.inboxConfig,
-      'regionConfig': instance.regionConfig
+      'regionConfig': instance.regionConfig,
     };
 
 NotificareInboxConfig _$NotificareInboxConfigFromJson(
@@ -45,7 +45,7 @@ Map<String, dynamic> _$NotificareInboxConfigToJson(
         NotificareInboxConfig instance) =>
     <String, dynamic>{
       'autoBadge': instance.autoBadge,
-      'useInbox': instance.useInbox
+      'useInbox': instance.useInbox,
     };
 
 NotificareRegionConfig _$NotificareRegionConfigFromJson(
@@ -56,7 +56,9 @@ NotificareRegionConfig _$NotificareRegionConfigFromJson(
 
 Map<String, dynamic> _$NotificareRegionConfigToJson(
         NotificareRegionConfig instance) =>
-    <String, dynamic>{'proximityUUID': instance.proximityUUID};
+    <String, dynamic>{
+      'proximityUUID': instance.proximityUUID,
+    };
 
 NotificareUserDataFields _$NotificareUserDataFieldsFromJson(
     Map<String, dynamic> json) {
@@ -96,7 +98,7 @@ Map<String, dynamic> _$NotificareNotificationSettingsToJson(
       'alertStyle': instance.alertStyle,
       'showPreviewsSetting': instance.showPreviewsSetting,
       'providesAppNotificationSettings':
-          instance.providesAppNotificationSettings
+          instance.providesAppNotificationSettings,
     };
 
 NotificareDevice _$NotificareDeviceFromJson(Map<String, dynamic> json) {
@@ -148,7 +150,7 @@ Map<String, dynamic> _$NotificareDeviceToJson(NotificareDevice instance) =>
       'allowedLocationServices': instance.allowedLocationServices,
       'allowedUI': instance.allowedUI,
       'backgroundAppRefresh': instance.backgroundAppRefresh,
-      'bluetoothON': instance.bluetoothON
+      'bluetoothON': instance.bluetoothON,
     };
 
 NotificareDeviceDnD _$NotificareDeviceDnDFromJson(Map<String, dynamic> json) {
@@ -159,7 +161,10 @@ NotificareDeviceDnD _$NotificareDeviceDnDFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$NotificareDeviceDnDToJson(
         NotificareDeviceDnD instance) =>
-    <String, dynamic>{'start': instance.start, 'end': instance.end};
+    <String, dynamic>{
+      'start': instance.start,
+      'end': instance.end,
+    };
 
 NotificareNotification _$NotificareNotificationFromJson(
     Map<String, dynamic> json) {
@@ -202,7 +207,7 @@ Map<String, dynamic> _$NotificareNotificationToJson(
       'extra': instance.extra,
       'content': instance.content,
       'actions': instance.actions,
-      'attachments': instance.attachments
+      'attachments': instance.attachments,
     };
 
 NotificareSystemNotification _$NotificareSystemNotificationFromJson(
@@ -218,15 +223,21 @@ Map<String, dynamic> _$NotificareSystemNotificationToJson(
     <String, dynamic>{
       'notificationID': instance.notificationID,
       'type': instance.type,
-      'extra': instance.extra
+      'extra': instance.extra,
     };
 
 NotificareContent _$NotificareContentFromJson(Map<String, dynamic> json) {
-  return NotificareContent(json['type'] as String, json['data'] as String);
+  return NotificareContent(
+    json['type'] as String,
+    json['data'] as String,
+  );
 }
 
 Map<String, dynamic> _$NotificareContentToJson(NotificareContent instance) =>
-    <String, dynamic>{'type': instance.type, 'data': instance.data};
+    <String, dynamic>{
+      'type': instance.type,
+      'data': instance.data,
+    };
 
 NotificareAction _$NotificareActionFromJson(Map<String, dynamic> json) {
   return NotificareAction()
@@ -243,20 +254,27 @@ Map<String, dynamic> _$NotificareActionToJson(NotificareAction instance) =>
       'type': instance.type,
       'target': instance.target,
       'camera': instance.camera,
-      'keyboard': instance.keyboard
+      'keyboard': instance.keyboard,
     };
 
 NotificareAttachment _$NotificareAttachmentFromJson(Map<String, dynamic> json) {
   return NotificareAttachment(
-      json['mimeType'] as String, json['uri'] as String);
+    json['mimeType'] as String,
+    json['uri'] as String,
+  );
 }
 
 Map<String, dynamic> _$NotificareAttachmentToJson(
         NotificareAttachment instance) =>
-    <String, dynamic>{'mimeType': instance.mimeType, 'uri': instance.uri};
+    <String, dynamic>{
+      'mimeType': instance.mimeType,
+      'uri': instance.uri,
+    };
 
 NotificareInboxItem _$NotificareInboxItemFromJson(Map<String, dynamic> json) {
-  return NotificareInboxItem(json['inboxId'] as String)
+  return NotificareInboxItem(
+    json['inboxId'] as String,
+  )
     ..notification = json['notification'] as String
     ..message = json['message'] as String
     ..time = json['time'] as String
@@ -270,7 +288,7 @@ Map<String, dynamic> _$NotificareInboxItemToJson(
       'notification': instance.notification,
       'message': instance.message,
       'time': instance.time,
-      'opened': instance.opened
+      'opened': instance.opened,
     };
 
 NotificareLocation _$NotificareLocationFromJson(Map<String, dynamic> json) {
@@ -296,7 +314,7 @@ Map<String, dynamic> _$NotificareLocationToJson(NotificareLocation instance) =>
       'floor': instance.floor,
       'speed': instance.speed,
       'course': instance.course,
-      'timestamp': instance.timestamp
+      'timestamp': instance.timestamp,
     };
 
 NotificareBeacon _$NotificareBeaconFromJson(Map<String, dynamic> json) {
@@ -318,7 +336,7 @@ Map<String, dynamic> _$NotificareBeaconToJson(NotificareBeacon instance) =>
       'beaconUUID': instance.beaconUUID,
       'beaconMajor': instance.beaconMajor,
       'beaconMinor': instance.beaconMinor,
-      'beaconTriggers': instance.beaconTriggers
+      'beaconTriggers': instance.beaconTriggers,
     };
 
 NotificareRegion _$NotificareRegionFromJson(Map<String, dynamic> json) {
@@ -344,7 +362,7 @@ Map<String, dynamic> _$NotificareRegionToJson(NotificareRegion instance) =>
       'regionGeometry': instance.regionGeometry,
       'regionAdvancedGeometry': instance.regionAdvancedGeometry,
       'regionDistance': instance.regionDistance,
-      'regionTimezone': instance.regionTimezone
+      'regionTimezone': instance.regionTimezone,
     };
 
 NotificarePolygon _$NotificarePolygonFromJson(Map<String, dynamic> json) {
@@ -361,7 +379,7 @@ NotificarePolygon _$NotificarePolygonFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$NotificarePolygonToJson(NotificarePolygon instance) =>
     <String, dynamic>{
       'type': instance.type,
-      'coordinates': instance.coordinates
+      'coordinates': instance.coordinates,
     };
 
 NotificarePoint _$NotificarePointFromJson(Map<String, dynamic> json) {
@@ -375,7 +393,7 @@ NotificarePoint _$NotificarePointFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$NotificarePointToJson(NotificarePoint instance) =>
     <String, dynamic>{
       'type': instance.type,
-      'coordinates': instance.coordinates
+      'coordinates': instance.coordinates,
     };
 
 NotificareHeading _$NotificareHeadingFromJson(Map<String, dynamic> json) {
@@ -395,7 +413,7 @@ Map<String, dynamic> _$NotificareHeadingToJson(NotificareHeading instance) =>
       'headingAccuracy': instance.headingAccuracy,
       'headingX': instance.headingX,
       'headingY': instance.headingY,
-      'headingZ': instance.headingZ
+      'headingZ': instance.headingZ,
     };
 
 NotificareVisit _$NotificareVisitFromJson(Map<String, dynamic> json) {
@@ -411,7 +429,7 @@ Map<String, dynamic> _$NotificareVisitToJson(NotificareVisit instance) =>
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'departureDate': instance.departureDate,
-      'arrivalDate': instance.arrivalDate
+      'arrivalDate': instance.arrivalDate,
     };
 
 NotificareUser _$NotificareUserFromJson(Map<String, dynamic> json) {
@@ -429,7 +447,7 @@ Map<String, dynamic> _$NotificareUserToJson(NotificareUser instance) =>
     <String, dynamic>{
       'userID': instance.userID,
       'userName': instance.userName,
-      'segments': instance.segments
+      'segments': instance.segments,
     };
 
 NotificareUserSegment _$NotificareUserSegmentFromJson(
@@ -443,7 +461,7 @@ Map<String, dynamic> _$NotificareUserSegmentToJson(
         NotificareUserSegment instance) =>
     <String, dynamic>{
       'segmentId': instance.segmentId,
-      'segmentLabel': instance.segmentLabel
+      'segmentLabel': instance.segmentLabel,
     };
 
 NotificareUserData _$NotificareUserDataFromJson(Map<String, dynamic> json) {
@@ -457,7 +475,7 @@ Map<String, dynamic> _$NotificareUserDataToJson(NotificareUserData instance) =>
     <String, dynamic>{
       'key': instance.key,
       'label': instance.label,
-      'data': instance.data
+      'data': instance.data,
     };
 
 NotificareUserPreference _$NotificareUserPreferenceFromJson(
@@ -480,7 +498,7 @@ Map<String, dynamic> _$NotificareUserPreferenceToJson(
       'preferenceId': instance.preferenceId,
       'preferenceLabel': instance.preferenceLabel,
       'preferenceType': instance.preferenceType,
-      'preferenceOptions': instance.preferenceOptions
+      'preferenceOptions': instance.preferenceOptions,
     };
 
 NotificareUserPreferenceOption _$NotificareUserPreferenceOptionFromJson(
@@ -496,7 +514,7 @@ Map<String, dynamic> _$NotificareUserPreferenceOptionToJson(
     <String, dynamic>{
       'segmentId': instance.segmentId,
       'segmentLabel': instance.segmentLabel,
-      'selected': instance.selected
+      'selected': instance.selected,
     };
 
 NotificareAsset _$NotificareAssetFromJson(Map<String, dynamic> json) {
@@ -520,7 +538,7 @@ Map<String, dynamic> _$NotificareAssetToJson(NotificareAsset instance) =>
       'assetDescription': instance.assetDescription,
       'assetUrl': instance.assetUrl,
       'assetMetaData': instance.assetMetaData,
-      'assetButton': instance.assetButton
+      'assetButton': instance.assetButton,
     };
 
 NotificareAssetMetaData _$NotificareAssetMetaDataFromJson(
@@ -538,7 +556,7 @@ Map<String, dynamic> _$NotificareAssetMetaDataToJson(
       'originalFileName': instance.originalFileName,
       'key': instance.key,
       'contentType': instance.contentType,
-      'contentLength': instance.contentLength
+      'contentLength': instance.contentLength,
     };
 
 NotificareAssetButton _$NotificareAssetButtonFromJson(
@@ -550,7 +568,10 @@ NotificareAssetButton _$NotificareAssetButtonFromJson(
 
 Map<String, dynamic> _$NotificareAssetButtonToJson(
         NotificareAssetButton instance) =>
-    <String, dynamic>{'label': instance.label, 'action': instance.action};
+    <String, dynamic>{
+      'label': instance.label,
+      'action': instance.action,
+    };
 
 NotificarePass _$NotificarePassFromJson(Map<String, dynamic> json) {
   return NotificarePass()
@@ -577,7 +598,7 @@ Map<String, dynamic> _$NotificarePassToJson(NotificarePass instance) =>
       'date': instance.date,
       'limit': instance.limit,
       'data': instance.data,
-      'redeemHistory': instance.redeemHistory
+      'redeemHistory': instance.redeemHistory,
     };
 
 NotificarePassRedemption _$NotificarePassRedemptionFromJson(
@@ -589,7 +610,10 @@ NotificarePassRedemption _$NotificarePassRedemptionFromJson(
 
 Map<String, dynamic> _$NotificarePassRedemptionToJson(
         NotificarePassRedemption instance) =>
-    <String, dynamic>{'commments': instance.commments, 'date': instance.date};
+    <String, dynamic>{
+      'commments': instance.commments,
+      'date': instance.date,
+    };
 
 NotificareProduct _$NotificareProductFromJson(Map<String, dynamic> json) {
   return NotificareProduct()
@@ -612,7 +636,7 @@ Map<String, dynamic> _$NotificareProductToJson(NotificareProduct instance) =>
       'productPrice': instance.productPrice,
       'productCurrency': instance.productCurrency,
       'productDate': instance.productDate,
-      'productActive': instance.productActive
+      'productActive': instance.productActive,
     };
 
 NotificareDownload _$NotificareDownloadFromJson(Map<String, dynamic> json) {
@@ -634,7 +658,7 @@ Map<String, dynamic> _$NotificareDownloadToJson(NotificareDownload instance) =>
       'contentVersion': instance.contentVersion,
       'progress': instance.progress,
       'timeRemaining': instance.timeRemaining,
-      'downloadState': instance.downloadState
+      'downloadState': instance.downloadState,
     };
 
 NotificareScannable _$NotificareScannableFromJson(Map<String, dynamic> json) {
@@ -658,5 +682,5 @@ Map<String, dynamic> _$NotificareScannableToJson(
       'type': instance.type,
       'tag': instance.tag,
       'data': instance.data,
-      'notification': instance.notification
+      'notification': instance.notification,
     };

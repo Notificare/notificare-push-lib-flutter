@@ -59,7 +59,7 @@ class NotificareInboxLoadedEvent {
 ///
 class NotificareBadgeUpdatedEvent {
   NotificareBadgeUpdatedEvent(this.unreadCount);
-  int unreadCount ;
+  int unreadCount;
 }
 
 ///
@@ -269,7 +269,8 @@ class NotificareActionFailedToExecuteEvent {
 /// Data: action
 ///
 class NotificareUnknownActionForNotificationReceivedEvent {
-  NotificareUnknownActionForNotificationReceivedEvent(this.action, this.notification);
+  NotificareUnknownActionForNotificationReceivedEvent(
+      this.action, this.notification);
   Map<String, dynamic> action;
   Map<String, dynamic> notification;
 }
@@ -600,7 +601,6 @@ class NotificareScannableDetectedEvent {
   NotificareScannableDetectedEvent(this.scannable);
   NotificareScannable scannable;
 }
-
 
 ///
 /// Event:
