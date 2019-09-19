@@ -210,8 +210,7 @@ class NotificarePushLib with WidgetsBindingObserver {
         .invokeMapMethod('presentInboxItem', {'inboxItem': inboxItem});
   }
 
-  Future<NotificareInboxItem> removeFromInbox(
-      Map<dynamic, dynamic> inboxItem) async {
+  Future<NotificareInboxItem> removeFromInbox(NotificareInboxItem inboxItem) async {
     return NotificareInboxItem.fromJson(await _methodChannel
         .invokeMapMethod('removeFromInbox', {'inboxItem': inboxItem}));
   }

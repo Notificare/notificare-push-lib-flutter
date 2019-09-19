@@ -1,3 +1,7 @@
+## 1.0.3
+* Update Notificare iOS library to 2.16
+* Fixed parameter in removedInboxItem method
+
 ## 1.0.2
 * Updated description
 

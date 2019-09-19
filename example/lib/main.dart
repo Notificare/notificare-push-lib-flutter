@@ -47,7 +47,9 @@ class _MyAppState extends State<MyApp> {
           }
 
           if (inbox.isNotEmpty) {
-            notificare.presentInboxItem(inbox[0]);
+            //notificare.presentInboxItem(inbox[0]);
+            //NotificareInboxItem item = await notificare.removeFromInbox(inbox[0]);
+            //print(item);
           }
 
           if (Platform.isAndroid) {
