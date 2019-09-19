@@ -9,7 +9,6 @@
 @implementation NotificarePushLibPlugin {
     FlutterMethodChannel *_channel;
     FlutterEventSink _eventSink;
-    NSDictionary *_launchOptions;
 }
 
 #define NOTIFICARE_ERROR @"notificare_error"
@@ -41,10 +40,7 @@
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"launch" isEqualToString:call.method]) {
-      [[NotificarePushLib shared] initializeWithKey:nil andSecret:nil];
       [[NotificarePushLib shared] launch];
-      [[NotificarePushLib shared] setDelegate:self];
-      [[NotificarePushLib shared] didFinishLaunchingWithOptions:_launchOptions];
       result(nil);
   } else if ([@"didChangeAppLifecycleState" isEqualToString:call.method]) {
       result(nil);
@@ -260,6 +256,7 @@
       id controller = [[NotificarePushLib shared] controllerForNotification:item];
       if ([self isViewController:controller]) {
           UINavigationController *navController = [self navigationControllerForViewControllers:controller];
+          [navController setModalPresentationStyle:UIModalPresentationFullScreen];
           [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
               [[NotificarePushLib shared] presentNotification:item inNavigationController:navController withController:controller];
           }];
@@ -288,6 +285,7 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
+                  [navController setModalPresentationStyle:UIModalPresentationFullScreen];
                   [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
                       [[NotificarePushLib shared] presentInboxItem:item inNavigationController:navController withController:response];
                   }];
@@ -622,6 +620,7 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
+                  [navController setModalPresentationStyle:UIModalPresentationFullScreen];
                   [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
                       [[NotificarePushLib shared] presentScannable:item inNavigationController:navController withController:response];
                   }];
@@ -672,7 +671,7 @@
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        _eventSink(event);
+        self->_eventSink(event);
     });
 }
 
@@ -1060,9 +1059,9 @@
 
 #pragma mark AppDelegate implementation
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    if (launchOptions != nil) {
-        _launchOptions = launchOptions;
-    }
+    [[NotificarePushLib shared] initializeWithKey:nil andSecret:nil];
+    [[NotificarePushLib shared] setDelegate:self];
+    [[NotificarePushLib shared] didFinishLaunchingWithOptions:launchOptions];
     return YES;
 }
 
