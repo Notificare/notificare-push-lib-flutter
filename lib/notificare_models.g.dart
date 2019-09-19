@@ -346,10 +346,12 @@ NotificareRegion _$NotificareRegionFromJson(Map<String, dynamic> json) {
     ..regionMajor = json['regionMajor'] as int
     ..regionGeometry = json['regionGeometry'] == null
         ? null
-        : NotificarePoint.fromJson(json['regionGeometry'])
+        : NotificarePoint.fromJson(
+            json['regionGeometry'] as Map<String, dynamic>)
     ..regionAdvancedGeometry = json['regionAdvancedGeometry'] == null
         ? null
-        : NotificarePolygon.fromJson(json['regionAdvancedGeometry'])
+        : NotificarePolygon.fromJson(
+            json['regionAdvancedGeometry'] as Map<String, dynamic>)
     ..regionDistance = (json['regionDistance'] as num)?.toDouble()
     ..regionTimezone = json['regionTimezone'] as String;
 }

@@ -206,7 +206,7 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<void> presentInboxItem(NotificareInboxItem inboxItem) async {
-    await _methodChannel
+    return await _methodChannel
         .invokeMapMethod('presentInboxItem', {'inboxItem': inboxItem});
   }
 

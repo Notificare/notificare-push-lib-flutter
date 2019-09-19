@@ -202,7 +202,7 @@ class NotificareInboxItem {
   String time;
   bool opened;
 
-  factory NotificareInboxItem.fromJson(dynamic json) =>
+  factory NotificareInboxItem.fromJson(Map<String, dynamic> json) =>
       _$NotificareInboxItemFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareInboxItemToJson(this);
 }
@@ -222,7 +222,7 @@ class NotificareLocation {
   double speed;
   double course;
   String timestamp;
-  factory NotificareLocation.fromJson(dynamic json) =>
+  factory NotificareLocation.fromJson(Map<String, dynamic> json) =>
       _$NotificareLocationFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareLocationToJson(this);
 }
@@ -237,7 +237,7 @@ class NotificareBeacon {
   int beaconMajor;
   int beaconMinor;
   bool beaconTriggers;
-  factory NotificareBeacon.fromJson(dynamic json) =>
+  factory NotificareBeacon.fromJson(Map<String, dynamic> json) =>
       _$NotificareBeaconFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareBeaconToJson(this);
 }
@@ -252,7 +252,7 @@ class NotificareRegion {
   NotificarePolygon regionAdvancedGeometry;
   double regionDistance;
   String regionTimezone;
-  factory NotificareRegion.fromJson(dynamic json) =>
+  factory NotificareRegion.fromJson(Map<String, dynamic> json) =>
       _$NotificareRegionFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareRegionToJson(this);
 }
@@ -262,7 +262,7 @@ class NotificarePolygon {
   NotificarePolygon();
   String type;
   List<List<List<double>>> coordinates;
-  factory NotificarePolygon.fromJson(dynamic json) =>
+  factory NotificarePolygon.fromJson(Map<String, dynamic> json) =>
       _$NotificarePolygonFromJson(json);
   Map<String, dynamic> toJson() => _$NotificarePolygonToJson(this);
 }
@@ -272,7 +272,7 @@ class NotificarePoint {
   NotificarePoint();
   String type;
   List<double> coordinates;
-  factory NotificarePoint.fromJson(dynamic json) =>
+  factory NotificarePoint.fromJson(Map<String, dynamic> json) =>
       _$NotificarePointFromJson(json);
   Map<String, dynamic> toJson() => _$NotificarePointToJson(this);
 }

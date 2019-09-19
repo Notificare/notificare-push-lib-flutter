@@ -453,7 +453,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
             Notificare.shared().getInboxManager().removeItem(notificareInboxItem, new NotificareCallback<Boolean>() {
               @Override
               public void onSuccess(Boolean aBoolean) {
-                replySuccess(result, null);
+                try {
+                  replySuccess(result, NotificareUtils.mapInboxItem(notificareInboxItem));
+                } catch (JSONException e) {
+                  replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+                }
               }
 
               @Override
@@ -479,7 +483,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
             Notificare.shared().getInboxManager().markItem(notificareInboxItem, new NotificareCallback<Boolean>() {
               @Override
               public void onSuccess(Boolean aBoolean) {
-                replySuccess(result, null);
+                try {
+                  replySuccess(result, NotificareUtils.mapInboxItem(notificareInboxItem));
+                } catch (JSONException e) {
+                  replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid response"));
+                }
               }
 
               @Override

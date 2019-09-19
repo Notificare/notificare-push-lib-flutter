@@ -48,6 +48,10 @@ class _MyAppState extends State<MyApp> {
 
           if (inbox.isNotEmpty) {
             //notificare.presentInboxItem(inbox[0]);
+            notificare.markAsRead(inbox[0]).then((NotificareInboxItem item) {
+              print("inbox item marked as read");
+              print(item);
+            });
             //NotificareInboxItem item = await notificare.removeFromInbox(inbox[0]);
             //print(item);
           }
@@ -57,7 +61,9 @@ class _MyAppState extends State<MyApp> {
               PermissionStatus permission = await LocationPermissions()
                   .requestPermissions();
               if (permission == PermissionStatus.granted) {
-                notificare.startLocationUpdates();
+                notificare.startLocationUpdates().then((_) {
+                  print("location updates started");
+                });
               }
             } catch (err) {
               //Handle error
