@@ -35,6 +35,18 @@ class NotificarePushLib with WidgetsBindingObserver {
     await _methodChannel.invokeMethod('launch');
   }
 
+  Future<void> setAuthorizationOptions(List options) async {
+    await _methodChannel.invokeMapMethod('setAuthorizationOptions', {'options': options});
+  }
+
+  Future<void> setPresentationOptions(List options) async {
+    await _methodChannel.invokeMapMethod('setPresentationOptions', {'options': options});
+  }
+
+  Future<void> setCategoryOptions(List options) async {
+    await _methodChannel.invokeMapMethod('setCategoryOptions', {'options': options});
+  }
+
   Future<void> registerForNotifications() async {
     await _methodChannel.invokeMethod('registerForNotifications');
   }

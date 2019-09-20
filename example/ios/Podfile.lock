@@ -25,7 +25,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/notificare_push_lib/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   location_permissions: 67cfaff583afbb027a9f9248196f4b79c40f3cdc
   notificare-push-lib: 8fc1b5e3f895e220201ba640912990b3ca8c5380
   notificare_push_lib: 30438e215ec8d90a85225d4ac7e713f6a636adcd

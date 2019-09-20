@@ -42,6 +42,96 @@
   if ([@"launch" isEqualToString:call.method]) {
       [[NotificarePushLib shared] launch];
       result(nil);
+  } else if ([@"setAuthorizationOptions" isEqualToString:call.method]) {
+      NSArray* options = call.arguments[@"options"];
+      
+      if (@available(iOS 10.0, *)) {
+          UNAuthorizationOptions authorizationOptions = UNAuthorizationOptionNone;
+          
+          for (NSString * option in options) {
+              if ([option isEqualToString:@"alert"]) {
+                  authorizationOptions = authorizationOptions + UNAuthorizationOptionAlert;
+              }
+              if ([option isEqualToString:@"badge"]) {
+                  authorizationOptions = authorizationOptions + UNAuthorizationOptionBadge;
+              }
+              if ([option isEqualToString:@"sound"]) {
+                  authorizationOptions = authorizationOptions + UNAuthorizationOptionSound;
+              }
+              if (@available(iOS 12.0, *)) {
+                  if ([option isEqualToString:@"providesAppNotificationSettings"]) {
+                      authorizationOptions = authorizationOptions + UNAuthorizationOptionProvidesAppNotificationSettings;
+                  }
+                  if ([option isEqualToString:@"provisional"]) {
+                      authorizationOptions = authorizationOptions + UNAuthorizationOptionProvisional;
+                  }
+                  if ([option isEqualToString:@"criticalAlert"]) {
+                      authorizationOptions = authorizationOptions + UNAuthorizationOptionCriticalAlert;
+                  }
+              }
+              
+          }
+          
+          if (authorizationOptions) {
+              [[NotificarePushLib shared] setAuthorizationOptions:authorizationOptions];
+          }
+      }
+      
+      result(nil);
+  } else if ([@"setPresentationOptions" isEqualToString:call.method]) {
+      NSArray* options = call.arguments[@"options"];
+      
+      if (@available(iOS 10.0, *)) {
+          UNNotificationPresentationOptions presentationOptions = UNNotificationPresentationOptionNone;
+          
+          for (NSString * option in options) {
+              if ([option isEqualToString:@"alert"]) {
+                  presentationOptions = presentationOptions + UNNotificationPresentationOptionAlert;
+              }
+              if ([option isEqualToString:@"badge"]) {
+                  presentationOptions = presentationOptions + UNNotificationPresentationOptionBadge;
+              }
+              if ([option isEqualToString:@"sound"]) {
+                  presentationOptions = presentationOptions + UNAuthorizationOptionSound;
+              }
+          }
+          
+          if (presentationOptions) {
+              [[NotificarePushLib shared] setPresentationOptions:presentationOptions];
+          }
+      }
+      
+      result(nil);
+  } else if ([@"setCategoryOptions" isEqualToString:call.method]) {
+      NSArray* options = call.arguments[@"options"];
+      
+      if (@available(iOS 10.0, *)) {
+          UNNotificationCategoryOptions categoryOptions = UNNotificationCategoryOptionNone;
+          
+          for (NSString * option in options) {
+              if ([option isEqualToString:@"customDismissAction"]) {
+                  categoryOptions = categoryOptions + UNNotificationCategoryOptionCustomDismissAction;
+              }
+              if ([option isEqualToString:@"allowInCarPlay"]) {
+                  categoryOptions = categoryOptions + UNNotificationCategoryOptionAllowInCarPlay;
+              }
+              if (@available(iOS 11.0, *)) {
+                  if ([option isEqualToString:@"hiddenPreviewsShowTitle"]) {
+                      categoryOptions = categoryOptions + UNNotificationCategoryOptionHiddenPreviewsShowTitle;
+                  }
+                  if ([option isEqualToString:@"hiddenPreviewsShowSubtitle"]) {
+                      categoryOptions = categoryOptions + UNNotificationCategoryOptionHiddenPreviewsShowSubtitle;
+                  }
+              }
+            
+          }
+          
+          if (categoryOptions) {
+              [[NotificarePushLib shared] setCategoryOptions:categoryOptions];
+          }
+      }
+      
+      result(nil);
   } else if ([@"didChangeAppLifecycleState" isEqualToString:call.method]) {
       result(nil);
   } else if ([@"registerForNotifications" isEqualToString:call.method]) {

@@ -106,6 +106,12 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     if ("launch".equals(call.method)) {
       Notificare.shared().addNotificareReadyListener(this);
       replySuccess(result, null);
+    } else if ("setAuthorizationOptions".equals(call.method)) {
+      replySuccess(result, null);
+    } else if ("setPresentationOptions".equals(call.method)) {
+      replySuccess(result, null);
+    } else if ("setCategoryOptions".equals(call.method)) {
+      replySuccess(result, null);
     } else if ("didChangeAppLifecycleState".equals(call.method)) {
       String lifeCycleState = call.argument("message");
       if (lifeCycleState != null) {
