@@ -108,9 +108,9 @@ public class NotificareUtils {
         if (device.getLastActive() != null) {
             deviceMap.put("lastRegistered", ISODateFormatter.format(device.getLastActive()));
         }
-        deviceMap.put("locationServicesAuthStatus", device.getLocationServicesAuthStatus() ? "always" : "none");
+        deviceMap.put("locationServicesAuthStatus", device.getLocationServicesAuthStatus());
         deviceMap.put("registeredForNotifications", Notificare.shared().isNotificationsEnabled());
-        deviceMap.put("allowedLocationServices", device.getLocationServicesAuthStatus());
+        deviceMap.put("allowedLocationServices", Notificare.shared().isLocationUpdatesEnabled());
         deviceMap.put("allowedUI", device.getAllowedUI());
         deviceMap.put("backgroundAppRefresh", true);
         deviceMap.put("bluetoothON", device.getBluetoothEnabled());

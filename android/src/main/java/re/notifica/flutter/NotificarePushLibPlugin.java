@@ -56,7 +56,7 @@ import re.notifica.model.NotificareUserSegment;
 import re.notifica.util.Log;
 
 /** NotificarePushLibPlugin */
-public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.StreamHandler, Observer<SortedSet<NotificareInboxItem>>, Notificare.OnNotificareReadyListener, Notificare.OnServiceErrorListener, Notificare.OnNotificationReceivedListener, BeaconRangingListener, Notificare.OnBillingReadyListener, BillingManager.OnRefreshFinishedListener, BillingManager.OnPurchaseFinishedListener, PluginRegistry.ActivityResultListener, PluginRegistry.NewIntentListener {
+public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.StreamHandler, Observer<SortedSet<NotificareInboxItem>>, Notificare.OnNotificareReadyListener, Notificare.OnServiceErrorListener, Notificare.OnNotificareNotificationListener, BeaconRangingListener, Notificare.OnBillingReadyListener, BillingManager.OnRefreshFinishedListener, BillingManager.OnPurchaseFinishedListener, PluginRegistry.ActivityResultListener, PluginRegistry.NewIntentListener {
 
   private static final String TAG = NotificarePushLibPlugin.class.getSimpleName();
 
@@ -1142,7 +1142,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
   @Override
   public void onListen(Object o, EventChannel.EventSink eventSink) {
     Notificare.shared().addServiceErrorListener(this);
-    Notificare.shared().addNotificationReceivedListener(this);
+    Notificare.shared().addNotificareNotificationListener(this);
     if (Notificare.shared().getBeaconClient() != null) {
       Notificare.shared().getBeaconClient().addRangingListener(this);
     }
@@ -1157,7 +1157,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
   @Override
   public void onCancel(Object o) {
     Notificare.shared().removeServiceErrorListener(this);
-    Notificare.shared().removeNotificationReceivedListener(this);
+    Notificare.shared().removeNotificareNotificationListener(this);
     if (Notificare.shared().getBeaconClient() != null) {
       Notificare.shared().getBeaconClient().removeRangingListener(this);
     }
@@ -1202,10 +1202,15 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
   }
 
   @Override
-  public void onNotificationReceived(NotificareNotification notification) {
+  public void onNotificareNotification(NotificareNotification notification, NotificareInboxItem inboxItem, Boolean shouldPresent) {
     if (notification != null) {
       try {
-        sendEvent("remoteNotificationReceivedInForeground", NotificareUtils.mapNotification(notification), true);
+        JSONObject notificationMap = NotificareUtils.mapNotification(notification);
+        // Add inbox item id if present
+        if (inboxItem != null) {
+          notificationMap.put("inboxItemId", inboxItem.getItemId());
+        }
+        sendEvent("remoteNotificationReceivedInForeground", notificationMap, true);
       } catch (JSONException e) {
         // ignore
       }

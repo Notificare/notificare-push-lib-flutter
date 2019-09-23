@@ -1,3 +1,6 @@
+## 2.0.0
+* Updated to Notificare Android SDK 2.1.0
+
 ## 1.0.3
 * Added authorization options for iOS
 * Added presentation options for iOS
