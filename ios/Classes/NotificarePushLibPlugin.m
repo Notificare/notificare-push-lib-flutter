@@ -69,7 +69,11 @@
                       authorizationOptions = authorizationOptions + UNAuthorizationOptionCriticalAlert;
                   }
               }
-              
+              if (@available(iOS 13.0, *)) {
+                  if ([option isEqualToString:@"announcement"]) {
+                      authorizationOptions = authorizationOptions + UNAuthorizationOptionAnnouncement;
+                  }
+              }
           }
           
           if (authorizationOptions) {
@@ -92,7 +96,7 @@
                   presentationOptions = presentationOptions + UNNotificationPresentationOptionBadge;
               }
               if ([option isEqualToString:@"sound"]) {
-                  presentationOptions = presentationOptions + UNAuthorizationOptionSound;
+                  presentationOptions = presentationOptions + UNNotificationPresentationOptionSound;
               }
           }
           
@@ -123,7 +127,11 @@
                       categoryOptions = categoryOptions + UNNotificationCategoryOptionHiddenPreviewsShowSubtitle;
                   }
               }
-            
+              if (@available(iOS 13.0, *)) {
+                  if ([option isEqualToString:@"allowAnnouncement"]) {
+                      categoryOptions = categoryOptions + UNNotificationCategoryOptionAllowAnnouncement;
+                  }
+              }
           }
           
           if (categoryOptions) {
