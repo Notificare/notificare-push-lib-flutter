@@ -1,3 +1,6 @@
+## 1.0.4
+* Added missing properties to inbox model
+
 ## 2.0.0
 * Updated to Notificare Android SDK 2.1.0
 

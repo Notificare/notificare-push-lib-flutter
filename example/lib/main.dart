@@ -54,6 +54,14 @@ class _MyAppState extends State<MyApp> {
 //            });
             //NotificareInboxItem item = await notificare.removeFromInbox(inbox[0]);
             //print(item);
+//            if (inbox[0].attachment != null) {
+//              print(inbox[0].attachment.uri);
+//            }
+//            if (inbox[0].extra != null) {
+//              print(inbox[0].extra['test']);
+//            }
+//            print(inbox[0].title);
+//            print(inbox[0].message);
           }
 
           if (Platform.isAndroid) {
