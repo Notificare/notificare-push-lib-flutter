@@ -139,9 +139,20 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     } else if ("startLocationUpdates".equals(call.method)) {
       Notificare.shared().enableLocationUpdates();
       replySuccess(result, null);
-    } else if ("stopLocationUpdates".equals(call.method)) {
-      Notificare.shared().disableLocationUpdates();
+    } else if ("clearDeviceLocation".equals(call.method)) {
       replySuccess(result, null);
+    } else if ("fetchTags".equals(call.method)) {
+      Notificare.shared().fetchDeviceTags(new NotificareCallback<List<String>>() {
+        @Override
+        public void onError(NotificareError notificareError) {
+          replyError(result, DEFAULT_ERROR_CODE, notificareError);
+        }
+
+        @Override
+        public void onSuccess(List<String> tags) {
+          replySuccess(result, new JSONArray(tags));
+        }
+      });
     } else if ("isLocationServicesEnabled".equals(call.method)) {
       replySuccess(result, Notificare.shared().isLocationUpdatesEnabled());
     } else if ("enableBeacons".equals(call.method)) {

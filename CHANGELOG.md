@@ -1,8 +1,10 @@
-## 1.0.4
-* Added missing properties to inbox model
-
 ## 2.0.0
 * Updated to Notificare Android SDK 2.1.0
+* Updated to Notificare iOS SDK 2.2.0 (Required Xcode 11 and iOS13 SDK to build it)
+* Added new method clearDeviceLocation for iOS
+
+## 1.0.4
+* Added missing properties to inbox model
 
 ## 1.0.3
 * Added authorization options for iOS

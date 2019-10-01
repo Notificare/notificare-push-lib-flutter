@@ -86,6 +86,10 @@ class NotificarePushLib with WidgetsBindingObserver {
     await _methodChannel.invokeMethod('stopLocationUpdates');
   }
 
+  Future<void> clearDeviceLocation() async {
+    await _methodChannel.invokeMapMethod('clearDeviceLocation');
+  }
+
   Future<void> enableBeacons() async {
     if (Platform.isAndroid) {
       await _methodChannel.invokeMethod('enableBeacons');

@@ -160,7 +160,17 @@
   } else if ([@"stopLocationUpdates" isEqualToString:call.method]) {
       [[NotificarePushLib shared] stopLocationUpdates];
       result(nil);
-  } else if ([@"isLocationServicesEnabled" isEqualToString:call.method]) {
+  } else if ([@"clearDeviceLocation" isEqualToString:call.method]) {
+       [[NotificarePushLib shared] clearDeviceLocation:^(id  _Nullable response, NSError * _Nullable error) {
+           if (!error) {
+               result(nil);
+           } else {
+               result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                          message:error.localizedDescription
+                                          details:nil]);
+           }
+       }];
+   } else if ([@"isLocationServicesEnabled" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[NotificarePushLib shared] locationServicesEnabled]]);
   } else if ([@"registerDevice" isEqualToString:call.method]) {
       NSString* userID = (call.arguments[@"userID"]) ? call.arguments[@"userID"] : nil;
