@@ -1,3 +1,6 @@
+## 1.0.4
+* Added missing properties to inbox model
+
 ## 1.0.3
 * Added authorization options for iOS
 * Added presentation options for iOS
