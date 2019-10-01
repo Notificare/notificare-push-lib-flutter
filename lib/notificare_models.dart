@@ -199,6 +199,10 @@ class NotificareInboxItem {
   String inboxId;
   String notification;
   String message;
+  String title;
+  String subtitle;
+  NotificareAttachment attachment;
+  Map<String, String> extra;
   String time;
   bool opened;
 

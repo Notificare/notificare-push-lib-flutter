@@ -365,6 +365,21 @@ public class NotificareUtils {
         inboxItemMap.put("inboxId", notificareInboxItem.getItemId());
         inboxItemMap.put("notification", notificareInboxItem.getNotification().getNotificationId());
         inboxItemMap.put("message", notificareInboxItem.getNotification().getMessage());
+        inboxItemMap.put("title", notificareInboxItem.getTitle());
+        inboxItemMap.put("subtitle", notificareInboxItem.getSubtitle());
+        if (notificareInboxItem.getAttachment() != null) {
+            JSONObject attachmentsMap = new JSONObject();
+            attachmentsMap.put("mimeType", notificareInboxItem.getAttachment().getMimeType());
+            attachmentsMap.put("uri", notificareInboxItem.getAttachment().getUri());
+            inboxItemMap.put("attachment", attachmentsMap);
+        }
+        if (notificareInboxItem.getExtra() != null) {
+            JSONObject extraMap = new JSONObject();
+            for (HashMap.Entry<String, String> prop : notificareInboxItem.getExtra().entrySet()) {
+                extraMap.put(prop.getKey(), prop.getValue());
+            }
+            inboxItemMap.put("extra", extraMap);
+        }
         inboxItemMap.put("time", ISODateFormatter.format(notificareInboxItem.getTimestamp()));
         inboxItemMap.put("opened", notificareInboxItem.getStatus());
         return inboxItemMap;

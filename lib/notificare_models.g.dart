@@ -277,6 +277,15 @@ NotificareInboxItem _$NotificareInboxItemFromJson(Map<String, dynamic> json) {
   )
     ..notification = json['notification'] as String
     ..message = json['message'] as String
+    ..title = json['title'] as String
+    ..subtitle = json['subtitle'] as String
+    ..attachment = json['attachment'] == null
+        ? null
+        : NotificareAttachment.fromJson(
+            json['attachment'] as Map<String, dynamic>)
+    ..extra = (json['extra'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as String),
+    )
     ..time = json['time'] as String
     ..opened = json['opened'] as bool;
 }
@@ -287,6 +296,10 @@ Map<String, dynamic> _$NotificareInboxItemToJson(
       'inboxId': instance.inboxId,
       'notification': instance.notification,
       'message': instance.message,
+      'title': instance.title,
+      'subtitle': instance.subtitle,
+      'attachment': instance.attachment,
+      'extra': instance.extra,
       'time': instance.time,
       'opened': instance.opened,
     };
