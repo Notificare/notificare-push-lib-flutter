@@ -1147,8 +1147,11 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
       Notificare.shared().getBeaconClient().addRangingListener(this);
     }
     if (Notificare.shared().getInboxManager() != null) {
-      mInboxItems = Notificare.shared().getInboxManager().getObservableItems();
-      mInboxItems.observeForever(this);
+      Handler handler = new Handler(Looper.getMainLooper());
+      handler.post(() -> {
+        mInboxItems = Notificare.shared().getInboxManager().getObservableItems();
+        mInboxItems.observeForever(this);
+      });
     }
     Notificare.shared().addBillingReadyListener(this);
     NotificareEventEmitter.getInstance().onListen(eventSink);
