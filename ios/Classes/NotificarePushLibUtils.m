@@ -697,6 +697,23 @@ static NotificarePushLibUtils *utils;
     }
     [data setObject:[NSNumber numberWithBool:providesAppNotificationSettings] forKey:@"providesAppNotificationSettings"];
     
+    
+    NSString * announcementSetting = @"notSupported";
+    if (@available(iOS 13.0, *)) {
+        switch ([settings announcementSetting]) {
+            case UNNotificationSettingEnabled:
+                announcementSetting = @"enabled";
+                break;
+            case UNNotificationSettingDisabled:
+                announcementSetting = @"disabled";
+                break;
+            default:
+                break;
+        }
+    }
+    
+    [data setObject:announcementSetting forKey:@"announcementSetting"];
+    
     return data;
 }
 
