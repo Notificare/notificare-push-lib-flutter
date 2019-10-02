@@ -142,7 +142,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
     } else if ("stopLocationUpdates".equals(call.method)) {
       Notificare.shared().disableLocationUpdates();
       replySuccess(result, null);
-    } else if ("clearDeviceLocation".equals(call.method)) {
+    } else if ("clearLocation".equals(call.method)) {
       Notificare.shared().clearLocation(new NotificareCallback<Boolean>() {
 
         @Override

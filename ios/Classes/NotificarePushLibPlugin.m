@@ -168,7 +168,7 @@
   } else if ([@"stopLocationUpdates" isEqualToString:call.method]) {
       [[NotificarePushLib shared] stopLocationUpdates];
       result(nil);
-  } else if ([@"clearDeviceLocation" isEqualToString:call.method]) {
+  } else if ([@"clearLocation" isEqualToString:call.method]) {
        [[NotificarePushLib shared] clearDeviceLocation:^(id  _Nullable response, NSError * _Nullable error) {
            if (!error) {
                result(nil);
