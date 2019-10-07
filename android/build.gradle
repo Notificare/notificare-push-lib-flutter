@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
     }
 }
 
@@ -41,9 +41,9 @@ android {
 }
 
 dependencies {
-    api 're.notifica:notificare-core:2.1.0'
-    compileOnly "re.notifica:notificare-location:2.1.0"
-    compileOnly "re.notifica:notificare-beacon:2.1.0"
-    compileOnly "re.notifica:notificare-scannable:2.1.0"
+    api 're.notifica:notificare-core:2.1.1'
+    compileOnly "re.notifica:notificare-location:2.1.1"
+    compileOnly "re.notifica:notificare-beacon:2.1.1"
+    compileOnly "re.notifica:notificare-scannable:2.1.1"
     implementation 'androidx.annotation:annotation:1.1.0'
 }
