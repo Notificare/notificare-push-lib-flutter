@@ -709,7 +709,7 @@
   } else if ([@"removeSegmentFromUserPreference" isEqualToString:call.method]) {
       NSDictionary* segment = call.arguments[@"segment"];
       NSDictionary* userPreference = call.arguments[@"userPreference"];
-      [[[NotificarePushLib shared] authManager] addSegment:[[NotificarePushLibUtils shared] segmentFromDictionary:segment] toPreference:[[NotificarePushLibUtils shared] userPreferenceFromDictionary:userPreference] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+      [[[NotificarePushLib shared] authManager] removeSegment:[[NotificarePushLibUtils shared] segmentFromDictionary:segment] fromPreference:[[NotificarePushLibUtils shared] userPreferenceFromDictionary:userPreference] completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
               result(nil);
           } else {
