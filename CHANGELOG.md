@@ -1,3 +1,6 @@
+## 2.0.1
+* added static_framework flag
+
 ## 2.0.0
 * Updated to Notificare Android SDK 2.1.0
 * Updated to Notificare iOS SDK 2.2.0 (Required Xcode 11 and iOS13 SDK to build it)
