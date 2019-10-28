@@ -180,7 +180,11 @@
        }];
    } else if ([@"isLocationServicesEnabled" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[NotificarePushLib shared] locationServicesEnabled]]);
-  } else if ([@"registerDevice" isEqualToString:call.method]) {
+   } else if ([@"enableBeacons" isEqualToString:call.method]) {
+       result(nil);
+   } else if ([@"disableBeacons" isEqualToString:call.method]) {
+         result(nil);
+   } else if ([@"registerDevice" isEqualToString:call.method]) {
       NSString* userID = (call.arguments[@"userID"]) ? call.arguments[@"userID"] : nil;
       NSString* userName = (call.arguments[@"userName"]) ? call.arguments[@"userName"] : nil;
       [[NotificarePushLib shared] registerDevice:userID withUsername:userName completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
@@ -518,6 +522,10 @@
               [[NotificarePushLib shared] buyProduct:response];
           }
       }];
+      result(nil);
+  } else if ([@"enableBilling" isEqualToString:call.method]) {
+      result(nil);
+  } else if ([@"disableBilling" isEqualToString:call.method]) {
       result(nil);
   } else if ([@"logCustomEvent" isEqualToString:call.method]) {
       NSString* name = call.arguments[@"name"];
