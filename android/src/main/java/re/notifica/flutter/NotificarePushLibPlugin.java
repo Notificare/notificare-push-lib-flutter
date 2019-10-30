@@ -841,7 +841,7 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         }
       });
     } else if ("changePassword".equals(call.method)) {
-      if (call.hasArgument("email") && call.hasArgument("password") && call.argument("email") != null && call.argument("password") != null) {
+      if (call.hasArgument("password") && call.argument("password") != null) {
         Notificare.shared().changePassword(call.argument("password"), new NotificareCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean aBoolean) {

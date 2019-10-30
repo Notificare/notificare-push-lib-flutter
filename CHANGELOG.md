@@ -1,3 +1,8 @@
+## 2.2.0
+* added noops for Android-only calls in iOS
+* fixed changePassword method
+* updated to Android SDK 2.2.0
+
 ## 2.0.1
 * added static_framework flag
 
