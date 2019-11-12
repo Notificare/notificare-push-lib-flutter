@@ -560,14 +560,38 @@ class NotificarePushLib with WidgetsBindingObserver {
                   .toList()));
           break;
         case 'monitoringForRegionStarted':
-          return new NotificareEvent(eventName,
-              new NotificareMonitoringForRegionStartedEvent(map['body']));
+          if (map['body']['region']['beaconId'] != null) {
+            return new NotificareEvent(eventName,
+                new NotificareMonitoringForRegionStartedEvent(
+                    NotificareBeacon.fromJson(map['body']['region'])));
+          } else {
+            return new NotificareEvent(eventName,
+                new NotificareMonitoringForRegionStartedEvent(
+                    NotificareRegion.fromJson(map['body']['region'])));
+          }
           break;
         case 'monitoringForRegionFailed':
-          return new NotificareEvent(
-              eventName,
-              new NotificareMonitoringForRegionFailedEvent(
-                  map['body']['error']));
+          if (map['body']['region'] != null) {
+            if (map['body']['region']['beaconId'] != null) {
+              return new NotificareEvent(
+                  eventName,
+                  new NotificareMonitoringForRegionFailedEvent(
+                      NotificareBeacon.fromJson(map['body']['region']),
+                      map['body']['error']));
+            } else {
+              return new NotificareEvent(
+                  eventName,
+                  new NotificareMonitoringForRegionFailedEvent(
+                      NotificareRegion.fromJson(map['body']['region']),
+                      map['body']['error']));
+            }
+          } else {
+            return new NotificareEvent(
+                eventName,
+                new NotificareMonitoringForRegionFailedEvent(
+                    null,
+                    map['body']['error']));
+          }
           break;
         case 'stateForRegionChanged':
           if (map['body']['region']['beaconId'] != null) {

@@ -316,7 +316,7 @@ class NotificareLocationsUpdatedEvent {
 ///
 class NotificareMonitoringForRegionStartedEvent {
   NotificareMonitoringForRegionStartedEvent(this.region);
-  NotificareRegion region;
+  dynamic region;
 }
 
 ///
@@ -326,8 +326,9 @@ class NotificareMonitoringForRegionStartedEvent {
 /// Data:
 ///
 class NotificareMonitoringForRegionFailedEvent {
-  NotificareMonitoringForRegionFailedEvent(this.region);
-  NotificareRegion region;
+  NotificareMonitoringForRegionFailedEvent(this.region, this.error);
+  dynamic region;
+  String error;
 }
 
 ///

@@ -1,3 +1,7 @@
+## 2.2.1
+* updated to Android SDK 2.2.1
+* updated to iOS SDK 2.2.3
+
 ## 2.2.0
 * added noops for Android-only calls in iOS
 * fixed changePassword method

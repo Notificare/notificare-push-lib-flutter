@@ -227,7 +227,8 @@ class _MyAppState extends State<MyApp> {
         }
         break;
         case "monitoringForRegionFailed": {
-          print("Monitoring for Region Failed: " + event.data.toString());
+          NotificareMonitoringForRegionFailedEvent monitoringForRegionFailedEvent = event.data as NotificareMonitoringForRegionFailedEvent;
+          print("Monitoring for Region Failed: " + monitoringForRegionFailedEvent.error);
         }
         break;
         case "stateForRegionChanged": {

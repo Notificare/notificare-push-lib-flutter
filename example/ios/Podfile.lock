@@ -1,11 +1,11 @@
 PODS:
   - Flutter (1.0.0)
-  - location_permissions (2.0.2):
+  - location_permissions (2.0.3):
     - Flutter
-  - notificare-push-lib (2.2.0)
-  - notificare_push_lib (2.0.0):
+  - notificare-push-lib (2.2.3)
+  - notificare_push_lib (2.2.1):
     - Flutter
-    - notificare-push-lib (= 2.2.0)
+    - notificare-push-lib (= 2.2.3)
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
@@ -26,9 +26,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  location_permissions: 67cfaff583afbb027a9f9248196f4b79c40f3cdc
-  notificare-push-lib: 6e608778402f17bcd5033716c1ac310b9451d70f
-  notificare_push_lib: f148c2e09e3d1772ac6232dd7080b26b04b3b9c4
+  location_permissions: 195ff2a1182fa9029ef3f2653156961ee5a1e40b
+  notificare-push-lib: 9c48bb770c0e4e8448b6c47b3dd7cd1f2800e934
+  notificare_push_lib: 8359697b249925382712711279630381a168b481
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 

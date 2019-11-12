@@ -1,5 +1,5 @@
 group 're.notifica.flutter'
-version '2.2.0'
+version '2.2.1'
 
 buildscript {
     repositories {
@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.5.2'
     }
 }
 
@@ -41,9 +41,9 @@ android {
 }
 
 dependencies {
-    api 're.notifica:notificare-core:2.2.0'
-    compileOnly "re.notifica:notificare-location:2.2.0"
-    compileOnly "re.notifica:notificare-beacon:2.2.0"
-    compileOnly "re.notifica:notificare-scannable:2.2.0"
+    api 're.notifica:notificare-core:2.2.1'
+    compileOnly "re.notifica:notificare-location:2.2.1"
+    compileOnly "re.notifica:notificare-beacon:2.2.1"
+    compileOnly "re.notifica:notificare-scannable:2.2.1"
     implementation 'androidx.annotation:annotation:1.1.0'
 }

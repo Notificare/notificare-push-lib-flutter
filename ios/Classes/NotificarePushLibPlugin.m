@@ -963,6 +963,12 @@
 
 - (void)notificarePushLib:(NotificarePushLib *)library monitoringDidFailForRegion:(id)region withError:(NSError *)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
+    if ([region isKindOfClass:[NotificareRegion class]]){
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromRegion:region] forKey:@"region"];
+    }
+    if ([region isKindOfClass:[NotificareBeacon class]]){
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
+    }
     [payload setObject:[error localizedDescription] forKey:@"error"];
     [self sendEvent:@{@"event":@"monitoringForRegionFailed", @"body": payload}];
 }
