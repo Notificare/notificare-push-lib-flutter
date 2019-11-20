@@ -1,3 +1,7 @@
+## 2.2.2
+* updated to iOS SDK 2.2.4
+* changes in isViewController method
+
 ## 2.2.1
 * updated to Android SDK 2.2.1
 * updated to iOS SDK 2.2.3
