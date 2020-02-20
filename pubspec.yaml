@@ -1,15 +1,17 @@
 name: notificare_push_lib
 description: Official Notificare Flutter plugin. Implements the power of the Notificare platform in Flutter applications.
-version: 2.2.3
+version: 2.2.4
 homepage: https://notificare.com
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
+  flutter: ">=1.12.13+hotfix.6 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   json_annotation: ^3.0.1
+  flutter_plugin_android_lifecycle: ^1.0.2
 
 dev_dependencies:
   flutter_test:

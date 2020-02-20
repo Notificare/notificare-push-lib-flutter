@@ -1,5 +1,7 @@
 package re.notifica.flutter.example;
 
+import android.app.Application;
+
 import io.flutter.app.FlutterApplication;
 import re.notifica.Notificare;
 import re.notifica.flutter.NotificareReceiver;

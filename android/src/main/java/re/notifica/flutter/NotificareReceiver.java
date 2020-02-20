@@ -24,7 +24,7 @@ public class NotificareReceiver extends DefaultIntentReceiver {
         // Check if location updates are enabled, by default they are not.
         if (Notificare.shared().isLocationUpdatesEnabled()) {
             Notificare.shared().enableLocationUpdates();
-            if (NotificarePushLibPlugin.getInstance().getPluginSetting("enableBeacons")) {
+            if (NotificarePushLibPlugin.getPluginSetting("enableBeacons")) {
                 Notificare.shared().enableBeacons();
             }
         }
