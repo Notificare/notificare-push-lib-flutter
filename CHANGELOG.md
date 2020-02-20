@@ -1,5 +1,7 @@
-## 2.2.3
+## 2.2.4
 * migrated Android Plugin to new Flutter 1.12 API
+
+## 2.2.3
 * updated to iOS SDK 2.2.6
 
 ## 2.2.2
