@@ -421,11 +421,21 @@ public class NotificarePushLibPlugin implements MethodCallHandler, EventChannel.
         if (inboxItem != null && inboxItem.optString("inboxId", null) != null && Notificare.shared().getInboxManager() != null) {
           NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(inboxItem.optString("inboxId"));
           if (notificareInboxItem != null) {
-            try {
-              replySuccess(result, NotificareUtils.mapNotification(notificareInboxItem.getNotification()));
-            } catch (JSONException e) {
-              replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid inbox item"));
-            }
+            Notificare.shared().fetchInboxItem(notificareInboxItem, new NotificareCallback<NotificareInboxItem>() {
+              @Override
+              public void onSuccess(NotificareInboxItem fetchedInboxItem) {
+                try {
+                  replySuccess(result, NotificareUtils.mapNotification(fetchedInboxItem.getNotification()));
+                } catch (JSONException e) {
+                  replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid inbox item"));
+                }
+              }
+
+              @Override
+              public void onError(NotificareError notificareError) {
+                replyError(result, DEFAULT_ERROR_CODE, notificareError);
+              }
+            });
           } else {
             replyError(result, DEFAULT_ERROR_CODE, "inbox item not found", null);
           }
