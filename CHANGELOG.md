@@ -1,3 +1,6 @@
+## 2.2.4
+* check partially fetched notifications when fetching inbox items 
+
 ## 2.2.3
 * migrated Android Plugin to new Flutter 1.12 API
 * updated to iOS SDK 2.2.6
