@@ -305,7 +305,7 @@ class NotificarePushLib with WidgetsBindingObserver {
       Map<String, String> headers,
       Map<String, dynamic> body) async {
     Map<String, dynamic> response = await _methodChannel.invokeMapMethod(
-        'doPushHostOperation', {
+        'doCloudHostOperation', {
       'verb': verb,
       'path': path,
       'params': params,
