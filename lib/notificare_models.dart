@@ -391,7 +391,7 @@ class NotificareAssetMetaData {
   String originalFileName;
   String key;
   String contentType;
-  String contentLength;
+  int contentLength;
   factory NotificareAssetMetaData.fromJson(Map<String, dynamic> json) =>
       _$NotificareAssetMetaDataFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareAssetMetaDataToJson(this);

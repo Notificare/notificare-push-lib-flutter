@@ -562,7 +562,7 @@ NotificareAssetMetaData _$NotificareAssetMetaDataFromJson(
     ..originalFileName = json['originalFileName'] as String
     ..key = json['key'] as String
     ..contentType = json['contentType'] as String
-    ..contentLength = json['contentLength'] as String;
+    ..contentLength = json['contentLength'] as int;
 }
 
 Map<String, dynamic> _$NotificareAssetMetaDataToJson(
