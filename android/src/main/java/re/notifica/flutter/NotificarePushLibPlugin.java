@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -848,18 +849,22 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
 
         Map<String, String> paramsMap = new HashMap<>();
         if (params != null) {
-          while (params.keys().hasNext()) {
-            String key = params.keys().next();
+          Iterator<String> keys = params.keys();
+          while (keys.hasNext()) {
+            String key = keys.next();
             paramsMap.put(key, params.optString(key, null));
           }
         }
+
         Map<String, String> headersMap = new HashMap<>();
         if (headers != null) {
-          while (headers.keys().hasNext()) {
-            String key = headers.keys().next();
+          Iterator<String> keys = headers.keys();
+          while (keys.hasNext()) {
+            String key = keys.next();
             headersMap.put(key, headers.optString(key, null));
           }
         }
+
         Notificare.shared().doCloudRequest(call.argument("verb"), call.argument("path"), paramsMap, body, headersMap, new NotificareCallback<JSONObject>() {
           @Override
           public void onSuccess(JSONObject jsonObject) {
