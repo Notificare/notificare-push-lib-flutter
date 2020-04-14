@@ -4,6 +4,8 @@
 * fix fetching device dnd for fresh installations
 * fix custom params & headers on cloud API requests
 * fix beacons parsing when the result is empty
+* added method to send a password reset email
+* fix user mapping
 
 ## 2.2.4
 * check partially fetched notifications when fetching inbox items 

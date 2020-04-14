@@ -396,7 +396,11 @@ public class NotificareUtils {
         JSONObject userMap = new JSONObject();
         userMap.put("userID", user.getUserId());
         userMap.put("userName", user.getUserName());
-        userMap.put("segments", user.getSegments());
+        JSONArray segmentsJson = new JSONArray();
+        for (String segment : user.getSegments()) {
+            segmentsJson.put(segment);
+        }
+        userMap.put("segments", segmentsJson);
         return userMap;
     }
 
