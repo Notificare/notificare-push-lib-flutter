@@ -324,6 +324,13 @@ class NotificarePushLib with WidgetsBindingObserver {
     await _methodChannel.invokeMapMethod('validateAccount', {'token': token});
   }
 
+  Future<void> sendPassword(String email) async {
+    await _methodChannel.invokeMapMethod(
+      'sendPassword',
+      {'email': email},
+    );
+  }
+
   Future<void> resetPassword(String password, String token) async {
     await _methodChannel.invokeMapMethod(
         'resetPassword', {'password': password, 'token': token});
