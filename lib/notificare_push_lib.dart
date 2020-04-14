@@ -636,13 +636,15 @@ class NotificarePushLib with WidgetsBindingObserver {
           break;
         case 'beaconsInRangeForRegion':
           List beacons = map['body']['beacons'] as List;
+          final region = map['body']['region'];
           return new NotificareEvent(
               eventName,
               new NotificareBeaconsInRangeForRegionEvent(
                   beacons
                       .map((value) => NotificareBeacon.fromJson(value))
                       .toList(),
-                  NotificareBeacon.fromJson(map['body']['region'])));
+                  region != null ? NotificareBeacon.fromJson(region) : null,
+              ));
           break;
         case 'headingUpdated':
           return new NotificareEvent(
