@@ -6,6 +6,7 @@
 * fix beacons parsing when the result is empty
 * added method to send a password reset email
 * fix user mapping
+* enhance NotificareUser model
 
 ## 2.2.4
 * check partially fetched notifications when fetching inbox items 

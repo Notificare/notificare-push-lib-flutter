@@ -317,6 +317,7 @@ class NotificareUser {
   String userID;
   String userName;
   List<NotificareUserSegment> segments;
+  String accessToken;
 
   factory NotificareUser.fromJson(Map<String, dynamic> json) =>
       _$NotificareUserFromJson(json);

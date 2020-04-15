@@ -455,7 +455,8 @@ NotificareUser _$NotificareUserFromJson(Map<String, dynamic> json) {
         ?.map((e) => e == null
             ? null
             : NotificareUserSegment.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+        ?.toList()
+    ..accessToken = json['accessToken'] as String;
 }
 
 Map<String, dynamic> _$NotificareUserToJson(NotificareUser instance) =>
@@ -463,6 +464,7 @@ Map<String, dynamic> _$NotificareUserToJson(NotificareUser instance) =>
       'userID': instance.userID,
       'userName': instance.userName,
       'segments': instance.segments,
+      'accessToken': instance.accessToken,
     };
 
 NotificareUserSegment _$NotificareUserSegmentFromJson(

@@ -401,6 +401,7 @@ public class NotificareUtils {
             segmentsJson.put(segment);
         }
         userMap.put("segments", segmentsJson);
+        userMap.put("accessToken", user.getAccessToken());
         return userMap;
     }
 
