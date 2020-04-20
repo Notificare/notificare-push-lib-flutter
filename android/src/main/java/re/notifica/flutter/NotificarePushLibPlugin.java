@@ -1245,33 +1245,41 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
   /**
    * Send a validate user token received event
    * @param token
+   * @return true if the event was handled successfully.
    */
-  private void sendValidateUserToken(String token) {
+  private boolean sendValidateUserToken(String token) {
     if (token != null && !token.isEmpty()) {
       JSONObject tokenMap = new JSONObject();
       try {
         tokenMap.put("token", token);
         sendEvent("activationTokenReceived", tokenMap, true);
+        return true;
       } catch (JSONException e) {
         // ignore
       }
     }
+
+    return false;
   }
 
   /**
    * Send a password reset token received event
    * @param token
+   * @return true if the event was handled successfully.
    */
-  private void sendResetPasswordToken(String token) {
+  private boolean sendResetPasswordToken(String token) {
     if (token != null && !token.isEmpty()) {
       JSONObject tokenMap = new JSONObject();
       try {
         tokenMap.put("token", token);
         sendEvent("resetPasswordTokenReceived", tokenMap, true);
+        return true;
       } catch (JSONException e) {
         // ignore
       }
     }
+
+    return false;
   }
 
   private JSONObject parseNotificationIntent(Intent intent) {
@@ -1291,14 +1299,17 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
     return null;
   }
 
-  private void handleIntent(Intent intent) {
+  private boolean handleIntent(Intent intent) {
     JSONObject notificationMap = parseNotificationIntent(intent);
     if (notificationMap != null) {
       sendEvent("remoteNotificationReceivedInBackground", notificationMap, true);
+      return true;
     } else {
-      sendValidateUserToken(Notificare.shared().parseValidateUserIntent(intent));
-      sendResetPasswordToken(Notificare.shared().parseResetPasswordIntent(intent));
+      if (sendValidateUserToken(Notificare.shared().parseValidateUserIntent(intent))) return true;
+      if (sendResetPasswordToken(Notificare.shared().parseResetPasswordIntent(intent))) return true;
     }
+
+    return false;
   }
 
   @Override
@@ -1464,11 +1475,6 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
 
   @Override
   public boolean onNewIntent(Intent intent) {
-    JSONObject notificationMap = parseNotificationIntent(intent);
-    if (notificationMap != null) {
-      sendEvent("remoteNotificationReceivedInBackground", notificationMap, true);
-      return true;
-    }
-    return false;
+    return handleIntent(intent);
   }
 }
