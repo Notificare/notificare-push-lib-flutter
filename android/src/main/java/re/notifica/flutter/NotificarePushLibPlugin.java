@@ -605,8 +605,15 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
           NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(inboxItem.optString("inboxId"));
           if (notificareInboxItem != null && mActivity != null) {
             Notificare.shared().openInboxItem(mActivity, notificareInboxItem);
+            replySuccess(result, null);
+          } else {
+            replyError(result, DEFAULT_ERROR_CODE, new NotificareError("inbox item not found"));
           }
+        } else {
+          replyError(result, DEFAULT_ERROR_CODE, new NotificareError("inbox item not found"));
         }
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("inbox not enabled"));
       }
     } else if ("removeFromInbox".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
