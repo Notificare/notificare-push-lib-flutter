@@ -386,8 +386,8 @@ class NotificarePushLib with WidgetsBindingObserver {
         {'segment': segment, 'userPreference': userPreference});
   }
 
-  Future<void> startScannableSessionWithQRCode() async {
-    await _methodChannel.invokeMethod('startScannableSessionWithQRCode');
+  Future<void> startScannableSession() async {
+    await _methodChannel.invokeMethod('startScannableSession');
   }
 
   Future<void> presentScannable(NotificareScannable scannable) async {
