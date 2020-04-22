@@ -1139,7 +1139,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
   private void presentNotification(JSONObject notification) {
     if (notification != null && notification.has("id")) {
       String notificationId = notification.optString("id");
-      if (notification.has("inboxItemId") && !notification.optString("inboxItemId").isEmpty() && Notificare.shared().getInboxManager() != null) {
+      if (!notification.isNull("inboxItemId") && !notification.optString("inboxItemId").isEmpty() && Notificare.shared().getInboxManager() != null) {
         // This is an item opened with inboxItemId, so coming from NotificationManager open
         NotificareInboxItem notificareInboxItem = Notificare.shared().getInboxManager().getItem(notification.optString("inboxItemId"));
         if (notificareInboxItem != null && mActivity != null) {

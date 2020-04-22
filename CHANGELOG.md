@@ -8,6 +8,7 @@
 * enhance NotificareUser model
 * fix handling new intents
 * fix scannable session
+* fix notification parsing without an inbox item id
 
 ## 2.2.4
 * check partially fetched notifications when fetching inbox items 
