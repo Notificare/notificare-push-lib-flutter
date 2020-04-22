@@ -18,12 +18,12 @@ class NotificarePushLib with WidgetsBindingObserver {
             .invokeMethod('didChangeAppLifecycleState', {'message': message});
         return null;
       });
-      _instance = NotificarePushLib.private(methodChannel, eventChannel);
+      _instance = NotificarePushLib._private(methodChannel, eventChannel);
     }
     return _instance;
   }
 
-  NotificarePushLib.private(this._methodChannel, this._eventChannel);
+  NotificarePushLib._private(this._methodChannel, this._eventChannel);
 
   static NotificarePushLib _instance;
 
