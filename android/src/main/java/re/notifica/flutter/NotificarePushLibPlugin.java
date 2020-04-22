@@ -221,10 +221,6 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       if (Notificare.shared().getBeaconClient() != null) {
         Notificare.shared().getBeaconClient().removeRangingListener(this);
       }
-      if (mInboxItems != null) {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> mInboxItems.removeObserver(this));
-      }
       Notificare.shared().removeBillingReadyListener(this);
     }
   }
