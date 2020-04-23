@@ -9,6 +9,7 @@
 * fix handling new intents
 * fix scannable session
 * fix notification parsing without an inbox item id
+* fix logout method
 
 ## 2.2.4
 * check partially fetched notifications when fetching inbox items 

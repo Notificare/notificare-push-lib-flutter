@@ -1060,12 +1060,12 @@
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didChangeAccountState:(NSDictionary *)info{
-    [self sendEvent:@{@"event":@"accountStateChanged", @"body": info}];
+    [self sendEvent:@{@"event":@"accountStateChanged", @"body": info ? info : [NSNull null]}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didFailToRenewAccountSessionWithError:(NSError * _Nullable)error{
     NSMutableDictionary * payload = [NSMutableDictionary new];
-    [payload setObject:[error localizedDescription] forKey:@"error"];
+    [payload setObject: error ? [error localizedDescription] : [NSNull null] forKey:@"error"];
     [self sendEvent:@{@"event":@"accountSessionFailedToRenewWithError", @"body": payload}];
 }
 
