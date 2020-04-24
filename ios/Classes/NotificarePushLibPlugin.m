@@ -583,9 +583,9 @@
   } else if ([@"doCloudHostOperation" isEqualToString:call.method]) {
       NSString* verb = call.arguments[@"verb"];
       NSString* path = call.arguments[@"path"];
-      NSDictionary* headers = (call.arguments[@"headers"]) ? call.arguments[@"headers"] : nil;
-      NSDictionary* params = (call.arguments[@"params"]) ? call.arguments[@"params"] : nil;
-      NSDictionary* body = (call.arguments[@"body"]) ? call.arguments[@"body"] : nil;
+      NSDictionary* headers = (call.arguments[@"headers"] && call.arguments[@"headers"] != [NSNull null]) ? call.arguments[@"headers"] : nil;
+      NSDictionary* params = (call.arguments[@"params"] && call.arguments[@"params"] != [NSNull null]) ? call.arguments[@"params"] : nil;
+      NSDictionary* body = (call.arguments[@"body"] && call.arguments[@"body"] != [NSNull null]) ? call.arguments[@"body"] : nil;
       [[NotificarePushLib shared] doCloudHostOperation:verb path:path URLParams:params customHeaders:headers bodyJSON:body completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
               result(response);

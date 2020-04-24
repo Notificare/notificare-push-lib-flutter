@@ -846,9 +846,9 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       }
     } else if ("doCloudHostOperation".equals(call.method)) {
       if (call.hasArgument("verb") && call.hasArgument("path") && call.argument("verb") != null && call.argument("path") != null) {
-        JSONObject body = call.hasArgument("body") ? call.argument("body") : null;
-        JSONObject params = call.hasArgument("params") ? call.argument("params") : null;
-        JSONObject headers = call.hasArgument("params") ? call.argument("headers") : null;
+        JSONObject body = call.hasArgument("body") && call.argument("body") != JSONObject.NULL ? call.argument("body") : null;
+        JSONObject params = call.hasArgument("params") && call.argument("params") != JSONObject.NULL ? call.argument("params")  : null;
+        JSONObject headers = call.hasArgument("headers") && call.argument("headers") != JSONObject.NULL ? call.argument("headers") : null;
         String path = "/api" + call.argument("path");
 
         Map<String, String> paramsMap = new HashMap<>();
