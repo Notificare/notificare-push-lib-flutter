@@ -849,6 +849,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
         JSONObject body = call.hasArgument("body") ? call.argument("body") : null;
         JSONObject params = call.hasArgument("params") ? call.argument("params") : null;
         JSONObject headers = call.hasArgument("params") ? call.argument("headers") : null;
+        String path = "/api" + call.argument("path");
 
         Map<String, String> paramsMap = new HashMap<>();
         if (params != null) {
@@ -868,7 +869,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
           }
         }
 
-        Notificare.shared().doCloudRequest(call.argument("verb"), call.argument("path"), paramsMap, body, headersMap, new NotificareCallback<JSONObject>() {
+        Notificare.shared().doCloudRequest(call.argument("verb"), path, paramsMap, body, headersMap, new NotificareCallback<JSONObject>() {
           @Override
           public void onSuccess(JSONObject jsonObject) {
             replySuccess(result, jsonObject);
