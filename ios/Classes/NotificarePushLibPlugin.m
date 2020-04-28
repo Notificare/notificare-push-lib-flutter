@@ -1015,26 +1015,31 @@
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didEnterRegion:(id)region{
+    NSMutableDictionary * payload = [NSMutableDictionary new];
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        [self sendEvent:@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]}];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromRegion:region] forKey:@"region"];
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [self sendEvent:@{@"event":@"regionEntered", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]}];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
     }
+    
+    [self sendEvent:@{@"event":@"regionEntered", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didExitRegion:(id)region{
+    NSMutableDictionary * payload = [NSMutableDictionary new];
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        [self sendEvent:@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]}];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromRegion:region] forKey:@"region"];
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [self sendEvent:@{@"event":@"regionExited", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]}];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
     }
     
+    [self sendEvent:@{@"event":@"regionExited", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library rangingBeaconsDidFailForRegion:(NotificareBeacon *)region withError:(NSError *)error{
