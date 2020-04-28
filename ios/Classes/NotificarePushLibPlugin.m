@@ -991,7 +991,7 @@
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didDetermineState:(NotificareRegionState)state forRegion:(id)region{
-    if (region != nil) return;
+    if (region == nil) return;
     
     NSMutableDictionary * payload = [NSMutableDictionary new];
     
