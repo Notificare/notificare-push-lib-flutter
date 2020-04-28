@@ -41,9 +41,9 @@ android {
 }
 
 dependencies {
-    api 're.notifica:notificare-core:2.2.2'
-    compileOnly "re.notifica:notificare-location:2.2.2"
-    compileOnly "re.notifica:notificare-beacon:2.2.2"
-    compileOnly "re.notifica:notificare-scannable:2.2.2"
+    api 're.notifica:notificare-core:2.2.3'
+    compileOnly "re.notifica:notificare-location:2.2.3"
+    compileOnly "re.notifica:notificare-beacon:2.2.3"
+    compileOnly "re.notifica:notificare-scannable:2.2.3"
     implementation 'androidx.annotation:annotation:1.1.0'
 }
