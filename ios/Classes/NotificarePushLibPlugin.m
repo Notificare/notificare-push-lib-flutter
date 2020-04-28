@@ -977,14 +977,17 @@
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didStartMonitoringForRegion:(id)region{
+    NSMutableDictionary * payload = [NSMutableDictionary new];
     
     if([region isKindOfClass:[NotificareRegion class]]){
-        [self sendEvent:@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromRegion:region]}];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromRegion:region] forKey:@"region"];
     }
     
     if([region isKindOfClass:[NotificareBeacon class]]){
-        [self sendEvent:@{@"event":@"monitoringForRegionStarted", @"body": [[NotificarePushLibUtils shared] dictionaryFromBeacon:region]}];
+        [payload setObject:[[NotificarePushLibUtils shared] dictionaryFromBeacon:region] forKey:@"region"];
     }
+
+    [self sendEvent:@{@"event":@"monitoringForRegionStarted", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didDetermineState:(NotificareRegionState)state forRegion:(id)region{
