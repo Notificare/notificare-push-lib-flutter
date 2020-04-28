@@ -1,4 +1,4 @@
-## Upcoming release
+## 2.2.5
 * migrated Android Plugin to new Flutter 1.12 API
 * fix fetching device dnd for fresh installations
 * fix custom params & headers on cloud API requests
