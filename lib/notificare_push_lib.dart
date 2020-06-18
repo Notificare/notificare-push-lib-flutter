@@ -669,16 +669,6 @@ class NotificarePushLib with WidgetsBindingObserver {
               new NotificareVisitReceivedEvent(
                   NotificareVisit.fromJson(map['body'])));
           break;
-        case 'accountStateChanged':
-          return new NotificareEvent(
-              eventName, new NotificareAccountStateChangedEvent(map['body']));
-          break;
-        case 'accountSessionFailedToRenewWithError':
-          return new NotificareEvent(
-              eventName,
-              new NotificareAccountSessionFailedToRenewWithErrorEvent(
-                  map['body']['error']));
-          break;
         case 'activationTokenReceived':
           return new NotificareEvent(eventName,
               new NotificareActivationTokenReceivedEvent(map['body']['token']));

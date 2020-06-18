@@ -271,14 +271,6 @@ class _MyAppState extends State<MyApp> {
           print("Visit Received: " + event.data.toString());
         }
         break;
-        case "accountStateChanged": {
-          print("Account State Changed: " + event.data.toString());
-        }
-        break;
-        case "accountSessionFailedToRenewWithError": {
-          print("Account Session Failed to Renew: " + event.data.toString());
-        }
-        break;
         case "activationTokenReceived": {
           print("Activation Token: " + event.data.toString());
         }

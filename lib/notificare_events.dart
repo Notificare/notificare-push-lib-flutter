@@ -414,28 +414,6 @@ class NotificareVisitReceivedEvent {
 ///
 /// Event:
 /// Platform: iOS
-/// Name: accountStateChanged
-/// Data: info
-///
-class NotificareAccountStateChangedEvent {
-  NotificareAccountStateChangedEvent(this.info);
-  Map<String, dynamic> info;
-}
-
-///
-/// Event:
-/// Platform: iOS
-/// Name: accountSessionFailedToRenewWithError
-/// Data:
-///
-class NotificareAccountSessionFailedToRenewWithErrorEvent {
-  NotificareAccountSessionFailedToRenewWithErrorEvent(this.error);
-  String error;
-}
-
-///
-/// Event:
-/// Platform: iOS
 /// Name: activationTokenReceived
 /// Data: token
 ///

@@ -1078,16 +1078,6 @@
     [self sendEvent:@{@"event":@"visitReceived", @"body": [[NotificarePushLibUtils shared] dictionaryFromVisit:visit]}];
 }
 
-- (void)notificarePushLib:(NotificarePushLib *)library didChangeAccountState:(NSDictionary *)info{
-    [self sendEvent:@{@"event":@"accountStateChanged", @"body": info ? info : [NSNull null]}];
-}
-
-- (void)notificarePushLib:(NotificarePushLib *)library didFailToRenewAccountSessionWithError:(NSError * _Nullable)error{
-    NSMutableDictionary * payload = [NSMutableDictionary new];
-    [payload setObject: error ? [error localizedDescription] : [NSNull null] forKey:@"error"];
-    [self sendEvent:@{@"event":@"accountSessionFailedToRenewWithError", @"body": payload}];
-}
-
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveActivationToken:(NSString *)token{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:token forKey:@"token"];
