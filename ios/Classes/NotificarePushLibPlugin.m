@@ -44,6 +44,9 @@
   if ([@"launch" isEqualToString:call.method]) {
       [[NotificarePushLib shared] launch];
       result(nil);
+  } else if ([@"unlaunch" isEqualToString: call.method]) {
+      [[NotificarePushLib shared] unlaunch];
+      result(nil);
   } else if ([@"setAuthorizationOptions" isEqualToString:call.method]) {
       NSArray* options = call.arguments[@"options"];
       
