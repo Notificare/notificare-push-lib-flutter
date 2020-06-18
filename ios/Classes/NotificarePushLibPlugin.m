@@ -658,8 +658,15 @@
           }
       }];
   } else if ([@"logout" isEqualToString:call.method]) {
-      [[[NotificarePushLib shared] authManager] logoutAccount];
-      result(nil);
+      [[[NotificarePushLib shared] authManager] logoutAccount:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(nil);
+          } else {
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
+          }
+      }];
   } else if ([@"isLoggedIn" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[[NotificarePushLib shared] authManager] isLoggedIn]]);
   } else if ([@"generateAccessToken" isEqualToString:call.method]) {
