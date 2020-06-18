@@ -1,3 +1,7 @@
+## 2.2.6
+* fix example's plugin registration
+* update example's Android SDK to v2.2.3
+
 ## 2.2.5
 * migrated Android Plugin to new Flutter 1.12 API
 * fix fetching device dnd for fresh installations
