@@ -15,8 +15,7 @@ Notificare Flutter Plugin implements the power of smart notifications, location 
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'notificare-push-lib', '2.2.6'
+  s.dependency 'notificare-push-lib', '2.3.0'
   s.ios.deployment_target = '9.0'
   s.static_framework = true
 end
-
