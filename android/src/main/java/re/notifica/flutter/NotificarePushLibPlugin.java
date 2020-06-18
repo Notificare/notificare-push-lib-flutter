@@ -245,6 +245,9 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
     if ("launch".equals(call.method)) {
       Notificare.shared().addNotificareReadyListener(this);
       replySuccess(result, null);
+    } else if ("unlaunch".equals(call.method)) {
+      Notificare.shared().unlaunch();
+      replySuccess(result, null);
     } else if ("setAuthorizationOptions".equals(call.method)) {
       replySuccess(result, null);
     } else if ("setPresentationOptions".equals(call.method)) {
