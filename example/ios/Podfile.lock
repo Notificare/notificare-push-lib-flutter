@@ -4,10 +4,10 @@ PODS:
     - Flutter
   - "location_permissions (2.0.4+1)":
     - Flutter
-  - notificare-push-lib (2.3.0)
-  - notificare_push_lib (2.2.4):
+  - notificare-push-lib (2.3.2)
+  - notificare_push_lib (2.3.0):
     - Flutter
-    - notificare-push-lib (= 2.3.0)
+    - notificare-push-lib (= 2.3.2)
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
@@ -33,8 +33,8 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_plugin_android_lifecycle: 47de533a02850f070f5696a623995e93eddcdb9b
   location_permissions: 360d12ecd1c94a4cab68585f508be1d5ad944c8b
-  notificare-push-lib: ae69c0e82cf925260af05626c155eb72a64bafee
-  notificare_push_lib: 04f108ca85b14a19f353d6941176376e69e69010
+  notificare-push-lib: 9af318893c3555516e64a019448e5f966eef23fe
+  notificare_push_lib: f305115667fb2a478f6a2a8f021b4502bc3b5c10
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 

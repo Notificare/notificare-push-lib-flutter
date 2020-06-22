@@ -55,10 +55,12 @@ flutter {
 }
 
 dependencies {
+    def notificare_version = '2.3.0'
+
     testImplementation 'junit:junit:4.12'
-    implementation "re.notifica:notificare-location:2.2.3"
-//    implementation "re.notifica:notificare-beacon:2.2.3"
-//    implementation "re.notifica:notificare-scannable:2.2.3"
+    implementation "re.notifica:notificare-location:$notificare_version"
+//    implementation "re.notifica:notificare-beacon:$notificare_version"
+//    implementation "re.notifica:notificare-scannable:$notificare_version"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
