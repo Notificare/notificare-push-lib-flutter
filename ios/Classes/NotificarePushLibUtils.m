@@ -275,6 +275,7 @@ static NotificarePushLibUtils *utils;
 -(NSDictionary *)dictionaryFromDeviceInbox:(NotificareDeviceInbox *)deviceInbox{
     NSMutableDictionary * data = [NSMutableDictionary dictionary];
     [data setValue:[deviceInbox inboxId] forKey:@"inboxId"];
+    [data setValue:[deviceInbox type] forKey:@"type"];
     [data setValue:[deviceInbox applicationId] forKey:@"applicationId"];
     [data setValue:[deviceInbox data] forKey:@"data"];
     [data setValue:[deviceInbox title] forKey:@"title"];
@@ -293,6 +294,7 @@ static NotificarePushLibUtils *utils;
 -(NotificareDeviceInbox *)deviceInboxFromDictionary:(NSDictionary *)dictionary{
     NotificareDeviceInbox * inboxItem = [NotificareDeviceInbox new];
     [inboxItem setInboxId:[dictionary objectForKey:@"inboxId"]];
+    [inboxItem setType:[dictionary objectForKey:@"type"]];
     [inboxItem setApplicationId:[dictionary objectForKey:@"applicationId"]];
     [inboxItem setTitle:[dictionary objectForKey:@"title"]];
     [inboxItem setSubtitle:[dictionary objectForKey:@"subtitle"]];

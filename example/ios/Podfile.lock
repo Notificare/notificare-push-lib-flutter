@@ -1,24 +1,29 @@
 PODS:
   - Flutter (1.0.0)
-  - location_permissions (2.0.3):
+  - flutter_plugin_android_lifecycle (0.0.1):
     - Flutter
-  - notificare-push-lib (2.2.6)
-  - notificare_push_lib (2.2.3):
+  - "location_permissions (2.0.4+1)":
     - Flutter
-    - notificare-push-lib (= 2.2.6)
+  - notificare-push-lib (2.3.2)
+  - notificare_push_lib (2.3.0):
+    - Flutter
+    - notificare-push-lib (= 2.3.2)
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - notificare_push_lib (from `.symlinks/plugins/notificare_push_lib/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - notificare-push-lib
 
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
+  flutter_plugin_android_lifecycle:
+    :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
   location_permissions:
     :path: ".symlinks/plugins/location_permissions/ios"
   notificare_push_lib:
@@ -26,10 +31,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  location_permissions: 195ff2a1182fa9029ef3f2653156961ee5a1e40b
-  notificare-push-lib: a8b12acf24a12d29bd4ef5959c70bdc208a4137e
-  notificare_push_lib: 8b11b1b9b5bdf4f7b00bfeeb701220ca3986573f
+  flutter_plugin_android_lifecycle: 47de533a02850f070f5696a623995e93eddcdb9b
+  location_permissions: 360d12ecd1c94a4cab68585f508be1d5ad944c8b
+  notificare-push-lib: 9af318893c3555516e64a019448e5f966eef23fe
+  notificare_push_lib: f305115667fb2a478f6a2a8f021b4502bc3b5c10
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.9.3

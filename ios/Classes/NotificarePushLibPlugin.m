@@ -44,6 +44,9 @@
   if ([@"launch" isEqualToString:call.method]) {
       [[NotificarePushLib shared] launch];
       result(nil);
+  } else if ([@"unlaunch" isEqualToString: call.method]) {
+      [[NotificarePushLib shared] unlaunch];
+      result(nil);
   } else if ([@"setAuthorizationOptions" isEqualToString:call.method]) {
       NSArray* options = call.arguments[@"options"];
       
@@ -370,7 +373,6 @@
       id controller = [[NotificarePushLib shared] controllerForNotification:item];
       if ([self isViewController:controller]) {
           UINavigationController *navController = [self navigationControllerForViewControllers:controller];
-          [navController setModalPresentationStyle:UIModalPresentationFullScreen];
           [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
               [[NotificarePushLib shared] presentNotification:item inNavigationController:navController withController:controller];
           }];
@@ -399,7 +401,6 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
-                  [navController setModalPresentationStyle:UIModalPresentationFullScreen];
                   [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
                       [[NotificarePushLib shared] presentInboxItem:item inNavigationController:navController withController:response];
                   }];
@@ -655,8 +656,15 @@
           }
       }];
   } else if ([@"logout" isEqualToString:call.method]) {
-      [[[NotificarePushLib shared] authManager] logoutAccount];
-      result(nil);
+      [[[NotificarePushLib shared] authManager] logoutAccount:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(nil);
+          } else {
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
+          }
+      }];
   } else if ([@"isLoggedIn" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[[[NotificarePushLib shared] authManager] isLoggedIn]]);
   } else if ([@"generateAccessToken" isEqualToString:call.method]) {
@@ -738,7 +746,6 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
-                  [navController setModalPresentationStyle:UIModalPresentationFullScreen];
                   [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
                       [[NotificarePushLib shared] presentScannable:item inNavigationController:navController withController:response];
                   }];
@@ -1066,16 +1073,6 @@
 
 - (void)notificarePushLib:(NotificarePushLib *)library didVisit:(NotificareVisit*)visit{
     [self sendEvent:@{@"event":@"visitReceived", @"body": [[NotificarePushLibUtils shared] dictionaryFromVisit:visit]}];
-}
-
-- (void)notificarePushLib:(NotificarePushLib *)library didChangeAccountState:(NSDictionary *)info{
-    [self sendEvent:@{@"event":@"accountStateChanged", @"body": info ? info : [NSNull null]}];
-}
-
-- (void)notificarePushLib:(NotificarePushLib *)library didFailToRenewAccountSessionWithError:(NSError * _Nullable)error{
-    NSMutableDictionary * payload = [NSMutableDictionary new];
-    [payload setObject: error ? [error localizedDescription] : [NSNull null] forKey:@"error"];
-    [self sendEvent:@{@"event":@"accountSessionFailedToRenewWithError", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveActivationToken:(NSString *)token{

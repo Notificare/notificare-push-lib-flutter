@@ -35,6 +35,10 @@ class NotificarePushLib with WidgetsBindingObserver {
     await _methodChannel.invokeMethod('launch');
   }
 
+  Future<void> unlaunch() async {
+    await _methodChannel.invokeMethod('unlaunch');
+  }
+
   Future<void> setAuthorizationOptions(List options) async {
     await _methodChannel.invokeMapMethod('setAuthorizationOptions', {'options': options});
   }
@@ -664,16 +668,6 @@ class NotificarePushLib with WidgetsBindingObserver {
               eventName,
               new NotificareVisitReceivedEvent(
                   NotificareVisit.fromJson(map['body'])));
-          break;
-        case 'accountStateChanged':
-          return new NotificareEvent(
-              eventName, new NotificareAccountStateChangedEvent(map['body']));
-          break;
-        case 'accountSessionFailedToRenewWithError':
-          return new NotificareEvent(
-              eventName,
-              new NotificareAccountSessionFailedToRenewWithErrorEvent(
-                  map['body']['error']));
           break;
         case 'activationTokenReceived':
           return new NotificareEvent(eventName,

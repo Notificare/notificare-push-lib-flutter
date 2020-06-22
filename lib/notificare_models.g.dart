@@ -276,6 +276,7 @@ NotificareInboxItem _$NotificareInboxItemFromJson(Map<String, dynamic> json) {
     json['inboxId'] as String,
   )
     ..notification = json['notification'] as String
+    ..type = json['type'] as String
     ..message = json['message'] as String
     ..title = json['title'] as String
     ..subtitle = json['subtitle'] as String
@@ -295,6 +296,7 @@ Map<String, dynamic> _$NotificareInboxItemToJson(
     <String, dynamic>{
       'inboxId': instance.inboxId,
       'notification': instance.notification,
+      'type': instance.type,
       'message': instance.message,
       'title': instance.title,
       'subtitle': instance.subtitle,

@@ -198,6 +198,7 @@ class NotificareInboxItem {
 
   String inboxId;
   String notification;
+  String type;
   String message;
   String title;
   String subtitle;
