@@ -122,7 +122,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.2.6"
+    version: "2.3.0"
   path:
     dependency: transitive
     description:
