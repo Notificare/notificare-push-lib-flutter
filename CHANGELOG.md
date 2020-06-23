@@ -1,6 +1,7 @@
 ## 2.3.0
 * update Android SDK to v2.3.0
 * update iOS SDK to v2.3.2
+* allow `carPlay` in authorization options
 
 ## 2.2.6
 * fix example's plugin registration
