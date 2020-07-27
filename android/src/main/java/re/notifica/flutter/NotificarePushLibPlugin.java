@@ -47,8 +47,8 @@ import re.notifica.NotificareCallback;
 import re.notifica.NotificareError;
 import re.notifica.beacon.BeaconRangingListener;
 import re.notifica.billing.BillingManager;
-import re.notifica.billing.BillingResult;
-import re.notifica.billing.Purchase;
+import re.notifica.billing.NotificareBillingResult;
+import re.notifica.billing.NotificarePurchase;
 import re.notifica.model.NotificareApplicationInfo;
 import re.notifica.model.NotificareAsset;
 import re.notifica.model.NotificareBeacon;
@@ -754,9 +754,9 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       }
     } else if ("fetchPurchasedProducts".equals(call.method)) {
       if (Notificare.shared().getBillingManager() != null) {
-        List<Purchase> purchases = Notificare.shared().getBillingManager().getPurchases();
+        List<NotificarePurchase> purchases = Notificare.shared().getBillingManager().getPurchases();
         List<NotificareProduct> products = new ArrayList<>();
-        for (Purchase purchase : purchases) {
+        for (NotificarePurchase purchase : purchases) {
           NotificareProduct product = Notificare.shared().getBillingManager().getProduct(purchase.getProductId());
           if (product != null) {
             products.add(product);
@@ -1367,9 +1367,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
 
   @Override
   public void onBillingReady() {
-    if (!mIsBillingReady) {
-      Notificare.shared().getBillingManager().refresh(this);
-    }
+    Notificare.shared().getBillingManager().refresh(this);
   }
 
   @Override
@@ -1390,9 +1388,10 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
 
   @Override
   public void onServiceError(int errorCode, int requestCode) {
-    if (Notificare.isUserRecoverableError(errorCode) && mActivity != null) {
+    if (mActivity == null || Notificare.shared().getServiceManager() == null) return;
+    if (Notificare.shared().getServiceManager().isUserRecoverableError(errorCode)) {
       final Activity activity = mActivity;
-      activity.runOnUiThread(() -> Notificare.getErrorDialog(errorCode, activity, requestCode).show());
+      activity.runOnUiThread(() -> Notificare.shared().getServiceManager().getErrorDialog(errorCode, activity, requestCode).show());
     }
   }
 
@@ -1417,8 +1416,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
   }
 
   @Override
-  public void onPurchaseFinished(BillingResult billingResult, Purchase purchase) {
-    mIsBillingReady = false;
+  public void onPurchaseFinished(NotificareBillingResult billingResult, NotificarePurchase purchase) {
     JSONObject payload = new JSONObject();
     NotificareProduct product = Notificare.shared().getBillingManager().getProduct(purchase.getProductId());
     try {
@@ -1470,9 +1468,6 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
         } else {
           sendEvent("scannableSessionInvalidatedWithError", createErrorPayload("unknown error"), true);
         }
-      } else if (Notificare.shared().getBillingManager() != null && Notificare.shared().getBillingManager().handleActivityResult(requestCode, resultCode, data)) {
-        // Billingmanager handled the result
-        mIsBillingReady = true; // wait for purchase to finish before doing other calls
       } else {
         return false;
       }
