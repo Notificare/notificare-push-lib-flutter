@@ -89,6 +89,7 @@ class NotificareDevice {
   double altitude;
   double speed;
   double course;
+  double accuracy;
   String locationServicesAuthStatus;
   bool registeredForNotifications;
   bool allowedLocationServices;

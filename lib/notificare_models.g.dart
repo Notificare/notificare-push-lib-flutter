@@ -119,6 +119,7 @@ NotificareDevice _$NotificareDeviceFromJson(Map<String, dynamic> json) {
     ..altitude = (json['altitude'] as num)?.toDouble()
     ..speed = (json['speed'] as num)?.toDouble()
     ..course = (json['course'] as num)?.toDouble()
+    ..accuracy = (json['accuracy'] as num)?.toDouble()
     ..locationServicesAuthStatus = json['locationServicesAuthStatus'] as String
     ..registeredForNotifications = json['registeredForNotifications'] as bool
     ..allowedLocationServices = json['allowedLocationServices'] as bool
@@ -145,6 +146,7 @@ Map<String, dynamic> _$NotificareDeviceToJson(NotificareDevice instance) =>
       'altitude': instance.altitude,
       'speed': instance.speed,
       'course': instance.course,
+      'accuracy': instance.accuracy,
       'locationServicesAuthStatus': instance.locationServicesAuthStatus,
       'registeredForNotifications': instance.registeredForNotifications,
       'allowedLocationServices': instance.allowedLocationServices,
