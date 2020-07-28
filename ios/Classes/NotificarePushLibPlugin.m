@@ -847,6 +847,14 @@
     [self sendEvent:@{@"event":@"unknownNotificationReceived", @"body": notification}];
 }
 
+- (void)notificarePushLib:(NotificarePushLib *)library didReceiveUnknownNotificationInBackground:(NSDictionary *)notification {
+    [self sendEvent:@{@"event": @"unknownNotificationReceivedInBackground", @"body": notification}];
+}
+
+- (void)notificarePushLib:(NotificarePushLib *)library didReceiveUnknownNotificationInForeground:(NSDictionary *)notification {
+    [self sendEvent:@{@"event": @"unknownNotificationReceivedInForeground", @"body": notification}];
+}
+
 - (void)notificarePushLib:(NotificarePushLib *)library didReceiveUnknownAction:(NSDictionary *)action forNotification:(NSDictionary *)notification{
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:action forKey:@"action"];
