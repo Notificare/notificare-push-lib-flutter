@@ -674,6 +674,22 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       } else {
         replyError(result, DEFAULT_ERROR_CODE, new NotificareError("inbox not enabled"));
       }
+    } else if ("markAllAsRead".equals(call.method)) {
+      if (Notificare.shared().getInboxManager() != null) {
+        Notificare.shared().getInboxManager().markAll(new NotificareCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean aBoolean) {
+            replySuccess(result, null);
+          }
+
+          @Override
+          public void onError(NotificareError error) {
+            replyError(result, DEFAULT_ERROR_CODE, error);
+          }
+        });
+      } else {
+        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("inbox not enabled"));
+      }
     } else if ("clearInbox".equals(call.method)) {
       if (Notificare.shared().getInboxManager() != null) {
         Notificare.shared().getInboxManager().clearInbox(new NotificareCallback<Integer>() {

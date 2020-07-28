@@ -435,6 +435,16 @@
                                          details:nil]);
           }
       }];
+  } else if ([@"markAllAsRead" isEqualToString:call.method]) {
+      [[[NotificarePushLib shared] inboxManager] markAllAsRead:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result(nil);
+          } else {
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
+          }
+      }];
   } else if ([@"clearInbox" isEqualToString:call.method]) {
       [[[NotificarePushLib shared] inboxManager] clearInbox:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {

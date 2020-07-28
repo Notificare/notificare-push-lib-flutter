@@ -240,6 +240,10 @@ class NotificarePushLib with WidgetsBindingObserver {
         .invokeMapMethod('markAsRead', {'inboxItem': inboxItem}));
   }
 
+  Future<void> markAllAsRead() async {
+    return await _methodChannel.invokeMapMethod('markAllAsRead');
+  }
+
   Future<void> clearInbox() async {
     return await _methodChannel.invokeMapMethod('clearInbox');
   }
