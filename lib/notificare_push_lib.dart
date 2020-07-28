@@ -469,6 +469,14 @@ class NotificarePushLib with WidgetsBindingObserver {
           return new NotificareEvent(eventName,
               new NotificareUnknownNotificationReceivedEvent(map['body']));
           break;
+        case 'unknownNotificationReceivedInBackground':
+          return new NotificareEvent(eventName,
+              new NotificareUnknownNotificationReceivedEvent(map['body']));
+          break;
+        case 'unknownNotificationReceivedInForeground':
+          return new NotificareEvent(eventName,
+              new NotificareUnknownNotificationReceivedEvent(map['body']));
+          break;
         case 'unknownActionForNotificationReceived':
           return new NotificareEvent(
               eventName,

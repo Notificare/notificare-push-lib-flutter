@@ -152,6 +152,28 @@ class NotificareUnknownNotificationReceivedEvent {
 }
 
 ///
+/// Event: unknown notification received in background
+/// Platform: iOS
+/// Name: unknownNotificationReceivedInBackground
+/// Data: notification
+///
+class NotificareUnknownNotificationReceivedInBackgroundEvent {
+  NotificareUnknownNotificationReceivedInBackgroundEvent(this.notification);
+  Map<String, dynamic> notification;
+}
+
+///
+/// Event: unknown notification received in foreground
+/// Platform: iOS
+/// Name: unknownNotificationReceivedInForeground
+/// Data: notification
+///
+class NotificareUnknownNotificationReceivedInForegroundEvent {
+  NotificareUnknownNotificationReceivedInForegroundEvent(this.notification);
+  Map<String, dynamic> notification;
+}
+
+///
 /// Event: settings should be opened
 /// Platform: iOS
 /// Name: shouldOpenSettings
