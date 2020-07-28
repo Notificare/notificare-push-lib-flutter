@@ -1226,6 +1226,11 @@
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nonnull))restorationHandler {
+    [[NotificarePushLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return YES;
+}
+
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken {
     [[NotificarePushLib shared] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
