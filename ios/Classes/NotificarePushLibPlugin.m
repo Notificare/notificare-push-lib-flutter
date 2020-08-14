@@ -768,6 +768,15 @@
           }
       }];
       result(nil);
+  } else if ([@"requestAlwaysAuthorizationForLocationUpdates" isEqualToString:call.method]) {
+      [[NotificarePushLib shared] requestAlwaysAuthorizationForLocationUpdates];
+      result([NSNull null]);
+  } else if ([@"requestTemporaryFullAccuracyAuthorization" isEqualToString:call.method]) {
+      if (@available(iOS 14.0, *)) {
+          NSString* purposeKey = call.arguments[@"purposeKey"];
+          [[NotificarePushLib shared] requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey];
+      }
+      result([NSNull null]);
   } else {
     result(FlutterMethodNotImplemented);
   }
@@ -982,6 +991,18 @@
     }
 
     [self sendEvent:@{@"event":@"locationServiceAuthorizationStatusReceived", @"body": payload}];
+}
+
+- (void)notificarePushLib:(NotificarePushLib *)library didReceiveLocationServiceAccuracyAuthorization:(NotificareGeoAccuracyAuthorization)accuracy {
+    NSMutableDictionary * payload = [NSMutableDictionary new];
+    
+    if (accuracy == NotificareGeoAccuracyAuthorizationFull) {
+        [payload setObject:@"full" forKey:@"accuracy"];
+    } else if (accuracy == NotificareGeoGeoAccuracyAuthorizationReduced) {
+        [payload setObject:@"reduced" forKey:@"accuracy"];
+    }
+
+    [self sendEvent:@{@"event":@"locationServiceAccuracyAuthorizationReceived", @"body": payload}];
 }
 
 - (void)notificarePushLib:(NotificarePushLib *)library didUpdateLocations:(NSArray<NotificareLocation*> *)locations{

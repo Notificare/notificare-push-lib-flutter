@@ -1122,6 +1122,10 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       if (scannable != null && scannable.optJSONObject("notification") != null) {
         presentNotification(scannable.optJSONObject("notification"));
       }
+    } else if ("requestAlwaysAuthorizationForLocationUpdates".equals(call.method)) {
+      replySuccess(result, null);
+    } else if ("requestTemporaryFullAccuracyAuthorization".equals(call.method)) {
+      replySuccess(result, null);
     } else {
       replyNotImplemented(result);
     }

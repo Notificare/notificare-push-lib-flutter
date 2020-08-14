@@ -403,6 +403,14 @@ class NotificarePushLib with WidgetsBindingObserver {
         .invokeMethod('presentScannable', {'scannable': scannable});
   }
 
+  Future<void> requestAlwaysAuthorizationForLocationUpdates() async {
+    await _methodChannel.invokeMethod('requestAlwaysAuthorizationForLocationUpdates');
+  }
+
+  Future<void> requestTemporaryFullAccuracyAuthorization(String purposeKey) async {
+    await _methodChannel.invokeMethod('requestTemporaryFullAccuracyAuthorization', { 'purposeKey': purposeKey });
+  }
+
   Stream<NotificareEvent> get onEventReceived {
     if (_onEventReceived == null) {
       _onEventReceived =
@@ -569,6 +577,12 @@ class NotificarePushLib with WidgetsBindingObserver {
               eventName,
               new NotificareLocationServiceAuthorizationStatusReceived(
                   map['body']['status']));
+          break;
+        case 'locationServiceAccuracyAuthorizationReceived':
+          return new NotificareEvent(
+              eventName,
+              new NotificareLocationServiceAccuracyAuthorizationReceivedEvent(
+                  map['body']['accuracy']));
           break;
         case 'locationServiceFailedToStart':
           return new NotificareEvent(eventName,

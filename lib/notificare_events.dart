@@ -613,3 +613,14 @@ class NotificareScannableSessionInvalidatedWithErrorEvent {
   NotificareScannableSessionInvalidatedWithErrorEvent(this.error);
   String error;
 }
+
+///
+/// Event:
+/// Platform: iOS
+/// Name: locationServiceAccuracyAuthorizationReceived
+/// Data: accuracy
+///
+class NotificareLocationServiceAccuracyAuthorizationReceivedEvent {
+  NotificareLocationServiceAccuracyAuthorizationReceivedEvent(this.accuracy);
+  String accuracy;
+}
