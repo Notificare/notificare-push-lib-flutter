@@ -1,3 +1,13 @@
+## Upcoming release
+* update native SDKs to v2.4.0-beta
+* refactor Billing Manager integration
+* add `unknownNotificationReceivedInBackground` and `unknownNotificationReceivedInForeground` events on iOS
+* add `markAllAsRead` method
+* add `accuracy` to `NotificareDevice`
+* add support for Dynamic Links
+* add 'ephemeral' authorization status
+* add `requestAlwaysAuthorizationForLocationUpdates` and `requestTemporaryFullAccuracyAuthorization` methods
+
 ## 2.3.0
 * update Android SDK to v2.3.0
 * update iOS SDK to v2.3.2
