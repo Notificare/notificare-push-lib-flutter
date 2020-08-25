@@ -1314,6 +1314,17 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
     } else {
       if (sendValidateUserToken(Notificare.shared().parseValidateUserIntent(intent))) return true;
       if (sendResetPasswordToken(Notificare.shared().parseResetPasswordIntent(intent))) return true;
+
+      if (intent.getData() != null) {
+        try {
+          JSONObject payload = new JSONObject();
+          payload.put("url", intent.getData().toString());
+          sendEvent("urlOpened", payload, true);
+          return true;
+        } catch (JSONException e) {
+          // ignore
+        }
+      }
     }
 
     return false;
