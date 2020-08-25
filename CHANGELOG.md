@@ -8,6 +8,9 @@
 * add 'ephemeral' authorization status
 * add `requestAlwaysAuthorizationForLocationUpdates` and `requestTemporaryFullAccuracyAuthorization` methods
 
+# 2.3.1
+* add 'urlOpened' event on Android
+
 ## 2.3.0
 * update Android SDK to v2.3.0
 * update iOS SDK to v2.3.2

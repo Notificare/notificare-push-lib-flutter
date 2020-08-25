@@ -64,7 +64,7 @@ class NotificareBadgeUpdatedEvent {
 
 ///
 /// Event: A URL was opened
-/// Platform: iOS
+/// Platform: iOS, Android
 /// Name: urlOpened
 /// Data: url
 ///
