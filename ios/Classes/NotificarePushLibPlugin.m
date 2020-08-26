@@ -777,6 +777,19 @@
           [[NotificarePushLib shared] requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey];
       }
       result([NSNull null]);
+  } else if ([@"fetchLink" isEqualToString:call.method]) {
+      NSString* urlStr = call.arguments[@"url"];
+      NSURL* url = [NSURL URLWithString:urlStr];
+      
+      [[NotificarePushLib shared] fetchLink:url completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
+          if (!error) {
+              result([response absoluteString]);
+          } else {
+              result([FlutterError errorWithCode:NOTIFICARE_ERROR
+                                         message:error.localizedDescription
+                                         details:nil]);
+          }
+      }];
   } else {
     result(FlutterMethodNotImplemented);
   }

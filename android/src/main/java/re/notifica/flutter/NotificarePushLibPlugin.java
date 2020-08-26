@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -52,6 +53,7 @@ import re.notifica.billing.NotificarePurchase;
 import re.notifica.model.NotificareApplicationInfo;
 import re.notifica.model.NotificareAsset;
 import re.notifica.model.NotificareBeacon;
+import re.notifica.model.NotificareDynamicLink;
 import re.notifica.model.NotificareInboxItem;
 import re.notifica.model.NotificareNotification;
 import re.notifica.model.NotificarePass;
@@ -1126,6 +1128,20 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       replySuccess(result, null);
     } else if ("requestTemporaryFullAccuracyAuthorization".equals(call.method)) {
       replySuccess(result, null);
+    } else if ("fetchLink".equals(call.method)) {
+      Uri uri = Uri.parse(call.argument("url"));
+
+      Notificare.shared().fetchDynamicLink(uri, new NotificareCallback<NotificareDynamicLink>() {
+        @Override
+        public void onSuccess(NotificareDynamicLink notificareDynamicLink) {
+          replySuccess(result, notificareDynamicLink.getTarget());
+        }
+
+        @Override
+        public void onError(NotificareError notificareError) {
+          replyError(result, DEFAULT_ERROR_CODE, notificareError);
+        }
+      });
     } else {
       replyNotImplemented(result);
     }

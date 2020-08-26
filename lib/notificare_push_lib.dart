@@ -411,6 +411,10 @@ class NotificarePushLib with WidgetsBindingObserver {
     await _methodChannel.invokeMethod('requestTemporaryFullAccuracyAuthorization', { 'purposeKey': purposeKey });
   }
 
+  Future<String> fetchLink(String url) async {
+    return await _methodChannel.invokeMethod('fetchLink', { 'url': url });
+  }
+
   Stream<NotificareEvent> get onEventReceived {
     if (_onEventReceived == null) {
       _onEventReceived =
