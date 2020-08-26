@@ -7,6 +7,7 @@
 * add support for Dynamic Links
 * add 'ephemeral' authorization status
 * add `requestAlwaysAuthorizationForLocationUpdates` and `requestTemporaryFullAccuracyAuthorization` methods
+* add `fetchLink` helper method
 
 # 2.3.1
 * add 'urlOpened' event on Android
