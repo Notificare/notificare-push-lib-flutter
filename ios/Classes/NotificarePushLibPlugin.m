@@ -998,7 +998,7 @@
     
     if (accuracy == NotificareGeoAccuracyAuthorizationFull) {
         [payload setObject:@"full" forKey:@"accuracy"];
-    } else if (accuracy == NotificareGeoGeoAccuracyAuthorizationReduced) {
+    } else if (accuracy == NotificareGeoAccuracyAuthorizationReduced) {
         [payload setObject:@"reduced" forKey:@"accuracy"];
     }
 
