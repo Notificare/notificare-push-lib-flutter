@@ -1,4 +1,4 @@
-## Upcoming release
+## 2.4.0-beta.1
 * update native SDKs to v2.4.0-beta
 * refactor Billing Manager integration
 * add `unknownNotificationReceivedInBackground` and `unknownNotificationReceivedInForeground` events on iOS
