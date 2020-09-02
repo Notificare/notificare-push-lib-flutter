@@ -306,11 +306,7 @@
       }
       [[NotificarePushLib shared] updateUserData:data completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
-              NSMutableArray * payload = [NSMutableArray array];
-              for (NotificareUserData * userData in response) {
-                  [payload addObject:[[NotificarePushLibUtils shared] dictionaryFromUserData:userData]];
-              }
-              result(payload);
+              result(nil);
           } else {
               result([FlutterError errorWithCode:NOTIFICARE_ERROR
                                          message:error.localizedDescription

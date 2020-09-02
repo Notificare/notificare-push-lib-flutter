@@ -79,7 +79,7 @@ static NotificarePushLibUtils *utils;
     NSMutableDictionary * data = [NSMutableDictionary dictionary];
     [data setValue:[userData key] forKey:@"key"];
     [data setValue:[userData label] forKey:@"label"];
-    [data setValue:[userData type] forKey:@"type"];
+    // [data setValue:[userData type] forKey:@"type"];
     [data setValue:[userData value] forKey:@"value"];
     return data;
 }
@@ -88,7 +88,7 @@ static NotificarePushLibUtils *utils;
     NotificareUserData * userData = [NotificareUserData new];
     [userData setKey:[dictionary objectForKey:@"key"]];
     [userData setValue:[dictionary objectForKey:@"value"]];
-    [userData setType:[dictionary objectForKey:@"type"]];
+    // [userData setType:[dictionary objectForKey:@"type"]];
     [userData setLabel:[dictionary objectForKey:@"label"]];
     return userData;
 }

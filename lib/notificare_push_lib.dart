@@ -186,7 +186,7 @@ class NotificarePushLib with WidgetsBindingObserver {
     return response.map((value) => NotificareUserData.fromJson(value)).toList();
   }
 
-  Future<List> updateUserData(List userData) async {
+  Future<void> updateUserData(List<NotificareUserData> userData) async {
     List response = await _methodChannel
         .invokeListMethod('updateUserData', {'userData': userData});
     return response;

@@ -471,28 +471,41 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
         }
       });
     } else if ("updateUserData".equals(call.method)) {
-      JSONObject fields = call.argument("userData");
-      if (fields != null) {
-        NotificareUserData data = new NotificareUserData();
-        while (fields.keys().hasNext()) {
-          String key = fields.keys().next();
-          if (!fields.optString(key).isEmpty()) {
-            data.setValue(key, fields.optString(key));
-          }
-        }
-        Notificare.shared().updateUserData(data, new NotificareCallback<Boolean>() {
-          @Override
-          public void onSuccess(Boolean aBoolean) {
-            replySuccess(result, null);
+      try {
+        JSONArray items = call.argument("userData");
+
+        if (items != null) {
+          NotificareUserData userData = new NotificareUserData();
+
+          for (int i = 0; i < items.length(); i++) {
+            JSONObject item = items.getJSONObject(i);
+
+            if (!item.isNull("key") && item.has("value")) {
+              String key = item.getString("key");
+              String value = !item.isNull("value") ? item.getString("value") : null;
+              userData.setValue(key, value);
+            } else {
+              replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid user data"));
+              return;
+            }
           }
 
-          @Override
-          public void onError(NotificareError notificareError) {
-            replyError(result, DEFAULT_ERROR_CODE, notificareError);
-          }
-        });
-      } else {
-        replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid user data"));
+          Notificare.shared().updateUserData(userData, new NotificareCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+              replySuccess(result, null);
+            }
+
+            @Override
+            public void onError(NotificareError notificareError) {
+              replyError(result, DEFAULT_ERROR_CODE, notificareError);
+            }
+          });
+        } else {
+          replyError(result, DEFAULT_ERROR_CODE, new NotificareError("invalid user data"));
+        }
+      } catch (JSONException e) {
+        replyError(result, DEFAULT_ERROR_CODE, e);
       }
     } else if ("fetchDoNotDisturb".equals(call.method)) {
       Notificare.shared().fetchDoNotDisturb(new NotificareCallback<NotificareTimeOfDayRange>() {
