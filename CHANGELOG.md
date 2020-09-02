@@ -1,4 +1,7 @@
-# 2.3.1
+## Upcoming release
+* Fix `updateUserData` method consistency between platforms
+
+## 2.3.1
 * add 'urlOpened' event on Android
 
 ## 2.3.0
