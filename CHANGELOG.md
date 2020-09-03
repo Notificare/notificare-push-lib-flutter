@@ -1,4 +1,4 @@
-## Upcoming release
+## 2.3.2
 * Fix `updateUserData` method consistency between platforms
 
 ## 2.3.1
