@@ -121,6 +121,7 @@ class NotificareNotification {
   String title;
   String subtitle;
   String message;
+  String targetContentIdentifier;
   Map<String, dynamic> extra;
   List<NotificareContent> content;
   List<NotificareAction> actions;

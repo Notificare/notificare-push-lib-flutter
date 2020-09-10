@@ -1,3 +1,7 @@
+## 2.4.0-beta.2
+* Add `targetContentIdentifier` to `NotificareNotification`
+* Update native iOS SDK to v2.4.0-beta.7
+
 ## 2.4.0-beta.1
 * update native SDKs to v2.4.0-beta
 * refactor Billing Manager integration

@@ -169,6 +169,7 @@ NotificareNotification _$NotificareNotificationFromJson(
     ..title = json['title'] as String
     ..subtitle = json['subtitle'] as String
     ..message = json['message'] as String
+    ..targetContentIdentifier = json['targetContentIdentifier'] as String
     ..extra = json['extra'] as Map<String, dynamic>
     ..content = (json['content'] as List)
         ?.map((e) => e == null
@@ -197,6 +198,7 @@ Map<String, dynamic> _$NotificareNotificationToJson(
       'title': instance.title,
       'subtitle': instance.subtitle,
       'message': instance.message,
+      'targetContentIdentifier': instance.targetContentIdentifier,
       'extra': instance.extra,
       'content': instance.content,
       'actions': instance.actions,
