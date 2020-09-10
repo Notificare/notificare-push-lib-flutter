@@ -186,10 +186,8 @@ class NotificarePushLib with WidgetsBindingObserver {
     return response.map((value) => NotificareUserData.fromJson(value)).toList();
   }
 
-  Future<List> updateUserData(List userData) async {
-    List response = await _methodChannel
-        .invokeListMethod('updateUserData', {'userData': userData});
-    return response;
+  Future<void> updateUserData(List<NotificareUserData> userData) async {
+    await _methodChannel.invokeMethod('updateUserData', {'userData': userData});
   }
 
   Future<NotificareDeviceDnD> fetchDoNotDisturb() async {

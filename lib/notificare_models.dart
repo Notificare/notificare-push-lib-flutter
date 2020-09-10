@@ -38,14 +38,6 @@ class NotificareRegionConfig {
   Map<String, dynamic> toJson() => _$NotificareRegionConfigToJson(this);
 }
 
-@JsonSerializable()
-class NotificareUserDataFields {
-  NotificareUserDataFields();
-  factory NotificareUserDataFields.fromJson(Map<String, dynamic> json) =>
-      _$NotificareUserDataFieldsFromJson(json);
-  Map<String, dynamic> toJson() => _$NotificareUserDataFieldsToJson(this);
-}
-
 ///
 /// NotificareNotificationSettings
 ///
@@ -343,7 +335,7 @@ class NotificareUserData {
   NotificareUserData();
   String key;
   String label;
-  String data;
+  String value;
   factory NotificareUserData.fromJson(Map<String, dynamic> json) =>
       _$NotificareUserDataFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareUserDataToJson(this);

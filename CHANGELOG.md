@@ -9,7 +9,10 @@
 * add `requestAlwaysAuthorizationForLocationUpdates` and `requestTemporaryFullAccuracyAuthorization` methods
 * add `fetchLink` helper method
 
-# 2.3.1
+## 2.3.2
+* Fix `updateUserData` method consistency between platforms
+
+## 2.3.1
 * add 'urlOpened' event on Android
 
 ## 2.3.0

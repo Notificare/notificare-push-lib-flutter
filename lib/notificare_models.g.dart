@@ -60,15 +60,6 @@ Map<String, dynamic> _$NotificareRegionConfigToJson(
       'proximityUUID': instance.proximityUUID,
     };
 
-NotificareUserDataFields _$NotificareUserDataFieldsFromJson(
-    Map<String, dynamic> json) {
-  return NotificareUserDataFields();
-}
-
-Map<String, dynamic> _$NotificareUserDataFieldsToJson(
-        NotificareUserDataFields instance) =>
-    <String, dynamic>{};
-
 NotificareNotificationSettings _$NotificareNotificationSettingsFromJson(
     Map<String, dynamic> json) {
   return NotificareNotificationSettings()
@@ -485,14 +476,14 @@ NotificareUserData _$NotificareUserDataFromJson(Map<String, dynamic> json) {
   return NotificareUserData()
     ..key = json['key'] as String
     ..label = json['label'] as String
-    ..data = json['data'] as String;
+    ..value = json['value'] as String;
 }
 
 Map<String, dynamic> _$NotificareUserDataToJson(NotificareUserData instance) =>
     <String, dynamic>{
       'key': instance.key,
       'label': instance.label,
-      'data': instance.data,
+      'value': instance.value,
     };
 
 NotificareUserPreference _$NotificareUserPreferenceFromJson(
