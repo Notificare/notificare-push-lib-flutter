@@ -106,6 +106,18 @@ class NotificarePushLib with WidgetsBindingObserver {
     }
   }
 
+  Future<void> enableBeaconForegroundService() async {
+    if (Platform.isAndroid) {
+      await _methodChannel.invokeMethod('enableBeaconForegroundService');
+    }
+  }
+
+  Future<void> disableBeaconForegroundService() async {
+    if (Platform.isAndroid) {
+      await _methodChannel.invokeMethod('disableBeaconForegroundService');
+    }
+  }
+
   Future<void> enableBilling() async {
     if (Platform.isAndroid) {
       await _methodChannel.invokeMethod('enableBilling');
