@@ -301,6 +301,12 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       Notificare.shared().disableBeacons();
       setPluginSetting("enableBeacons", false);
       replySuccess(result, null);
+    } else if ("enableBeaconForegroundService".equals(call.method)) {
+      Notificare.shared().enableBeaconForegroundService();
+      replySuccess(result, null);
+    } else if ("disableBeaconForegroundService".equals(call.method)) {
+      Notificare.shared().disableBeaconForegroundService();
+      replySuccess(result, null);
     } else if ("enableBilling".equals(call.method)) {
       Notificare.shared().enableBilling();
       replySuccess(result, null);
