@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import re.notifica.Notificare;
 import re.notifica.model.NotificareAction;
@@ -207,7 +208,8 @@ public class NotificareUtils {
         JSONObject assetMap = new JSONObject();
         assetMap.put("assetTitle", asset.getTitle());
         assetMap.put("assetDescription", asset.getDescription());
-        assetMap.put("assetUrl", asset.getUrl().toString());
+        assetMap.put("assetUrl", (asset.getUrl() != null) ? asset.getUrl() : null);
+        assetMap.put("assetExtra", asset.getExtra());
 
         JSONObject metaMap = new JSONObject();
         metaMap.put("originalFileName", asset.getOriginalFileName());
