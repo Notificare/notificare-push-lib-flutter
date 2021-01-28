@@ -376,6 +376,7 @@ class NotificareAsset {
   String assetUrl;
   NotificareAssetMetaData assetMetaData;
   NotificareAssetButton assetButton;
+  Map<String, dynamic> assetExtra;
   factory NotificareAsset.fromJson(Map<String, dynamic> json) =>
       _$NotificareAssetFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareAssetToJson(this);
