@@ -539,7 +539,8 @@ NotificareAsset _$NotificareAssetFromJson(Map<String, dynamic> json) {
     ..assetButton = json['assetButton'] == null
         ? null
         : NotificareAssetButton.fromJson(
-            json['assetButton'] as Map<String, dynamic>);
+            json['assetButton'] as Map<String, dynamic>)
+    ..assetExtra = json['assetExtra'];
 }
 
 Map<String, dynamic> _$NotificareAssetToJson(NotificareAsset instance) =>
@@ -549,6 +550,7 @@ Map<String, dynamic> _$NotificareAssetToJson(NotificareAsset instance) =>
       'assetUrl': instance.assetUrl,
       'assetMetaData': instance.assetMetaData,
       'assetButton': instance.assetButton,
+      'assetExtra': instance.assetExtra,
     };
 
 NotificareAssetMetaData _$NotificareAssetMetaDataFromJson(
