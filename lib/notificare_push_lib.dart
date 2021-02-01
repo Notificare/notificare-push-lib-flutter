@@ -13,11 +13,6 @@ class NotificarePushLib with WidgetsBindingObserver {
           const MethodChannel('notificare_push_lib', JSONMethodCodec());
       final EventChannel eventChannel =
           const EventChannel('notificare_push_lib/events', JSONMethodCodec());
-      SystemChannels.lifecycle.setMessageHandler((message) async {
-        await methodChannel
-            .invokeMethod('didChangeAppLifecycleState', {'message': message});
-        return null;
-      });
       _instance = NotificarePushLib._private(methodChannel, eventChannel);
     }
     return _instance;

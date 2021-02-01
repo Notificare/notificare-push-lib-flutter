@@ -157,8 +157,6 @@
       }
       
       result(nil);
-  } else if ([@"didChangeAppLifecycleState" isEqualToString:call.method]) {
-      result(nil);
   } else if ([@"registerForNotifications" isEqualToString:call.method]) {
       [[NotificarePushLib shared] registerForNotifications];
       result(nil);
