@@ -1419,7 +1419,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
   @Override
   public void onChanged(@Nullable SortedSet<NotificareInboxItem> notificareInboxItems) {
     JSONArray inbox = new JSONArray();
-    if (notificareInboxItems != null) {
+    if (notificareInboxItems != null && Notificare.shared().getInboxManager() != null) {
       try {
         for (NotificareInboxItem item : notificareInboxItems) {
           inbox.put(NotificareUtils.mapInboxItem(item));
