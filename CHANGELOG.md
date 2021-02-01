@@ -1,3 +1,7 @@
+## 2.5.2
+* Fix WidgetsBindingObserver lifecycle issue
+* Fix un-launch related inbox crash
+
 ## 2.5.1
 * Add `extra` to assets
 * Allow nullable asset URLs 
