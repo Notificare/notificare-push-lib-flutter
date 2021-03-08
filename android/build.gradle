@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    def notificare_version = '2.5.0'
+    def notificare_version = '2.5.1'
 
     api "re.notifica:notificare-core:$notificare_version"
     compileOnly "re.notifica:notificare-location:$notificare_version"
