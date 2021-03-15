@@ -1,3 +1,8 @@
+## 2.5.3
+- Prevent crash on mapping inbox items without a notification
+- Update native Android dependency
+- Update native iOS dependency
+
 ## 2.5.2
 * Fix WidgetsBindingObserver lifecycle issue
 * Fix un-launch related inbox crash
