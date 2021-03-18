@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'notificare_push_lib'
-  s.version          = '2.5.3'
+  s.version          = '2.5.4'
   s.summary          = 'Notificare Flutter Plugin'
   s.description      = <<-DESC
 Notificare Flutter Plugin implements the power of smart notifications, location services, contextual marketing and powerful loyalty solutions provided by the Notificare platform in Flutter applications.\n\nFor documentation please refer to: http://docs.notifica.re\n\nFor support please use: http://support.notifica.re
