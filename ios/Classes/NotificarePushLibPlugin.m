@@ -379,7 +379,7 @@
       id controller = [[NotificarePushLib shared] controllerForNotification:item];
       if ([self isViewController:controller]) {
           UINavigationController *navController = [self navigationControllerForViewControllers:controller];
-          [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
+          [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:YES completion:^{
               [[NotificarePushLib shared] presentNotification:item inNavigationController:navController withController:controller];
           }];
       } else {
@@ -407,7 +407,7 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
-                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
+                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:YES completion:^{
                       [[NotificarePushLib shared] presentInboxItem:item inNavigationController:navController withController:response];
                   }];
               } else {
@@ -762,7 +762,7 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
-                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:NO completion:^{
+                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:YES completion:^{
                       [[NotificarePushLib shared] presentScannable:item inNavigationController:navController withController:response];
                   }];
               } else {
