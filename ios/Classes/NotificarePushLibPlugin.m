@@ -218,7 +218,7 @@
   } else if ([@"fetchPreferredLanguage" isEqualToString:call.method]) {
       result([[NotificarePushLib shared] preferredLanguage]);
   } else if ([@"updatePreferredLanguage" isEqualToString:call.method]) {
-      NSString* preferredLanguage = call.arguments[@"preferredLanguage"];
+      NSString* preferredLanguage = call.arguments[@"preferredLanguage"] && call.arguments[@"preferredLanguage"] != [NSNull null] ? call.arguments[@"preferredLanguage"] : nil;
       [[NotificarePushLib shared] updatePreferredLanguage:preferredLanguage completionHandler:^(id  _Nullable response, NSError * _Nullable error) {
           if (!error) {
               result(nil);
