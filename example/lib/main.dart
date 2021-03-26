@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io' show Platform;
 
-import 'package:flutter/services.dart';
 import 'package:notificare_push_lib/notificare_push_lib.dart';
 import 'package:notificare_push_lib/notificare_models.dart';
 import 'package:notificare_push_lib/notificare_events.dart';
-import 'package:location_permissions/location_permissions.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       switch (event.name) {
         case "ready": {
           NotificareReadyEvent readyEvent = event.data as NotificareReadyEvent;
-          print("Application is Ready: " + readyEvent.application.name);
+          print("Application is Ready: " + readyEvent.application.name!);
           await notificare.registerForNotifications();
           await _registerDevice("1234567890", "Joel Oliveira");
           List inbox = await _fetchInbox();
@@ -66,8 +64,7 @@ class _MyAppState extends State<MyApp> {
 
           if (Platform.isAndroid) {
             try {
-              PermissionStatus permission = await LocationPermissions()
-                  .requestPermissions();
+              final permission = await Permission.location.request();
               if (permission == PermissionStatus.granted) {
                 notificare.startLocationUpdates().then((_) {
                   print("location updates started");
@@ -95,7 +92,7 @@ class _MyAppState extends State<MyApp> {
         break;
         case "deviceRegistered": {
           NotificareDeviceRegisteredEvent deviceRegisteredEvent = event.data as NotificareDeviceRegisteredEvent;
-          print("Device: " + deviceRegisteredEvent.device.deviceID);
+          print("Device: " + deviceRegisteredEvent.device.deviceID!);
           _fetchNotificationSettings();
           _fetchTags();
           _addTag("tag_flutter");
@@ -113,23 +110,23 @@ class _MyAppState extends State<MyApp> {
         break;
         case "remoteNotificationReceivedInBackground": {
           NotificareRemoteNotificationReceivedInBackgroundEvent remoteNotificationReceivedInBackgroundEvent = event.data as NotificareRemoteNotificationReceivedInBackgroundEvent;
-          print("Notification: " + remoteNotificationReceivedInBackgroundEvent.notification.message);
+          print("Notification: " + remoteNotificationReceivedInBackgroundEvent.notification.message!);
           notificare.presentNotification(remoteNotificationReceivedInBackgroundEvent.notification);
         }
         break;
         case "remoteNotificationReceivedInForeground": {
           NotificareRemoteNotificationReceivedInForegroundEvent remoteNotificationReceivedInForegroundEvent = event.data as NotificareRemoteNotificationReceivedInForegroundEvent;
-          print("Notification: " + remoteNotificationReceivedInForegroundEvent.notification.message);
+          print("Notification: " + remoteNotificationReceivedInForegroundEvent.notification.message!);
         }
         break;
         case "systemNotificationReceivedInBackground": {
           NotificareSystemNotificationReceivedInBackgroundEvent systemNotificationReceivedInBackgroundEvent = event.data as NotificareSystemNotificationReceivedInBackgroundEvent;
-          print("System Notification: " + systemNotificationReceivedInBackgroundEvent.notification.type);
+          print("System Notification: " + systemNotificationReceivedInBackgroundEvent.notification.type!);
         }
         break;
         case "systemNotificationReceivedInForeground": {
           NotificareSystemNotificationReceivedInForegroundEvent systemNotificationReceivedInForegroundEvent = event.data as NotificareSystemNotificationReceivedInForegroundEvent;
-          print("System Notification: " + systemNotificationReceivedInForegroundEvent.notification.type);
+          print("System Notification: " + systemNotificationReceivedInForegroundEvent.notification.type!);
         }
         break;
         case "unknownNotificationReceived": {
@@ -143,22 +140,22 @@ class _MyAppState extends State<MyApp> {
         break;
         case "notificationWillOpen": {
           NotificareNotificationWillOpenEvent notificationWillOpenEvent = event.data as NotificareNotificationWillOpenEvent;
-          print("Notification: " + notificationWillOpenEvent.notification.message);
+          print("Notification: " + notificationWillOpenEvent.notification.message!);
         }
         break;
         case "notificationOpened": {
           NotificareNotificationOpenedEvent notificationOpenedEvent = event.data as NotificareNotificationOpenedEvent;
-          print("Notification: " + notificationOpenedEvent.notification.message);
+          print("Notification: " + notificationOpenedEvent.notification.message!);
         }
         break;
         case "notificationClosed": {
           NotificareNotificationClosedEvent notificationClosedEvent = event.data as NotificareNotificationClosedEvent;
-          print("Notification: " + notificationClosedEvent.notification.message);
+          print("Notification: " + notificationClosedEvent.notification.message!);
         }
         break;
         case "notificationFailedToOpen": {
           NotificareNotificationFailedToOpenEvent notificationFailedToOpenEvent = event.data as NotificareNotificationFailedToOpenEvent;
-          print("Notification: " + notificationFailedToOpenEvent.notification.message);
+          print("Notification: " + notificationFailedToOpenEvent.notification.message!);
         }
         break;
         case "urlClickedInNotification": {
@@ -169,12 +166,12 @@ class _MyAppState extends State<MyApp> {
         break;
         case "actionWillExecute": {
           NotificareActionWillExecuteEvent actionWillExecuteEvent = event.data as NotificareActionWillExecuteEvent;
-          print("Action: " + actionWillExecuteEvent.action.label);
+          print("Action: " + actionWillExecuteEvent.action.label!);
         }
         break;
         case "actionExecuted": {
           NotificareActionWillExecuteEvent actionWillExecuteEvent = event.data as NotificareActionWillExecuteEvent;
-          print("Action: " + actionWillExecuteEvent.action.label);
+          print("Action: " + actionWillExecuteEvent.action.label!);
         }
         break;
         case "shouldPerformSelectorWithUrl": {
@@ -185,17 +182,17 @@ class _MyAppState extends State<MyApp> {
         break;
         case "actionNotExecuted": {
           NotificareActionNotExecutedEvent actionNotExecutedEvent = event.data as NotificareActionNotExecutedEvent;
-          print("Action: " + actionNotExecutedEvent.action.label);
+          print("Action: " + actionNotExecutedEvent.action.label!);
         }
         break;
         case "actionFailedToExecute": {
           NotificareActionFailedToExecuteEvent actionFailedToExecuteEvent = event.data as NotificareActionFailedToExecuteEvent;
-          print("Action: " + actionFailedToExecuteEvent.action.label);
+          print("Action: " + actionFailedToExecuteEvent.action.label!);
         }
         break;
         case "shouldOpenSettings": {
           NotificareShouldOpenSettingsEvent shouldOpenSettingsEvent = event.data as NotificareShouldOpenSettingsEvent;
-          print("Notification: " + shouldOpenSettingsEvent.notification.message);
+          print("Notification: " + shouldOpenSettingsEvent.notification.message!);
           //Go to settings
         }
         break;
@@ -357,7 +354,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _fetchPreferredLanguage() async {
-    String preferredLanguage = await notificare.fetchPreferredLanguage();
+    String? preferredLanguage = await notificare.fetchPreferredLanguage();
     print("Preferred Language: " + preferredLanguage.toString());
   }
 
