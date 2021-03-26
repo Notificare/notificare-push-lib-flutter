@@ -24,7 +24,7 @@ class NotificarePushLib with WidgetsBindingObserver {
 
   final MethodChannel _methodChannel;
   final EventChannel _eventChannel;
-  Stream<NotificareEvent?>? _onEventReceived;
+  Stream<NotificareEvent>? _onEventReceived;
 
   Future<void> launch() async {
     await _methodChannel.invokeMethod('launch');
@@ -270,10 +270,9 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<List<NotificareAsset>> fetchAssets(String group) async {
-    List response =
-        await (_methodChannel.invokeListMethod('fetchAssets', {'group': group})
-            as FutureOr<List<dynamic>>);
-    return response.map((value) => NotificareAsset.fromJson(value)).toList();
+    final response =
+        await _methodChannel.invokeListMethod('fetchAssets', {'group': group});
+    return response!.map((value) => NotificareAsset.fromJson(value)).toList();
   }
 
   Future<NotificarePass> fetchPassWithSerial(String serial) async {
@@ -289,15 +288,14 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<List<NotificareProduct>> fetchProducts() async {
-    List response = await (_methodChannel.invokeListMethod('fetchProducts')
-        as FutureOr<List<dynamic>>);
-    return response.map((value) => NotificareProduct.fromJson(value)).toList();
+    final response = await _methodChannel.invokeListMethod('fetchProducts');
+    return response!.map((value) => NotificareProduct.fromJson(value)).toList();
   }
 
   Future<List<NotificareProduct>> fetchPurchasedProducts() async {
-    List response = await (_methodChannel
-        .invokeListMethod('fetchPurchasedProducts') as FutureOr<List<dynamic>>);
-    return response.map((value) => NotificareProduct.fromJson(value)).toList();
+    final response =
+        await _methodChannel.invokeListMethod('fetchPurchasedProducts');
+    return response!.map((value) => NotificareProduct.fromJson(value)).toList();
   }
 
   Future<NotificareProduct> fetchProduct(NotificareProduct product) async {
@@ -335,9 +333,9 @@ class NotificarePushLib with WidgetsBindingObserver {
   Future<Map<String, dynamic>?> doCloudHostOperation(
       String verb,
       String path,
-      Map<String, String> params,
-      Map<String, String> headers,
-      Map<String, dynamic> body) async {
+      Map<String, String>? params,
+      Map<String, String>? headers,
+      Map<String, dynamic>? body) async {
     final response = await _methodChannel.invokeMapMethod(
         'doCloudHostOperation', {
       'verb': verb,
@@ -403,9 +401,9 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<List<NotificareUserPreference>> fetchUserPreferences() async {
-    List response = await (_methodChannel
-        .invokeListMethod('fetchUserPreferences') as FutureOr<List<dynamic>>);
-    return response
+    final response =
+        await _methodChannel.invokeListMethod('fetchUserPreferences');
+    return response!
         .map((value) => NotificareUserPreference.fromJson(value))
         .toList();
   }
@@ -447,7 +445,7 @@ class NotificarePushLib with WidgetsBindingObserver {
     return await _methodChannel.invokeMethod('fetchLink', {'url': url});
   }
 
-  Stream<NotificareEvent?> get onEventReceived {
+  Stream<NotificareEvent> get onEventReceived {
     if (_onEventReceived == null) {
       _onEventReceived =
           _eventChannel.receiveBroadcastStream().map(_toEventMessage);
@@ -455,7 +453,7 @@ class NotificarePushLib with WidgetsBindingObserver {
     return _onEventReceived!;
   }
 
-  NotificareEvent? _toEventMessage(dynamic map) {
+  NotificareEvent _toEventMessage(dynamic map) {
     if (map is Map) {
       String eventName = map['event'];
       switch (eventName) {
@@ -779,6 +777,7 @@ class NotificarePushLib with WidgetsBindingObserver {
           return new NotificareEvent(eventName, map['body']);
       }
     }
-    return null;
+    // NOTE: should never occur.
+    return new NotificareEvent('unhandled', null);
   }
 }
