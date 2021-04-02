@@ -338,8 +338,11 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
     } else if ("fetchPreferredLanguage".equals(call.method)) {
       replySuccess(result, Notificare.shared().getPreferredLanguage());
     } else if ("updatePreferredLanguage".equals(call.method)) {
-      if (call.hasArgument("language") && call.argument("language") instanceof String) {
-        Notificare.shared().updatePreferredLanguage(call.argument("language"), new NotificareCallback<Boolean>() {
+      if (call.hasArgument("preferredLanguage")) {
+        String language = call.argument("preferredLanguage") != JSONObject.NULL
+                ? call.argument("preferredLanguage")
+                : null;
+        Notificare.shared().updatePreferredLanguage(language, new NotificareCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean aBoolean) {
             replySuccess(result, null);
