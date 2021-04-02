@@ -15,16 +15,16 @@ class NotificarePushLib with WidgetsBindingObserver {
           const EventChannel('notificare_push_lib/events', JSONMethodCodec());
       _instance = NotificarePushLib._private(methodChannel, eventChannel);
     }
-    return _instance;
+    return _instance!;
   }
 
   NotificarePushLib._private(this._methodChannel, this._eventChannel);
 
-  static NotificarePushLib _instance;
+  static NotificarePushLib? _instance;
 
   final MethodChannel _methodChannel;
   final EventChannel _eventChannel;
-  Stream<NotificareEvent> _onEventReceived;
+  Stream<NotificareEvent>? _onEventReceived;
 
   Future<void> launch() async {
     await _methodChannel.invokeMethod('launch');
@@ -35,15 +35,18 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<void> setAuthorizationOptions(List options) async {
-    await _methodChannel.invokeMapMethod('setAuthorizationOptions', {'options': options});
+    await _methodChannel
+        .invokeMapMethod('setAuthorizationOptions', {'options': options});
   }
 
   Future<void> setPresentationOptions(List options) async {
-    await _methodChannel.invokeMapMethod('setPresentationOptions', {'options': options});
+    await _methodChannel
+        .invokeMapMethod('setPresentationOptions', {'options': options});
   }
 
   Future<void> setCategoryOptions(List options) async {
-    await _methodChannel.invokeMapMethod('setCategoryOptions', {'options': options});
+    await _methodChannel
+        .invokeMapMethod('setCategoryOptions', {'options': options});
   }
 
   Future<void> registerForNotifications() async {
@@ -73,8 +76,9 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<NotificareNotificationSettings> fetchNotificationSettings() async {
-    return NotificareNotificationSettings.fromJson(
-        await _methodChannel.invokeMapMethod('fetchNotificationSettings'));
+    final json = await _methodChannel
+        .invokeMapMethod<String, dynamic>('fetchNotificationSettings');
+    return NotificareNotificationSettings.fromJson(json!);
   }
 
   Future<void> startLocationUpdates() async {
@@ -131,41 +135,41 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<NotificareDevice> registerDevice(
-      String userID, String userName) async {
+      String? userID, String? userName) async {
     if (userID != null && userName != null) {
-      return NotificareDevice.fromJson(await _methodChannel.invokeMapMethod(
-          'registerDevice', {'userID': userID, 'userName': userName}));
+      final json = await _methodChannel.invokeMapMethod<String, dynamic>(
+          'registerDevice', {'userID': userID, 'userName': userName});
+      return NotificareDevice.fromJson(json!);
     } else if (userID != null && userName == null) {
-      return NotificareDevice.fromJson(await _methodChannel
-          .invokeMapMethod('registerDevice', {'userID': userID}));
+      final json = await _methodChannel.invokeMapMethod<String, dynamic>(
+          'registerDevice', {'userID': userID});
+      return NotificareDevice.fromJson(json!);
     } else {
-      return NotificareDevice.fromJson(
-          await _methodChannel.invokeMapMethod('registerDevice'));
+      final json = await _methodChannel
+          .invokeMapMethod<String, dynamic>('registerDevice');
+      return NotificareDevice.fromJson(json!);
     }
   }
 
   Future<NotificareDevice> fetchDevice() async {
-    return NotificareDevice.fromJson(
-        await _methodChannel.invokeMapMethod('fetchDevice'));
+    final json =
+        await _methodChannel.invokeMapMethod<String, dynamic>('fetchDevice');
+    return NotificareDevice.fromJson(json!);
   }
 
-  Future<String> fetchPreferredLanguage() async {
+  Future<String?> fetchPreferredLanguage() async {
     var response = await _methodChannel.invokeMethod('fetchPreferredLanguage');
-    return response as String;
+    return response as String?;
   }
 
-  Future<void> updatePreferredLanguage(String preferredLanguage) async {
-    if (preferredLanguage != null) {
-      await _methodChannel.invokeMapMethod(
-          'updatePreferredLanguage', {'preferredLanguage': preferredLanguage});
-    } else {
-      await _methodChannel.invokeMethod('updatePreferredLanguage');
-    }
+  Future<void> updatePreferredLanguage(String? preferredLanguage) async {
+    await _methodChannel.invokeMapMethod(
+        'updatePreferredLanguage', {'preferredLanguage': preferredLanguage});
   }
 
-  Future<List> fetchTags() async {
-    List response = await _methodChannel.invokeListMethod('fetchTags');
-    return response;
+  Future<List<String>> fetchTags() async {
+    List<String>? response = await _methodChannel.invokeListMethod('fetchTags');
+    return response!;
   }
 
   Future<void> addTag(String tag) async {
@@ -189,23 +193,30 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<List<NotificareUserData>> fetchUserData() async {
-    List response = await _methodChannel.invokeListMethod('fetchUserData');
-    return response.map((value) => NotificareUserData.fromJson(value)).toList();
+    List<dynamic>? response =
+        await _methodChannel.invokeListMethod('fetchUserData');
+    return response!
+        .map((value) => NotificareUserData.fromJson(value))
+        .toList();
   }
 
   Future<void> updateUserData(List<NotificareUserData> userData) async {
     await _methodChannel.invokeMethod('updateUserData', {'userData': userData});
   }
 
-  Future<NotificareDeviceDnD> fetchDoNotDisturb() async {
-    return NotificareDeviceDnD.fromJson(
-        await _methodChannel.invokeMapMethod('fetchDoNotDisturb'));
+  Future<NotificareDeviceDnD?> fetchDoNotDisturb() async {
+    Map<String, dynamic>? json =
+        await _methodChannel.invokeMapMethod('fetchDoNotDisturb');
+    if (json == null) return null;
+
+    return NotificareDeviceDnD.fromJson(json);
   }
 
   Future<NotificareDeviceDnD> updateDoNotDisturb(
       NotificareDeviceDnD dnd) async {
-    return NotificareDeviceDnD.fromJson(await _methodChannel
-        .invokeMapMethod('updateDoNotDisturb', {'dnd': dnd}));
+    Map<String, dynamic>? json = await _methodChannel
+        .invokeMapMethod('updateDoNotDisturb', {'dnd': dnd});
+    return NotificareDeviceDnD.fromJson(json!);
   }
 
   Future<void> clearDoNotDisturb() async {
@@ -214,8 +225,9 @@ class NotificarePushLib with WidgetsBindingObserver {
 
   Future<NotificareNotification> fetchNotificationForInboxItem(
       NotificareInboxItem inboxItem) async {
-    return NotificareNotification.fromJson(await _methodChannel.invokeMapMethod(
-        'fetchNotificationForInboxItem', {'inboxItem': inboxItem}));
+    Map<String, dynamic>? json = await _methodChannel.invokeMapMethod(
+        'fetchNotificationForInboxItem', {'inboxItem': inboxItem});
+    return NotificareNotification.fromJson(json!);
   }
 
   Future<void> presentNotification(NotificareNotification notification) async {
@@ -224,65 +236,72 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<List<NotificareInboxItem>> fetchInbox() async {
-    List response = await _methodChannel.invokeListMethod('fetchInbox');
-    return response
+    List<dynamic>? response =
+        await _methodChannel.invokeListMethod('fetchInbox');
+    return response!
         .map((value) => NotificareInboxItem.fromJson(value))
         .toList();
   }
 
   Future<void> presentInboxItem(NotificareInboxItem inboxItem) async {
-    return await _methodChannel
+    await _methodChannel
         .invokeMapMethod('presentInboxItem', {'inboxItem': inboxItem});
   }
 
-  Future<NotificareInboxItem> removeFromInbox(NotificareInboxItem inboxItem) async {
-    return NotificareInboxItem.fromJson(await _methodChannel
-        .invokeMapMethod('removeFromInbox', {'inboxItem': inboxItem}));
+  Future<NotificareInboxItem> removeFromInbox(
+      NotificareInboxItem inboxItem) async {
+    Map<String, dynamic>? json = await _methodChannel
+        .invokeMapMethod('removeFromInbox', {'inboxItem': inboxItem});
+    return NotificareInboxItem.fromJson(json!);
   }
 
   Future<NotificareInboxItem> markAsRead(NotificareInboxItem inboxItem) async {
-    return NotificareInboxItem.fromJson(await _methodChannel
-        .invokeMapMethod('markAsRead', {'inboxItem': inboxItem}));
+    Map<String, dynamic>? json = await _methodChannel
+        .invokeMapMethod('markAsRead', {'inboxItem': inboxItem});
+    return NotificareInboxItem.fromJson(json!);
   }
 
   Future<void> markAllAsRead() async {
-    return await _methodChannel.invokeMapMethod('markAllAsRead');
+    await _methodChannel.invokeMapMethod('markAllAsRead');
   }
 
   Future<void> clearInbox() async {
-    return await _methodChannel.invokeMapMethod('clearInbox');
+    await _methodChannel.invokeMapMethod('clearInbox');
   }
 
   Future<List<NotificareAsset>> fetchAssets(String group) async {
-    List response =
+    final response =
         await _methodChannel.invokeListMethod('fetchAssets', {'group': group});
-    return response.map((value) => NotificareAsset.fromJson(value)).toList();
+    return response!.map((value) => NotificareAsset.fromJson(value)).toList();
   }
 
   Future<NotificarePass> fetchPassWithSerial(String serial) async {
-    return NotificarePass.fromJson(await _methodChannel
-        .invokeMapMethod('fetchPassWithSerial', {'serial': serial}));
+    final json = await _methodChannel.invokeMapMethod<String, dynamic>(
+        'fetchPassWithSerial', {'serial': serial});
+    return NotificarePass.fromJson(json!);
   }
 
   Future<NotificarePass> fetchPassWithBarcode(String barcode) async {
-    return NotificarePass.fromJson(await _methodChannel
-        .invokeMapMethod('fetchPassWithBarcode', {'barcode': barcode}));
+    final json = await _methodChannel.invokeMapMethod<String, dynamic>(
+        'fetchPassWithBarcode', {'barcode': barcode});
+    return NotificarePass.fromJson(json!);
   }
 
   Future<List<NotificareProduct>> fetchProducts() async {
-    List response = await _methodChannel.invokeListMethod('fetchProducts');
-    return response.map((value) => NotificareProduct.fromJson(value)).toList();
+    final response = await _methodChannel.invokeListMethod('fetchProducts');
+    return response!.map((value) => NotificareProduct.fromJson(value)).toList();
   }
 
   Future<List<NotificareProduct>> fetchPurchasedProducts() async {
-    List response =
+    final response =
         await _methodChannel.invokeListMethod('fetchPurchasedProducts');
-    return response.map((value) => NotificareProduct.fromJson(value)).toList();
+    return response!.map((value) => NotificareProduct.fromJson(value)).toList();
   }
 
   Future<NotificareProduct> fetchProduct(NotificareProduct product) async {
-    return NotificareProduct.fromJson(await _methodChannel
-        .invokeMapMethod('fetchProduct', {'product': product}));
+    final json = await _methodChannel
+        .invokeMapMethod<String, dynamic>('fetchProduct', {'product': product});
+    return NotificareProduct.fromJson(json!);
   }
 
   Future<void> buyProduct(NotificareProduct product) async {
@@ -311,13 +330,13 @@ class NotificarePushLib with WidgetsBindingObserver {
         'logReceiveNotification', {'notification': notification});
   }
 
-  Future<Map<String, dynamic>> doCloudHostOperation(
+  Future<Map<String, dynamic>?> doCloudHostOperation(
       String verb,
       String path,
-      Map<String, String> params,
-      Map<String, String> headers,
-      Map<String, dynamic> body) async {
-    Map<String, dynamic> response = await _methodChannel.invokeMapMethod(
+      Map<String, String>? params,
+      Map<String, String>? headers,
+      Map<String, dynamic>? body) async {
+    final response = await _methodChannel.invokeMapMethod(
         'doCloudHostOperation', {
       'verb': verb,
       'path': path,
@@ -325,10 +344,11 @@ class NotificarePushLib with WidgetsBindingObserver {
       'headers': headers,
       'body': body
     });
-    return response.cast<String, dynamic>();
+    return response?.cast<String, dynamic>();
   }
 
-  Future<void> createAccount(String email, String name, String password) async {
+  Future<void> createAccount(
+      String email, String? name, String password) async {
     await _methodChannel.invokeMapMethod(
         'createAccount', {'email': email, 'name': name, 'password': password});
   }
@@ -364,38 +384,39 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<NotificareUser> generateAccessToken() async {
-    return new NotificareUser.fromJson(
-        await _methodChannel.invokeMapMethod('generateAccessToken'));
+    final Map<String, dynamic>? json =
+        await _methodChannel.invokeMapMethod('generateAccessToken');
+    return NotificareUser.fromJson(json!);
   }
 
   Future<void> changePassword(String password) async {
-    return await _methodChannel
+    await _methodChannel
         .invokeMapMethod('changePassword', {'password': password});
   }
 
   Future<NotificareUser> fetchAccountDetails() async {
-    return new NotificareUser.fromJson(
-        await _methodChannel.invokeMapMethod('fetchAccountDetails'));
+    Map<String, dynamic>? json =
+        await _methodChannel.invokeMapMethod('fetchAccountDetails');
+    return NotificareUser.fromJson(json!);
   }
 
   Future<List<NotificareUserPreference>> fetchUserPreferences() async {
-    List response =
+    final response =
         await _methodChannel.invokeListMethod('fetchUserPreferences');
-    return response
+    return response!
         .map((value) => NotificareUserPreference.fromJson(value))
         .toList();
   }
 
   Future<void> addSegmentToUserPreference(NotificareUserSegment segment,
       NotificareUserPreference userPreference) async {
-    return await _methodChannel.invokeMapMethod('addSegmentToUserPreference',
+    await _methodChannel.invokeMapMethod('addSegmentToUserPreference',
         {'segment': segment, 'userPreference': userPreference});
   }
 
   Future<void> removeSegmentFromUserPreference(NotificareUserSegment segment,
       NotificareUserPreference userPreference) async {
-    return await _methodChannel.invokeMapMethod(
-        'removeSegmentFromUserPreference',
+    await _methodChannel.invokeMapMethod('removeSegmentFromUserPreference',
         {'segment': segment, 'userPreference': userPreference});
   }
 
@@ -409,15 +430,19 @@ class NotificarePushLib with WidgetsBindingObserver {
   }
 
   Future<void> requestAlwaysAuthorizationForLocationUpdates() async {
-    await _methodChannel.invokeMethod('requestAlwaysAuthorizationForLocationUpdates');
+    await _methodChannel
+        .invokeMethod('requestAlwaysAuthorizationForLocationUpdates');
   }
 
-  Future<void> requestTemporaryFullAccuracyAuthorization(String purposeKey) async {
-    await _methodChannel.invokeMethod('requestTemporaryFullAccuracyAuthorization', { 'purposeKey': purposeKey });
+  Future<void> requestTemporaryFullAccuracyAuthorization(
+      String purposeKey) async {
+    await _methodChannel.invokeMethod(
+        'requestTemporaryFullAccuracyAuthorization',
+        {'purposeKey': purposeKey});
   }
 
-  Future<String> fetchLink(String url) async {
-    return await _methodChannel.invokeMethod('fetchLink', { 'url': url });
+  Future<String?> fetchLink(String url) async {
+    return await _methodChannel.invokeMethod('fetchLink', {'url': url});
   }
 
   Stream<NotificareEvent> get onEventReceived {
@@ -425,7 +450,7 @@ class NotificarePushLib with WidgetsBindingObserver {
       _onEventReceived =
           _eventChannel.receiveBroadcastStream().map(_toEventMessage);
     }
-    return _onEventReceived;
+    return _onEventReceived!;
   }
 
   NotificareEvent _toEventMessage(dynamic map) {
@@ -437,93 +462,76 @@ class NotificarePushLib with WidgetsBindingObserver {
               eventName,
               new NotificareReadyEvent(
                   NotificareApplication.fromJson(map['body'])));
-          break;
         case 'urlOpened':
           return new NotificareEvent(
               eventName, new NotificareUrlOpenedEvent(map['body']['url']));
-          break;
         case 'launchUrlReceived':
           return new NotificareEvent(eventName,
               new NotificareLaunchUrlReceivedEvent(map['body']['url']));
-          break;
         case 'deviceRegistered':
           return new NotificareEvent(
               eventName,
               new NotificareDeviceRegisteredEvent(
                   NotificareDevice.fromJson(map['body'])));
-          break;
         case 'notificationSettingsChanged':
           return new NotificareEvent(
               eventName,
               new NotificareNotificationSettingsChangedEvent(
                   map['body']['granted']));
-          break;
         case 'remoteNotificationReceivedInBackground':
           return new NotificareEvent(
               eventName,
               new NotificareRemoteNotificationReceivedInBackgroundEvent(
                   NotificareNotification.fromJson(map['body'])));
-          break;
         case 'remoteNotificationReceivedInForeground':
           return new NotificareEvent(
               eventName,
               new NotificareRemoteNotificationReceivedInForegroundEvent(
                   NotificareNotification.fromJson(map['body'])));
-          break;
         case 'systemNotificationReceivedInBackground':
           return new NotificareEvent(
               eventName,
               new NotificareSystemNotificationReceivedInBackgroundEvent(
                   NotificareSystemNotification.fromJson(map['body'])));
-          break;
         case 'systemNotificationReceivedInForeground':
           return new NotificareEvent(
               eventName,
               new NotificareSystemNotificationReceivedInForegroundEvent(
                   NotificareSystemNotification.fromJson(map['body'])));
-          break;
         case 'unknownNotificationReceived':
           return new NotificareEvent(eventName,
               new NotificareUnknownNotificationReceivedEvent(map['body']));
-          break;
         case 'unknownNotificationReceivedInBackground':
           return new NotificareEvent(eventName,
               new NotificareUnknownNotificationReceivedEvent(map['body']));
-          break;
         case 'unknownNotificationReceivedInForeground':
           return new NotificareEvent(eventName,
               new NotificareUnknownNotificationReceivedEvent(map['body']));
-          break;
         case 'unknownActionForNotificationReceived':
           return new NotificareEvent(
               eventName,
               new NotificareUnknownActionForNotificationReceivedEvent(
                   map['body']['action'], map['body']['notification']));
-          break;
         case 'notificationWillOpen':
           return new NotificareEvent(
               eventName,
               new NotificareNotificationWillOpenEvent(
                   NotificareNotification.fromJson(map['body'])));
-          break;
         case 'notificationOpened':
           return new NotificareEvent(
               eventName,
               new NotificareNotificationOpenedEvent(
                   NotificareNotification.fromJson(map['body'])));
-          break;
         case 'notificationClosed':
           return new NotificareEvent(
               eventName,
               new NotificareNotificationClosedEvent(
                   NotificareNotification.fromJson(map['body'])));
-          break;
         case 'notificationFailedToOpen':
           return new NotificareEvent(
               eventName,
               new NotificareNotificationFailedToOpenEvent(
                   NotificareNotification.fromJson(map['body'])));
-          break;
         case 'urlClickedInNotification':
           return new NotificareEvent(
               eventName,
@@ -531,44 +539,37 @@ class NotificarePushLib with WidgetsBindingObserver {
                   map['body']['url'],
                   NotificareNotification.fromJson(
                       map['body']['notification'])));
-          break;
         case 'actionWillExecute':
           return new NotificareEvent(
               eventName,
               new NotificareActionWillExecuteEvent(
                   NotificareAction.fromJson(map['body'])));
-          break;
         case 'actionExecuted':
           return new NotificareEvent(
               eventName,
               new NotificareActionExecutedEvent(
                   NotificareAction.fromJson(map['body'])));
-          break;
         case 'shouldPerformSelectorWithUrl':
           return new NotificareEvent(
               eventName,
               new NotificareShouldPerformSelectorWithUrlEvent(
                   map['body']['url'],
                   NotificareAction.fromJson(map['body']['action'])));
-          break;
         case 'actionNotExecuted':
           return new NotificareEvent(
               eventName,
               new NotificareActionNotExecutedEvent(
                   NotificareAction.fromJson(map['body'])));
-          break;
         case 'actionFailedToExecute':
           return new NotificareEvent(
               eventName,
               new NotificareActionFailedToExecuteEvent(
                   NotificareAction.fromJson(map['body'])));
-          break;
         case 'shouldOpenSettings':
           return new NotificareEvent(
               eventName,
               new NotificareShouldOpenSettingsEvent(
                   NotificareNotification.fromJson(map['body'])));
-          break;
         case 'inboxLoaded':
           List inbox = map['body'] as List;
           return new NotificareEvent(
@@ -576,27 +577,22 @@ class NotificarePushLib with WidgetsBindingObserver {
               new NotificareInboxLoadedEvent(inbox
                   .map((value) => NotificareInboxItem.fromJson(value))
                   .toList()));
-          break;
         case 'badgeUpdated':
           return new NotificareEvent(
               eventName, new NotificareBadgeUpdatedEvent(map['body']));
-          break;
         case 'locationServiceAuthorizationStatusReceived':
           return new NotificareEvent(
               eventName,
               new NotificareLocationServiceAuthorizationStatusReceived(
                   map['body']['status']));
-          break;
         case 'locationServiceAccuracyAuthorizationReceived':
           return new NotificareEvent(
               eventName,
               new NotificareLocationServiceAccuracyAuthorizationReceivedEvent(
                   map['body']['accuracy']));
-          break;
         case 'locationServiceFailedToStart':
           return new NotificareEvent(eventName,
               new NotificareLocationServiceFailedToStart(map['body']['error']));
-          break;
         case 'locationsUpdated':
           List locations = map['body'] as List;
           return new NotificareEvent(
@@ -604,18 +600,18 @@ class NotificarePushLib with WidgetsBindingObserver {
               new NotificareLocationsUpdatedEvent(locations
                   .map((value) => NotificareLocation.fromJson(value))
                   .toList()));
-          break;
         case 'monitoringForRegionStarted':
           if (map['body']['region']['beaconId'] != null) {
-            return new NotificareEvent(eventName,
+            return new NotificareEvent(
+                eventName,
                 new NotificareMonitoringForRegionStartedEvent(
                     NotificareBeacon.fromJson(map['body']['region'])));
           } else {
-            return new NotificareEvent(eventName,
+            return new NotificareEvent(
+                eventName,
                 new NotificareMonitoringForRegionStartedEvent(
                     NotificareRegion.fromJson(map['body']['region'])));
           }
-          break;
         case 'monitoringForRegionFailed':
           if (map['body']['region'] != null) {
             if (map['body']['region']['beaconId'] != null) {
@@ -635,10 +631,8 @@ class NotificarePushLib with WidgetsBindingObserver {
             return new NotificareEvent(
                 eventName,
                 new NotificareMonitoringForRegionFailedEvent(
-                    null,
-                    map['body']['error']));
+                    null, map['body']['error']));
           }
-          break;
         case 'stateForRegionChanged':
           if (map['body']['region']['beaconId'] != null) {
             return new NotificareEvent(
@@ -653,7 +647,6 @@ class NotificarePushLib with WidgetsBindingObserver {
                     NotificareRegion.fromJson(map['body']['region']),
                     map['body']['state']));
           }
-          break;
         case 'regionEntered':
           if (map['body']['region']['beaconId'] != null) {
             return new NotificareEvent(
@@ -666,7 +659,6 @@ class NotificarePushLib with WidgetsBindingObserver {
                 new NotificareRegionEnteredEvent(
                     NotificareRegion.fromJson(map['body']['region'])));
           }
-          break;
         case 'regionExited':
           if (map['body']['region']['beaconId'] != null) {
             return new NotificareEvent(
@@ -679,41 +671,35 @@ class NotificarePushLib with WidgetsBindingObserver {
                 new NotificareRegionExitedEvent(
                     NotificareRegion.fromJson(map['body']['region'])));
           }
-          break;
         case 'beaconsInRangeForRegion':
           List beacons = map['body']['beacons'] as List;
           final region = map['body']['region'];
           return new NotificareEvent(
               eventName,
               new NotificareBeaconsInRangeForRegionEvent(
-                  beacons
-                      .map((value) => NotificareBeacon.fromJson(value))
-                      .toList(),
-                  region != null ? NotificareBeacon.fromJson(region) : null,
+                beacons
+                    .map((value) => NotificareBeacon.fromJson(value))
+                    .toList(),
+                region != null ? NotificareBeacon.fromJson(region) : null,
               ));
-          break;
         case 'headingUpdated':
           return new NotificareEvent(
               eventName,
               new NotificareHeadingUpdatedEvent(
                   NotificareHeading.fromJson(map['body'])));
-          break;
         case 'visitReceived':
           return new NotificareEvent(
               eventName,
               new NotificareVisitReceivedEvent(
                   NotificareVisit.fromJson(map['body'])));
-          break;
         case 'activationTokenReceived':
           return new NotificareEvent(eventName,
               new NotificareActivationTokenReceivedEvent(map['body']['token']));
-          break;
         case 'resetPasswordTokenReceived':
           return new NotificareEvent(
               eventName,
               new NotificareResetPasswordTokenReceivedEvent(
                   map['body']['token']));
-          break;
         case 'storeLoaded':
           List products = map['body'] as List;
           return new NotificareEvent(
@@ -721,91 +707,77 @@ class NotificarePushLib with WidgetsBindingObserver {
               new NotificareStoreLoadedEvent(products
                   .map((value) => NotificareProduct.fromJson(value))
                   .toList()));
-          break;
         case 'storeFailedToLoad':
           return new NotificareEvent(eventName,
               new NotificareStoreFailedToLoadEvent(map['body']['error']));
-          break;
         case 'productTransactionCompleted':
           return new NotificareEvent(
               eventName,
               new NotificareProductTransactionCompletedEvent(
                   NotificareProduct.fromJson(map['body'])));
-          break;
         case 'productTransactionRestored':
           return new NotificareEvent(
               eventName,
               new NotificareProductTransactionRestoredEvent(
                   NotificareProduct.fromJson(map['body'])));
-          break;
         case 'productTransactionFailed':
           return new NotificareEvent(
               eventName,
               new NotificareProductTransactionFailedEvent(map['body']['error'],
                   NotificareProduct.fromJson(map['body'])));
-          break;
         case 'productContentDownloadStarted':
           return new NotificareEvent(
               eventName,
               new NotificareProductContentDownloadStartedEvent(
                   NotificareProduct.fromJson(map['body'])));
-          break;
         case 'productContentDownloadPaused':
           return new NotificareEvent(
               eventName,
               new NotificareProductContentDownloadPausedEvent(
                   NotificareDownload.fromJson(map['body']['download']),
                   NotificareProduct.fromJson(map['body']['product'])));
-          break;
         case 'productContentDownloadCancelled':
           return new NotificareEvent(
               eventName,
               new NotificareProductContentDownloadCancelledEvent(
                   NotificareDownload.fromJson(map['body']['download']),
                   NotificareProduct.fromJson(map['body']['product'])));
-          break;
         case 'productContentDownloadProgress':
           return new NotificareEvent(
               eventName,
               new NotificareProductContentDownloadProgressEvent(
                   NotificareDownload.fromJson(map['body']['download']),
                   NotificareProduct.fromJson(map['body']['product'])));
-          break;
         case 'productContentDownloadFailed':
           return new NotificareEvent(
               eventName,
               new NotificareProductContentDownloadFailedEvent(
                   NotificareDownload.fromJson(map['body']['download']),
                   NotificareProduct.fromJson(map['body']['product'])));
-          break;
         case 'productContentDownloadFinished':
           return new NotificareEvent(
               eventName,
               new NotificareProductContentDownloadFinishedEvent(
                   NotificareDownload.fromJson(map['body']['download']),
                   NotificareProduct.fromJson(map['body']['product'])));
-          break;
         case 'qrCodeScannerStarted':
           return new NotificareEvent(
               eventName, new NotificareQrCodeScannerStartedEvent());
-          break;
         case 'scannableDetected':
           return new NotificareEvent(
               eventName,
               new NotificareScannableDetectedEvent(
                   NotificareScannable.fromJson(map['body'])));
-          break;
         case 'scannableSessionInvalidatedWithError':
           return new NotificareEvent(
               eventName,
               new NotificareScannableSessionInvalidatedWithErrorEvent(
                   map['body']['error']));
-          break;
         default:
           return new NotificareEvent(eventName, map['body']);
-          break;
       }
     }
-    return null;
+    // NOTE: should never occur.
+    return new NotificareEvent('unhandled', null);
   }
 }

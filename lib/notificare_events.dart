@@ -395,7 +395,7 @@ class NotificareRegionExitedEvent {
 ///
 class NotificareBeaconsInRangeForRegionEvent {
   NotificareBeaconsInRangeForRegionEvent(this.beacons, this.region);
-  NotificareBeacon region;
+  NotificareBeacon? region;
   List<NotificareBeacon> beacons;
 }
 
