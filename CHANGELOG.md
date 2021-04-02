@@ -1,3 +1,7 @@
+## 2.6.0
+- Fix preferred language update
+- Add null safety support
+
 ## 2.5.4
 - Update native iOS dependency
 - Improve present notifications, inbox items & scannables transition & styling 
