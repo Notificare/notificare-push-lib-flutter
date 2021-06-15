@@ -179,7 +179,8 @@ NotificareNotification _$NotificareNotificationFromJson(
         .toList()
     ..attachments = (json['attachments'] as List<dynamic>?)
         ?.map((e) => NotificareAttachment.fromJson(e as Map<String, dynamic>))
-        .toList();
+        .toList()
+    ..application = json['application'] as Map<String, dynamic>?;
 }
 
 Map<String, dynamic> _$NotificareNotificationToJson(
@@ -197,6 +198,7 @@ Map<String, dynamic> _$NotificareNotificationToJson(
       'content': instance.content,
       'actions': instance.actions,
       'attachments': instance.attachments,
+      'application': instance.application,
     };
 
 NotificareSystemNotification _$NotificareSystemNotificationFromJson(

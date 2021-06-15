@@ -126,6 +126,7 @@ class NotificareNotification {
   List<NotificareContent>? content;
   List<NotificareAction>? actions;
   List<NotificareAttachment>? attachments;
+  Map<String, dynamic>? application;
 
   factory NotificareNotification.fromJson(Map<String, dynamic> json) =>
       _$NotificareNotificationFromJson(json);
