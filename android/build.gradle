@@ -1,5 +1,5 @@
 group 're.notifica.flutter'
-version '2.6.0'
+version '2.6.1'
 
 buildscript {
     repositories {
@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    def notificare_version = '2.5.1'
+    def notificare_version = '2.6.0'
 
     api "re.notifica:notificare-core:$notificare_version"
     compileOnly "re.notifica:notificare-location:$notificare_version"
