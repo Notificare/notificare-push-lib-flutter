@@ -1,16 +1,16 @@
 PODS:
   - Flutter (1.0.0)
-  - "location_permissions (2.0.4+1)":
+  - notificare-push-lib (2.6.1)
+  - notificare_push_lib (2.6.0):
     - Flutter
-  - notificare-push-lib (2.5.0)
-  - notificare_push_lib (2.5.0):
+    - notificare-push-lib (= 2.6.1)
+  - "permission_handler (5.1.0+2)":
     - Flutter
-    - notificare-push-lib (= 2.5.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - notificare_push_lib (from `.symlinks/plugins/notificare_push_lib/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
 
 SPEC REPOS:
   trunk:
@@ -19,17 +19,17 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  location_permissions:
-    :path: ".symlinks/plugins/location_permissions/ios"
   notificare_push_lib:
     :path: ".symlinks/plugins/notificare_push_lib/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  location_permissions: 360d12ecd1c94a4cab68585f508be1d5ad944c8b
-  notificare-push-lib: 3143ce67ef7b709f5816bd9d0c327c8f16228b5c
-  notificare_push_lib: adb65b3e140253d7465d3a5fd63a7552ec285502
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  notificare-push-lib: 51c8a9413eea2c31a522d152b8c8885de8b1616a
+  notificare_push_lib: 149817f442abc2c1173d51ee714032f1c86653d4
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
 
 PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1
