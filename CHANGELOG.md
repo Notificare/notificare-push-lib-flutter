@@ -1,3 +1,9 @@
+## 2.6.1
+- Update native Android dependency
+- Update native iOS dependency
+- Handle test device registration
+- Fix notification serialisation
+
 ## 2.6.0
 - Fix preferred language update
 - Add null safety support
