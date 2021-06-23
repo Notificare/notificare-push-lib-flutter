@@ -1,3 +1,6 @@
+## 2.6.2
+- Prevent the plugin from stopping the events propagation
+
 ## 2.6.1
 - Update native Android dependency
 - Update native iOS dependency
