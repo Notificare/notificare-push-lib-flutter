@@ -1272,12 +1272,12 @@
     [payload setObject:[url absoluteString] forKey:@"url"];
     [payload setObject:options forKey:@"options"];
     [self sendEvent:@{@"event":@"urlOpened", @"body": payload}];
-    return YES;
+    return NO;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nonnull))restorationHandler {
     [[NotificarePushLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
-    return YES;
+    return NO;
 }
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken {
