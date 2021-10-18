@@ -1,9 +1,9 @@
 PODS:
   - Flutter (1.0.0)
-  - notificare-push-lib (2.7-beta2)
+  - notificare-push-lib (2.7.0)
   - notificare_push_lib (2.7.0-beta.1):
     - Flutter
-    - notificare-push-lib (= 2.7-beta2)
+    - notificare-push-lib (= 2.7.0)
   - "permission_handler (5.1.0+2)":
     - Flutter
 
@@ -26,8 +26,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  notificare-push-lib: 7c298b0187290f12dbb0efd65950e61cc2053e70
-  notificare_push_lib: fee3d32131c93587f7f291d4ce988e72ea9ff16c
+  notificare-push-lib: b8e0b9373b6a06f97d8936a189c90679fafb2151
+  notificare_push_lib: a074103ffbac6d228795705c01075039a049e316
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
 
 PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
