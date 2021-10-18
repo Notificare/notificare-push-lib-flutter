@@ -7,6 +7,9 @@
 #import "UIColor+Hex.h"
 
 @interface NotificarePushLibPlugin () <FlutterStreamHandler,NotificarePushLibDelegate>
+
+@property (strong, nonatomic) NSMutableArray *eventQueue;
+
 @end
 
 @implementation NotificarePushLibPlugin {
@@ -37,6 +40,7 @@
     self = [super init];
     if (self) {
         _channel = channel;
+        [self setEventQueue:[NSMutableArray new]];
     }
     return self;
 }
@@ -844,16 +848,33 @@
 #pragma mark Event Sink
 -(void)sendEvent:(NSDictionary*)event{
     if (!_eventSink) {
+        [[self eventQueue] addObject:event];
         return;
     }
+
     dispatch_async(dispatch_get_main_queue(), ^{
         self->_eventSink(event);
     });
 }
 
+-(void)handleEvents {
+    if (!_eventSink) {
+        return;
+    }
+    
+    if ([self eventQueue] && [[self eventQueue] count] > 0) {
+        for (NSDictionary* event in [self eventQueue]) {
+            self->_eventSink(event);
+        }
+        
+        [[self eventQueue] removeAllObjects];
+    }
+}
+
 #pragma mark Notificare Delegates
 -(void)notificarePushLib:(NotificarePushLib *)library onReady:(NotificareApplication *)application{
     [self sendEvent:@{@"event":@"ready", @"body": [[NotificarePushLibUtils shared] dictionaryFromApplication:application]}];
+    [self handleEvents];
 }
 
 
@@ -1313,6 +1334,7 @@
 #pragma mark FlutterStreamHandler implementation
 - (FlutterError*)onListenWithArguments:(id)arguments eventSink:(FlutterEventSink)eventSink {
     _eventSink = eventSink;
+    // [self handleEvents];
     return nil;
 }
 
