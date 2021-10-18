@@ -220,7 +220,7 @@ Map<String, dynamic> _$NotificareSystemNotificationToJson(
 NotificareContent _$NotificareContentFromJson(Map<String, dynamic> json) {
   return NotificareContent(
     json['type'] as String?,
-    json['data'] as String?,
+    json['data'],
   );
 }
 
