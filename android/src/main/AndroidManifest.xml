@@ -2,7 +2,9 @@
   package="re.notifica.flutter">
     <application>
 
-        <receiver android:name="re.notifica.flutter.NotificareReceiver" />
+        <receiver
+            android:name="re.notifica.flutter.NotificareReceiver"
+            android:exported="false" />
 
     </application>
 </manifest>

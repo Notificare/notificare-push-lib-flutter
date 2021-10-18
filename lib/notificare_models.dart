@@ -151,7 +151,7 @@ class NotificareContent {
   NotificareContent(this.type, this.data);
 
   String? type;
-  String? data;
+  dynamic data;
 
   factory NotificareContent.fromJson(Map<String, dynamic> json) =>
       _$NotificareContentFromJson(json);

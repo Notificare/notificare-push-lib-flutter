@@ -15,6 +15,7 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="true"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
@@ -27,6 +28,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="re.notifica.intent.action.RemoteMessageOpened" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="re.notifica.intent.action.NotificationOpened" />
@@ -61,12 +66,14 @@
             android:name=".EmbeddingV1Activity"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale"
+            android:exported="true"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name="re.notifica.ui.PassbookActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
             android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -82,6 +89,7 @@
             android:name="re.notifica.ui.NotificationActivity"
             android:theme="@style/NotificationTheme.Translucent"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
             android:hardwareAccelerated="true" />
 
         <meta-data android:name="flutterEmbedding" android:value="2"/>

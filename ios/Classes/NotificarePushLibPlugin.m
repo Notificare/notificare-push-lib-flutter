@@ -7,6 +7,9 @@
 #import "UIColor+Hex.h"
 
 @interface NotificarePushLibPlugin () <FlutterStreamHandler,NotificarePushLibDelegate>
+
+@property (strong, nonatomic) NSMutableArray *eventQueue;
+
 @end
 
 @implementation NotificarePushLibPlugin {
@@ -37,6 +40,7 @@
     self = [super init];
     if (self) {
         _channel = channel;
+        [self setEventQueue:[NSMutableArray new]];
     }
     return self;
 }
@@ -380,7 +384,7 @@
       id controller = [[NotificarePushLib shared] controllerForNotification:item];
       if ([self isViewController:controller]) {
           UINavigationController *navController = [self navigationControllerForViewControllers:controller];
-          [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:YES completion:^{
+          [[self rootViewController] presentViewController:navController animated:YES completion:^{
               [[NotificarePushLib shared] presentNotification:item inNavigationController:navController withController:controller];
           }];
       } else {
@@ -408,7 +412,7 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
-                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:YES completion:^{
+                  [[self rootViewController] presentViewController:navController animated:YES completion:^{
                       [[NotificarePushLib shared] presentInboxItem:item inNavigationController:navController withController:response];
                   }];
               } else {
@@ -763,7 +767,7 @@
           if (!error) {
               if ([self isViewController:response]) {
                   UINavigationController *navController = [self navigationControllerForViewControllers:response];
-                  [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:navController animated:YES completion:^{
+                  [[self rootViewController] presentViewController:navController animated:YES completion:^{
                       [[NotificarePushLib shared] presentScannable:item inNavigationController:navController withController:response];
                   }];
               } else {
@@ -801,8 +805,14 @@
 
 
 #pragma mark Helper Methods
+
+-(UIViewController*) rootViewController {
+    FlutterAppDelegate* delegate = (FlutterAppDelegate*) [[UIApplication sharedApplication] delegate];
+    return [[delegate window] rootViewController];
+}
+
 -(void)close{
-    [[[[UIApplication sharedApplication] keyWindow] rootViewController] dismissViewControllerAnimated:YES completion:^{
+    [[self rootViewController] dismissViewControllerAnimated:YES completion:^{
         
     }];
 }
@@ -825,7 +835,7 @@
 }
 
 -(UINavigationController*)navigationControllerForRootViewController{
-    UINavigationController * navController = (UINavigationController*)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+    UINavigationController * navController = (UINavigationController*) [self rootViewController];
     return navController;
 }
 
@@ -844,16 +854,33 @@
 #pragma mark Event Sink
 -(void)sendEvent:(NSDictionary*)event{
     if (!_eventSink) {
+        [[self eventQueue] addObject:event];
         return;
     }
+
     dispatch_async(dispatch_get_main_queue(), ^{
         self->_eventSink(event);
     });
 }
 
+-(void)handleEvents {
+    if (!_eventSink) {
+        return;
+    }
+    
+    if ([self eventQueue] && [[self eventQueue] count] > 0) {
+        for (NSDictionary* event in [self eventQueue]) {
+            self->_eventSink(event);
+        }
+        
+        [[self eventQueue] removeAllObjects];
+    }
+}
+
 #pragma mark Notificare Delegates
 -(void)notificarePushLib:(NotificarePushLib *)library onReady:(NotificareApplication *)application{
     [self sendEvent:@{@"event":@"ready", @"body": [[NotificarePushLibUtils shared] dictionaryFromApplication:application]}];
+    [self handleEvents];
 }
 
 
@@ -1267,17 +1294,18 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
-    [[NotificarePushLib shared] handleOpenURL:url withOptions:options];
+    BOOL handled = [[NotificarePushLib shared] handleOpenURL:url withOptions:options];
+    
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[url absoluteString] forKey:@"url"];
     [payload setObject:options forKey:@"options"];
     [self sendEvent:@{@"event":@"urlOpened", @"body": payload}];
-    return NO;
+    
+    return handled;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nonnull))restorationHandler {
-    [[NotificarePushLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
-    return NO;
+    return [[NotificarePushLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken {
@@ -1312,6 +1340,7 @@
 #pragma mark FlutterStreamHandler implementation
 - (FlutterError*)onListenWithArguments:(id)arguments eventSink:(FlutterEventSink)eventSink {
     _eventSink = eventSink;
+    // [self handleEvents];
     return nil;
 }
 

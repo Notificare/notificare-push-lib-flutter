@@ -1363,6 +1363,8 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
   }
 
   private boolean handleIntent(Intent intent) {
+    if (Notificare.shared().handleTrampolineIntent(intent)) return true;
+
     JSONObject notificationMap = parseNotificationIntent(intent);
     if (notificationMap != null) {
       sendEvent("remoteNotificationReceivedInBackground", notificationMap, true);
