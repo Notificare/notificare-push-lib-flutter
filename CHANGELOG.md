@@ -1,3 +1,8 @@
+## 2.7.0
+- Update native dependencies
+- Fix notification opens from cold app start
+- Fix notification content (map) parsing
+
 ## 2.7.0-beta.1
 - Update native Android dependency to 2.7.0-beta.5
 - Update native iOS dependency to 2.7-beta2
