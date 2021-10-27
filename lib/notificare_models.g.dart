@@ -9,9 +9,9 @@ part of 'notificare_models.dart';
 NotificareApplication _$NotificareApplicationFromJson(
     Map<String, dynamic> json) {
   return NotificareApplication()
-    ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..services = (json['services'] as Map<String, dynamic>)?.map(
+    ..id = json['id'] as String?
+    ..name = json['name'] as String?
+    ..services = (json['services'] as Map<String, dynamic>?)?.map(
       (k, e) => MapEntry(k, e as bool),
     )
     ..inboxConfig = json['inboxConfig'] == null
@@ -37,8 +37,8 @@ Map<String, dynamic> _$NotificareApplicationToJson(
 NotificareInboxConfig _$NotificareInboxConfigFromJson(
     Map<String, dynamic> json) {
   return NotificareInboxConfig()
-    ..autoBadge = json['autoBadge'] as bool
-    ..useInbox = json['useInbox'] as bool;
+    ..autoBadge = json['autoBadge'] as bool?
+    ..useInbox = json['useInbox'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareInboxConfigToJson(
@@ -51,7 +51,7 @@ Map<String, dynamic> _$NotificareInboxConfigToJson(
 NotificareRegionConfig _$NotificareRegionConfigFromJson(
     Map<String, dynamic> json) {
   return NotificareRegionConfig()
-    ..proximityUUID = json['proximityUUID'] as String;
+    ..proximityUUID = json['proximityUUID'] as String?;
 }
 
 Map<String, dynamic> _$NotificareRegionConfigToJson(
@@ -63,17 +63,17 @@ Map<String, dynamic> _$NotificareRegionConfigToJson(
 NotificareNotificationSettings _$NotificareNotificationSettingsFromJson(
     Map<String, dynamic> json) {
   return NotificareNotificationSettings()
-    ..authorizationStatus = json['authorizationStatus'] as String
-    ..alertSetting = json['alertSetting'] as String
-    ..badgeSetting = json['badgeSetting'] as String
-    ..soundSetting = json['soundSetting'] as String
-    ..notificationCenterSetting = json['notificationCenterSetting'] as String
-    ..lockScreenSetting = json['lockScreenSetting'] as String
-    ..criticalAlertSetting = json['criticalAlertSetting'] as String
-    ..alertStyle = json['alertStyle'] as String
-    ..showPreviewsSetting = json['showPreviewsSetting'] as String
+    ..authorizationStatus = json['authorizationStatus'] as String?
+    ..alertSetting = json['alertSetting'] as String?
+    ..badgeSetting = json['badgeSetting'] as String?
+    ..soundSetting = json['soundSetting'] as String?
+    ..notificationCenterSetting = json['notificationCenterSetting'] as String?
+    ..lockScreenSetting = json['lockScreenSetting'] as String?
+    ..criticalAlertSetting = json['criticalAlertSetting'] as String?
+    ..alertStyle = json['alertStyle'] as String?
+    ..showPreviewsSetting = json['showPreviewsSetting'] as String?
     ..providesAppNotificationSettings =
-        json['providesAppNotificationSettings'] as bool;
+        json['providesAppNotificationSettings'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareNotificationSettingsToJson(
@@ -94,29 +94,29 @@ Map<String, dynamic> _$NotificareNotificationSettingsToJson(
 
 NotificareDevice _$NotificareDeviceFromJson(Map<String, dynamic> json) {
   return NotificareDevice()
-    ..deviceID = json['deviceID'] as String
-    ..userID = json['userID'] as String
-    ..userName = json['userName'] as String
-    ..timezone = (json['timezone'] as num)?.toDouble()
-    ..osVersion = json['osVersion'] as String
-    ..sdkVersion = json['sdkVersion'] as String
-    ..appVersion = json['appVersion'] as String
-    ..countryCode = json['countryCode'] as String
-    ..language = json['language'] as String
-    ..region = json['region'] as String
-    ..transport = json['transport'] as String
-    ..latitude = (json['latitude'] as num)?.toDouble()
-    ..longitude = (json['longitude'] as num)?.toDouble()
-    ..altitude = (json['altitude'] as num)?.toDouble()
-    ..speed = (json['speed'] as num)?.toDouble()
-    ..course = (json['course'] as num)?.toDouble()
-    ..accuracy = (json['accuracy'] as num)?.toDouble()
-    ..locationServicesAuthStatus = json['locationServicesAuthStatus'] as String
-    ..registeredForNotifications = json['registeredForNotifications'] as bool
-    ..allowedLocationServices = json['allowedLocationServices'] as bool
-    ..allowedUI = json['allowedUI'] as bool
-    ..backgroundAppRefresh = json['backgroundAppRefresh'] as bool
-    ..bluetoothON = json['bluetoothON'] as bool;
+    ..deviceID = json['deviceID'] as String?
+    ..userID = json['userID'] as String?
+    ..userName = json['userName'] as String?
+    ..timezone = (json['timezone'] as num?)?.toDouble()
+    ..osVersion = json['osVersion'] as String?
+    ..sdkVersion = json['sdkVersion'] as String?
+    ..appVersion = json['appVersion'] as String?
+    ..countryCode = json['countryCode'] as String?
+    ..language = json['language'] as String?
+    ..region = json['region'] as String?
+    ..transport = json['transport'] as String?
+    ..latitude = (json['latitude'] as num?)?.toDouble()
+    ..longitude = (json['longitude'] as num?)?.toDouble()
+    ..altitude = (json['altitude'] as num?)?.toDouble()
+    ..speed = (json['speed'] as num?)?.toDouble()
+    ..course = (json['course'] as num?)?.toDouble()
+    ..accuracy = (json['accuracy'] as num?)?.toDouble()
+    ..locationServicesAuthStatus = json['locationServicesAuthStatus'] as String?
+    ..registeredForNotifications = json['registeredForNotifications'] as bool?
+    ..allowedLocationServices = json['allowedLocationServices'] as bool?
+    ..allowedUI = json['allowedUI'] as bool?
+    ..backgroundAppRefresh = json['backgroundAppRefresh'] as bool?
+    ..bluetoothON = json['bluetoothON'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareDeviceToJson(NotificareDevice instance) =>
@@ -148,8 +148,8 @@ Map<String, dynamic> _$NotificareDeviceToJson(NotificareDevice instance) =>
 
 NotificareDeviceDnD _$NotificareDeviceDnDFromJson(Map<String, dynamic> json) {
   return NotificareDeviceDnD()
-    ..start = json['start'] as String
-    ..end = json['end'] as String;
+    ..start = json['start'] as String?
+    ..end = json['end'] as String?;
 }
 
 Map<String, dynamic> _$NotificareDeviceDnDToJson(
@@ -162,30 +162,25 @@ Map<String, dynamic> _$NotificareDeviceDnDToJson(
 NotificareNotification _$NotificareNotificationFromJson(
     Map<String, dynamic> json) {
   return NotificareNotification()
-    ..id = json['id'] as String
-    ..inboxItemId = json['inboxItemId'] as String
-    ..type = json['type'] as String
-    ..time = json['time'] as String
-    ..title = json['title'] as String
-    ..subtitle = json['subtitle'] as String
-    ..message = json['message'] as String
-    ..targetContentIdentifier = json['targetContentIdentifier'] as String
-    ..extra = json['extra'] as Map<String, dynamic>
-    ..content = (json['content'] as List)
-        ?.map((e) => e == null
-            ? null
-            : NotificareContent.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..actions = (json['actions'] as List)
-        ?.map((e) => e == null
-            ? null
-            : NotificareAction.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..attachments = (json['attachments'] as List)
-        ?.map((e) => e == null
-            ? null
-            : NotificareAttachment.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..id = json['id'] as String?
+    ..inboxItemId = json['inboxItemId'] as String?
+    ..type = json['type'] as String?
+    ..time = json['time'] as String?
+    ..title = json['title'] as String?
+    ..subtitle = json['subtitle'] as String?
+    ..message = json['message'] as String?
+    ..targetContentIdentifier = json['targetContentIdentifier'] as String?
+    ..extra = json['extra'] as Map<String, dynamic>?
+    ..content = (json['content'] as List<dynamic>?)
+        ?.map((e) => NotificareContent.fromJson(e as Map<String, dynamic>))
+        .toList()
+    ..actions = (json['actions'] as List<dynamic>?)
+        ?.map((e) => NotificareAction.fromJson(e as Map<String, dynamic>))
+        .toList()
+    ..attachments = (json['attachments'] as List<dynamic>?)
+        ?.map((e) => NotificareAttachment.fromJson(e as Map<String, dynamic>))
+        .toList()
+    ..application = json['application'] as Map<String, dynamic>?;
 }
 
 Map<String, dynamic> _$NotificareNotificationToJson(
@@ -203,14 +198,15 @@ Map<String, dynamic> _$NotificareNotificationToJson(
       'content': instance.content,
       'actions': instance.actions,
       'attachments': instance.attachments,
+      'application': instance.application,
     };
 
 NotificareSystemNotification _$NotificareSystemNotificationFromJson(
     Map<String, dynamic> json) {
   return NotificareSystemNotification()
-    ..notificationID = json['notificationID'] as String
-    ..type = json['type'] as String
-    ..extra = json['extra'] as Map<String, dynamic>;
+    ..notificationID = json['notificationID'] as String?
+    ..type = json['type'] as String?
+    ..extra = json['extra'] as Map<String, dynamic>?;
 }
 
 Map<String, dynamic> _$NotificareSystemNotificationToJson(
@@ -223,8 +219,8 @@ Map<String, dynamic> _$NotificareSystemNotificationToJson(
 
 NotificareContent _$NotificareContentFromJson(Map<String, dynamic> json) {
   return NotificareContent(
-    json['type'] as String,
-    json['data'] as String,
+    json['type'] as String?,
+    json['data'],
   );
 }
 
@@ -236,11 +232,11 @@ Map<String, dynamic> _$NotificareContentToJson(NotificareContent instance) =>
 
 NotificareAction _$NotificareActionFromJson(Map<String, dynamic> json) {
   return NotificareAction()
-    ..label = json['label'] as String
-    ..type = json['type'] as String
-    ..target = json['target'] as String
-    ..camera = json['camera'] as bool
-    ..keyboard = json['keyboard'] as bool;
+    ..label = json['label'] as String?
+    ..type = json['type'] as String?
+    ..target = json['target'] as String?
+    ..camera = json['camera'] as bool?
+    ..keyboard = json['keyboard'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareActionToJson(NotificareAction instance) =>
@@ -254,8 +250,8 @@ Map<String, dynamic> _$NotificareActionToJson(NotificareAction instance) =>
 
 NotificareAttachment _$NotificareAttachmentFromJson(Map<String, dynamic> json) {
   return NotificareAttachment(
-    json['mimeType'] as String,
-    json['uri'] as String,
+    json['mimeType'] as String?,
+    json['uri'] as String?,
   );
 }
 
@@ -268,22 +264,22 @@ Map<String, dynamic> _$NotificareAttachmentToJson(
 
 NotificareInboxItem _$NotificareInboxItemFromJson(Map<String, dynamic> json) {
   return NotificareInboxItem(
-    json['inboxId'] as String,
+    json['inboxId'] as String?,
   )
-    ..notification = json['notification'] as String
-    ..type = json['type'] as String
-    ..message = json['message'] as String
-    ..title = json['title'] as String
-    ..subtitle = json['subtitle'] as String
+    ..notification = json['notification'] as String?
+    ..type = json['type'] as String?
+    ..message = json['message'] as String?
+    ..title = json['title'] as String?
+    ..subtitle = json['subtitle'] as String?
     ..attachment = json['attachment'] == null
         ? null
         : NotificareAttachment.fromJson(
             json['attachment'] as Map<String, dynamic>)
-    ..extra = (json['extra'] as Map<String, dynamic>)?.map(
+    ..extra = (json['extra'] as Map<String, dynamic>?)?.map(
       (k, e) => MapEntry(k, e as String),
     )
-    ..time = json['time'] as String
-    ..opened = json['opened'] as bool;
+    ..time = json['time'] as String?
+    ..opened = json['opened'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareInboxItemToJson(
@@ -303,15 +299,15 @@ Map<String, dynamic> _$NotificareInboxItemToJson(
 
 NotificareLocation _$NotificareLocationFromJson(Map<String, dynamic> json) {
   return NotificareLocation()
-    ..latitude = (json['latitude'] as num)?.toDouble()
-    ..longitude = (json['longitude'] as num)?.toDouble()
-    ..altitude = (json['altitude'] as num)?.toDouble()
-    ..horizontalAccuracy = (json['horizontalAccuracy'] as num)?.toDouble()
-    ..verticalAccuracy = (json['verticalAccuracy'] as num)?.toDouble()
-    ..floor = json['floor'] as int
-    ..speed = (json['speed'] as num)?.toDouble()
-    ..course = (json['course'] as num)?.toDouble()
-    ..timestamp = json['timestamp'] as String;
+    ..latitude = (json['latitude'] as num?)?.toDouble()
+    ..longitude = (json['longitude'] as num?)?.toDouble()
+    ..altitude = (json['altitude'] as num?)?.toDouble()
+    ..horizontalAccuracy = (json['horizontalAccuracy'] as num?)?.toDouble()
+    ..verticalAccuracy = (json['verticalAccuracy'] as num?)?.toDouble()
+    ..floor = json['floor'] as int?
+    ..speed = (json['speed'] as num?)?.toDouble()
+    ..course = (json['course'] as num?)?.toDouble()
+    ..timestamp = json['timestamp'] as String?;
 }
 
 Map<String, dynamic> _$NotificareLocationToJson(NotificareLocation instance) =>
@@ -329,13 +325,13 @@ Map<String, dynamic> _$NotificareLocationToJson(NotificareLocation instance) =>
 
 NotificareBeacon _$NotificareBeaconFromJson(Map<String, dynamic> json) {
   return NotificareBeacon()
-    ..beaconId = json['beaconId'] as String
-    ..beaconName = json['beaconName'] as String
-    ..beaconRegion = json['beaconRegion'] as String
-    ..beaconUUID = json['beaconUUID'] as String
-    ..beaconMajor = json['beaconMajor'] as int
-    ..beaconMinor = json['beaconMinor'] as int
-    ..beaconTriggers = json['beaconTriggers'] as bool;
+    ..beaconId = json['beaconId'] as String?
+    ..beaconName = json['beaconName'] as String?
+    ..beaconRegion = json['beaconRegion'] as String?
+    ..beaconUUID = json['beaconUUID'] as String?
+    ..beaconMajor = json['beaconMajor'] as int?
+    ..beaconMinor = json['beaconMinor'] as int?
+    ..beaconTriggers = json['beaconTriggers'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareBeaconToJson(NotificareBeacon instance) =>
@@ -351,9 +347,9 @@ Map<String, dynamic> _$NotificareBeaconToJson(NotificareBeacon instance) =>
 
 NotificareRegion _$NotificareRegionFromJson(Map<String, dynamic> json) {
   return NotificareRegion()
-    ..regionId = json['regionId'] as String
-    ..regionName = json['regionName'] as String
-    ..regionMajor = json['regionMajor'] as int
+    ..regionId = json['regionId'] as String?
+    ..regionName = json['regionName'] as String?
+    ..regionMajor = json['regionMajor'] as int?
     ..regionGeometry = json['regionGeometry'] == null
         ? null
         : NotificarePoint.fromJson(
@@ -362,8 +358,8 @@ NotificareRegion _$NotificareRegionFromJson(Map<String, dynamic> json) {
         ? null
         : NotificarePolygon.fromJson(
             json['regionAdvancedGeometry'] as Map<String, dynamic>)
-    ..regionDistance = (json['regionDistance'] as num)?.toDouble()
-    ..regionTimezone = json['regionTimezone'] as String;
+    ..regionDistance = (json['regionDistance'] as num?)?.toDouble()
+    ..regionTimezone = json['regionTimezone'] as String?;
 }
 
 Map<String, dynamic> _$NotificareRegionToJson(NotificareRegion instance) =>
@@ -379,13 +375,13 @@ Map<String, dynamic> _$NotificareRegionToJson(NotificareRegion instance) =>
 
 NotificarePolygon _$NotificarePolygonFromJson(Map<String, dynamic> json) {
   return NotificarePolygon()
-    ..type = json['type'] as String
-    ..coordinates = (json['coordinates'] as List)
-        ?.map((e) => (e as List)
-            ?.map((e) =>
-                (e as List)?.map((e) => (e as num)?.toDouble())?.toList())
-            ?.toList())
-        ?.toList();
+    ..type = json['type'] as String?
+    ..coordinates = (json['coordinates'] as List<dynamic>?)
+        ?.map((e) => (e as List<dynamic>)
+            .map((e) =>
+                (e as List<dynamic>).map((e) => (e as num).toDouble()).toList())
+            .toList())
+        .toList();
 }
 
 Map<String, dynamic> _$NotificarePolygonToJson(NotificarePolygon instance) =>
@@ -396,10 +392,10 @@ Map<String, dynamic> _$NotificarePolygonToJson(NotificarePolygon instance) =>
 
 NotificarePoint _$NotificarePointFromJson(Map<String, dynamic> json) {
   return NotificarePoint()
-    ..type = json['type'] as String
-    ..coordinates = (json['coordinates'] as List)
-        ?.map((e) => (e as num)?.toDouble())
-        ?.toList();
+    ..type = json['type'] as String?
+    ..coordinates = (json['coordinates'] as List<dynamic>?)
+        ?.map((e) => (e as num).toDouble())
+        .toList();
 }
 
 Map<String, dynamic> _$NotificarePointToJson(NotificarePoint instance) =>
@@ -410,12 +406,12 @@ Map<String, dynamic> _$NotificarePointToJson(NotificarePoint instance) =>
 
 NotificareHeading _$NotificareHeadingFromJson(Map<String, dynamic> json) {
   return NotificareHeading()
-    ..magneticHeading = (json['magneticHeading'] as num)?.toDouble()
-    ..trueHeading = (json['trueHeading'] as num)?.toDouble()
-    ..headingAccuracy = (json['headingAccuracy'] as num)?.toDouble()
-    ..headingX = (json['headingX'] as num)?.toDouble()
-    ..headingY = (json['headingY'] as num)?.toDouble()
-    ..headingZ = (json['headingZ'] as num)?.toDouble();
+    ..magneticHeading = (json['magneticHeading'] as num?)?.toDouble()
+    ..trueHeading = (json['trueHeading'] as num?)?.toDouble()
+    ..headingAccuracy = (json['headingAccuracy'] as num?)?.toDouble()
+    ..headingX = (json['headingX'] as num?)?.toDouble()
+    ..headingY = (json['headingY'] as num?)?.toDouble()
+    ..headingZ = (json['headingZ'] as num?)?.toDouble();
 }
 
 Map<String, dynamic> _$NotificareHeadingToJson(NotificareHeading instance) =>
@@ -430,10 +426,10 @@ Map<String, dynamic> _$NotificareHeadingToJson(NotificareHeading instance) =>
 
 NotificareVisit _$NotificareVisitFromJson(Map<String, dynamic> json) {
   return NotificareVisit()
-    ..latitude = (json['latitude'] as num)?.toDouble()
-    ..longitude = (json['longitude'] as num)?.toDouble()
-    ..departureDate = json['departureDate'] as String
-    ..arrivalDate = json['arrivalDate'] as String;
+    ..latitude = (json['latitude'] as num?)?.toDouble()
+    ..longitude = (json['longitude'] as num?)?.toDouble()
+    ..departureDate = json['departureDate'] as String?
+    ..arrivalDate = json['arrivalDate'] as String?;
 }
 
 Map<String, dynamic> _$NotificareVisitToJson(NotificareVisit instance) =>
@@ -446,10 +442,11 @@ Map<String, dynamic> _$NotificareVisitToJson(NotificareVisit instance) =>
 
 NotificareUser _$NotificareUserFromJson(Map<String, dynamic> json) {
   return NotificareUser()
-    ..userID = json['userID'] as String
-    ..userName = json['userName'] as String
-    ..segments = (json['segments'] as List)?.map((e) => e as String)?.toList()
-    ..accessToken = json['accessToken'] as String;
+    ..userID = json['userID'] as String?
+    ..userName = json['userName'] as String?
+    ..segments =
+        (json['segments'] as List<dynamic>?)?.map((e) => e as String).toList()
+    ..accessToken = json['accessToken'] as String?;
 }
 
 Map<String, dynamic> _$NotificareUserToJson(NotificareUser instance) =>
@@ -463,8 +460,8 @@ Map<String, dynamic> _$NotificareUserToJson(NotificareUser instance) =>
 NotificareUserSegment _$NotificareUserSegmentFromJson(
     Map<String, dynamic> json) {
   return NotificareUserSegment()
-    ..segmentId = json['segmentId'] as String
-    ..segmentLabel = json['segmentLabel'] as String;
+    ..segmentId = json['segmentId'] as String?
+    ..segmentLabel = json['segmentLabel'] as String?;
 }
 
 Map<String, dynamic> _$NotificareUserSegmentToJson(
@@ -476,9 +473,9 @@ Map<String, dynamic> _$NotificareUserSegmentToJson(
 
 NotificareUserData _$NotificareUserDataFromJson(Map<String, dynamic> json) {
   return NotificareUserData()
-    ..key = json['key'] as String
-    ..label = json['label'] as String
-    ..value = json['value'] as String;
+    ..key = json['key'] as String?
+    ..label = json['label'] as String?
+    ..value = json['value'] as String?;
 }
 
 Map<String, dynamic> _$NotificareUserDataToJson(NotificareUserData instance) =>
@@ -491,15 +488,13 @@ Map<String, dynamic> _$NotificareUserDataToJson(NotificareUserData instance) =>
 NotificareUserPreference _$NotificareUserPreferenceFromJson(
     Map<String, dynamic> json) {
   return NotificareUserPreference()
-    ..preferenceId = json['preferenceId'] as String
-    ..preferenceLabel = json['preferenceLabel'] as String
-    ..preferenceType = json['preferenceType'] as String
-    ..preferenceOptions = (json['preferenceOptions'] as List)
-        ?.map((e) => e == null
-            ? null
-            : NotificareUserPreferenceOption.fromJson(
-                e as Map<String, dynamic>))
-        ?.toList();
+    ..preferenceId = json['preferenceId'] as String?
+    ..preferenceLabel = json['preferenceLabel'] as String?
+    ..preferenceType = json['preferenceType'] as String?
+    ..preferenceOptions = (json['preferenceOptions'] as List<dynamic>?)
+        ?.map((e) =>
+            NotificareUserPreferenceOption.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$NotificareUserPreferenceToJson(
@@ -514,9 +509,9 @@ Map<String, dynamic> _$NotificareUserPreferenceToJson(
 NotificareUserPreferenceOption _$NotificareUserPreferenceOptionFromJson(
     Map<String, dynamic> json) {
   return NotificareUserPreferenceOption()
-    ..segmentId = json['segmentId'] as String
-    ..segmentLabel = json['segmentLabel'] as String
-    ..selected = json['selected'] as bool;
+    ..segmentId = json['segmentId'] as String?
+    ..segmentLabel = json['segmentLabel'] as String?
+    ..selected = json['selected'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareUserPreferenceOptionToJson(
@@ -529,9 +524,9 @@ Map<String, dynamic> _$NotificareUserPreferenceOptionToJson(
 
 NotificareAsset _$NotificareAssetFromJson(Map<String, dynamic> json) {
   return NotificareAsset()
-    ..assetTitle = json['assetTitle'] as String
-    ..assetDescription = json['assetDescription'] as String
-    ..assetUrl = json['assetUrl'] as String
+    ..assetTitle = json['assetTitle'] as String?
+    ..assetDescription = json['assetDescription'] as String?
+    ..assetUrl = json['assetUrl'] as String?
     ..assetMetaData = json['assetMetaData'] == null
         ? null
         : NotificareAssetMetaData.fromJson(
@@ -540,7 +535,7 @@ NotificareAsset _$NotificareAssetFromJson(Map<String, dynamic> json) {
         ? null
         : NotificareAssetButton.fromJson(
             json['assetButton'] as Map<String, dynamic>)
-    ..assetExtra = json['assetExtra'];
+    ..assetExtra = json['assetExtra'] as Map<String, dynamic>?;
 }
 
 Map<String, dynamic> _$NotificareAssetToJson(NotificareAsset instance) =>
@@ -556,10 +551,10 @@ Map<String, dynamic> _$NotificareAssetToJson(NotificareAsset instance) =>
 NotificareAssetMetaData _$NotificareAssetMetaDataFromJson(
     Map<String, dynamic> json) {
   return NotificareAssetMetaData()
-    ..originalFileName = json['originalFileName'] as String
-    ..key = json['key'] as String
-    ..contentType = json['contentType'] as String
-    ..contentLength = json['contentLength'] as int;
+    ..originalFileName = json['originalFileName'] as String?
+    ..key = json['key'] as String?
+    ..contentType = json['contentType'] as String?
+    ..contentLength = json['contentLength'] as int?;
 }
 
 Map<String, dynamic> _$NotificareAssetMetaDataToJson(
@@ -574,8 +569,8 @@ Map<String, dynamic> _$NotificareAssetMetaDataToJson(
 NotificareAssetButton _$NotificareAssetButtonFromJson(
     Map<String, dynamic> json) {
   return NotificareAssetButton()
-    ..label = json['label'] as String
-    ..action = json['action'] as String;
+    ..label = json['label'] as String?
+    ..action = json['action'] as String?;
 }
 
 Map<String, dynamic> _$NotificareAssetButtonToJson(
@@ -587,18 +582,17 @@ Map<String, dynamic> _$NotificareAssetButtonToJson(
 
 NotificarePass _$NotificarePassFromJson(Map<String, dynamic> json) {
   return NotificarePass()
-    ..passbook = json['passbook'] as String
-    ..serial = json['serial'] as String
-    ..redeem = json['redeem'] as String
-    ..token = json['token'] as String
-    ..date = json['date'] as String
-    ..limit = json['limit'] as int
-    ..data = json['data'] as Map<String, dynamic>
-    ..redeemHistory = (json['redeemHistory'] as List)
-        ?.map((e) => e == null
-            ? null
-            : NotificarePassRedemption.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..passbook = json['passbook'] as String?
+    ..serial = json['serial'] as String?
+    ..redeem = json['redeem'] as String?
+    ..token = json['token'] as String?
+    ..date = json['date'] as String?
+    ..limit = json['limit'] as int?
+    ..data = json['data'] as Map<String, dynamic>?
+    ..redeemHistory = (json['redeemHistory'] as List<dynamic>?)
+        ?.map(
+            (e) => NotificarePassRedemption.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$NotificarePassToJson(NotificarePass instance) =>
@@ -616,8 +610,8 @@ Map<String, dynamic> _$NotificarePassToJson(NotificarePass instance) =>
 NotificarePassRedemption _$NotificarePassRedemptionFromJson(
     Map<String, dynamic> json) {
   return NotificarePassRedemption()
-    ..commments = json['commments'] as String
-    ..date = json['date'] as String;
+    ..commments = json['commments'] as String?
+    ..date = json['date'] as String?;
 }
 
 Map<String, dynamic> _$NotificarePassRedemptionToJson(
@@ -629,14 +623,14 @@ Map<String, dynamic> _$NotificarePassRedemptionToJson(
 
 NotificareProduct _$NotificareProductFromJson(Map<String, dynamic> json) {
   return NotificareProduct()
-    ..productIdentifier = json['productIdentifier'] as String
-    ..productType = json['productType'] as String
-    ..productName = json['productName'] as String
-    ..productDescription = json['productDescription'] as String
-    ..productPrice = json['productPrice'] as String
-    ..productCurrency = json['productCurrency'] as String
-    ..productDate = json['productDate'] as String
-    ..productActive = json['productActive'] as bool;
+    ..productIdentifier = json['productIdentifier'] as String?
+    ..productType = json['productType'] as String?
+    ..productName = json['productName'] as String?
+    ..productDescription = json['productDescription'] as String?
+    ..productPrice = json['productPrice'] as String?
+    ..productCurrency = json['productCurrency'] as String?
+    ..productDate = json['productDate'] as String?
+    ..productActive = json['productActive'] as bool?;
 }
 
 Map<String, dynamic> _$NotificareProductToJson(NotificareProduct instance) =>
@@ -653,13 +647,13 @@ Map<String, dynamic> _$NotificareProductToJson(NotificareProduct instance) =>
 
 NotificareDownload _$NotificareDownloadFromJson(Map<String, dynamic> json) {
   return NotificareDownload()
-    ..contentIdentifier = json['contentIdentifier'] as String
-    ..contentUrl = json['contentUrl'] as String
-    ..contentLength = json['contentLength'] as int
-    ..contentVersion = json['contentVersion'] as String
-    ..progress = (json['progress'] as num)?.toDouble()
-    ..timeRemaining = (json['timeRemaining'] as num)?.toDouble()
-    ..downloadState = json['downloadState'] as String;
+    ..contentIdentifier = json['contentIdentifier'] as String?
+    ..contentUrl = json['contentUrl'] as String?
+    ..contentLength = json['contentLength'] as int?
+    ..contentVersion = json['contentVersion'] as String?
+    ..progress = (json['progress'] as num?)?.toDouble()
+    ..timeRemaining = (json['timeRemaining'] as num?)?.toDouble()
+    ..downloadState = json['downloadState'] as String?;
 }
 
 Map<String, dynamic> _$NotificareDownloadToJson(NotificareDownload instance) =>
@@ -675,11 +669,11 @@ Map<String, dynamic> _$NotificareDownloadToJson(NotificareDownload instance) =>
 
 NotificareScannable _$NotificareScannableFromJson(Map<String, dynamic> json) {
   return NotificareScannable()
-    ..scannableId = json['scannableId'] as String
-    ..name = json['name'] as String
-    ..type = json['type'] as String
-    ..tag = json['tag'] as String
-    ..data = json['data'] as Map<String, dynamic>
+    ..scannableId = json['scannableId'] as String?
+    ..name = json['name'] as String?
+    ..type = json['type'] as String?
+    ..tag = json['tag'] as String?
+    ..data = json['data'] as Map<String, dynamic>?
     ..notification = json['notification'] == null
         ? null
         : NotificareNotification.fromJson(

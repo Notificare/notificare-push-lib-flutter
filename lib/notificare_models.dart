@@ -8,11 +8,11 @@ part 'notificare_models.g.dart';
 @JsonSerializable()
 class NotificareApplication {
   NotificareApplication();
-  String id;
-  String name;
-  Map<String, bool> services;
-  NotificareInboxConfig inboxConfig;
-  NotificareRegionConfig regionConfig;
+  String? id;
+  String? name;
+  Map<String, bool>? services;
+  NotificareInboxConfig? inboxConfig;
+  NotificareRegionConfig? regionConfig;
 
   factory NotificareApplication.fromJson(Map<String, dynamic> json) =>
       _$NotificareApplicationFromJson(json);
@@ -22,8 +22,8 @@ class NotificareApplication {
 @JsonSerializable()
 class NotificareInboxConfig {
   NotificareInboxConfig();
-  bool autoBadge;
-  bool useInbox;
+  bool? autoBadge;
+  bool? useInbox;
   factory NotificareInboxConfig.fromJson(Map<String, dynamic> json) =>
       _$NotificareInboxConfigFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareInboxConfigToJson(this);
@@ -32,7 +32,7 @@ class NotificareInboxConfig {
 @JsonSerializable()
 class NotificareRegionConfig {
   NotificareRegionConfig();
-  String proximityUUID;
+  String? proximityUUID;
   factory NotificareRegionConfig.fromJson(Map<String, dynamic> json) =>
       _$NotificareRegionConfigFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareRegionConfigToJson(this);
@@ -44,16 +44,16 @@ class NotificareRegionConfig {
 @JsonSerializable()
 class NotificareNotificationSettings {
   NotificareNotificationSettings();
-  String authorizationStatus;
-  String alertSetting;
-  String badgeSetting;
-  String soundSetting;
-  String notificationCenterSetting;
-  String lockScreenSetting;
-  String criticalAlertSetting;
-  String alertStyle;
-  String showPreviewsSetting;
-  bool providesAppNotificationSettings;
+  String? authorizationStatus;
+  String? alertSetting;
+  String? badgeSetting;
+  String? soundSetting;
+  String? notificationCenterSetting;
+  String? lockScreenSetting;
+  String? criticalAlertSetting;
+  String? alertStyle;
+  String? showPreviewsSetting;
+  bool? providesAppNotificationSettings;
   factory NotificareNotificationSettings.fromJson(Map<String, dynamic> json) =>
       _$NotificareNotificationSettingsFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareNotificationSettingsToJson(this);
@@ -65,29 +65,29 @@ class NotificareNotificationSettings {
 @JsonSerializable()
 class NotificareDevice {
   NotificareDevice();
-  String deviceID;
-  String userID;
-  String userName;
-  double timezone;
-  String osVersion;
-  String sdkVersion;
-  String appVersion;
-  String countryCode;
-  String language;
-  String region;
-  String transport;
-  double latitude;
-  double longitude;
-  double altitude;
-  double speed;
-  double course;
-  double accuracy;
-  String locationServicesAuthStatus;
-  bool registeredForNotifications;
-  bool allowedLocationServices;
-  bool allowedUI;
-  bool backgroundAppRefresh;
-  bool bluetoothON;
+  String? deviceID;
+  String? userID;
+  String? userName;
+  double? timezone;
+  String? osVersion;
+  String? sdkVersion;
+  String? appVersion;
+  String? countryCode;
+  String? language;
+  String? region;
+  String? transport;
+  double? latitude;
+  double? longitude;
+  double? altitude;
+  double? speed;
+  double? course;
+  double? accuracy;
+  String? locationServicesAuthStatus;
+  bool? registeredForNotifications;
+  bool? allowedLocationServices;
+  bool? allowedUI;
+  bool? backgroundAppRefresh;
+  bool? bluetoothON;
 
   factory NotificareDevice.fromJson(Map<String, dynamic> json) =>
       _$NotificareDeviceFromJson(json);
@@ -100,8 +100,8 @@ class NotificareDevice {
 @JsonSerializable()
 class NotificareDeviceDnD {
   NotificareDeviceDnD();
-  String start;
-  String end;
+  String? start;
+  String? end;
   factory NotificareDeviceDnD.fromJson(Map<String, dynamic> json) =>
       _$NotificareDeviceDnDFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareDeviceDnDToJson(this);
@@ -114,18 +114,19 @@ class NotificareDeviceDnD {
 class NotificareNotification {
   NotificareNotification();
 
-  String id;
-  String inboxItemId;
-  String type;
-  String time;
-  String title;
-  String subtitle;
-  String message;
-  String targetContentIdentifier;
-  Map<String, dynamic> extra;
-  List<NotificareContent> content;
-  List<NotificareAction> actions;
-  List<NotificareAttachment> attachments;
+  String? id;
+  String? inboxItemId;
+  String? type;
+  String? time;
+  String? title;
+  String? subtitle;
+  String? message;
+  String? targetContentIdentifier;
+  Map<String, dynamic>? extra;
+  List<NotificareContent>? content;
+  List<NotificareAction>? actions;
+  List<NotificareAttachment>? attachments;
+  Map<String, dynamic>? application;
 
   factory NotificareNotification.fromJson(Map<String, dynamic> json) =>
       _$NotificareNotificationFromJson(json);
@@ -136,9 +137,9 @@ class NotificareNotification {
 class NotificareSystemNotification {
   NotificareSystemNotification();
 
-  String notificationID;
-  String type;
-  Map<String, dynamic> extra;
+  String? notificationID;
+  String? type;
+  Map<String, dynamic>? extra;
 
   factory NotificareSystemNotification.fromJson(Map<String, dynamic> json) =>
       _$NotificareSystemNotificationFromJson(json);
@@ -149,8 +150,8 @@ class NotificareSystemNotification {
 class NotificareContent {
   NotificareContent(this.type, this.data);
 
-  String type;
-  String data;
+  String? type;
+  dynamic data;
 
   factory NotificareContent.fromJson(Map<String, dynamic> json) =>
       _$NotificareContentFromJson(json);
@@ -161,11 +162,11 @@ class NotificareContent {
 class NotificareAction {
   NotificareAction();
 
-  String label;
-  String type;
-  String target;
-  bool camera;
-  bool keyboard;
+  String? label;
+  String? type;
+  String? target;
+  bool? camera;
+  bool? keyboard;
 
   factory NotificareAction.fromJson(Map<String, dynamic> json) =>
       _$NotificareActionFromJson(json);
@@ -175,8 +176,8 @@ class NotificareAction {
 @JsonSerializable()
 class NotificareAttachment {
   NotificareAttachment(this.mimeType, this.uri);
-  String mimeType;
-  String uri;
+  String? mimeType;
+  String? uri;
 
   factory NotificareAttachment.fromJson(Map<String, dynamic> json) =>
       _$NotificareAttachmentFromJson(json);
@@ -190,16 +191,16 @@ class NotificareAttachment {
 class NotificareInboxItem {
   NotificareInboxItem(this.inboxId);
 
-  String inboxId;
-  String notification;
-  String type;
-  String message;
-  String title;
-  String subtitle;
-  NotificareAttachment attachment;
-  Map<String, String> extra;
-  String time;
-  bool opened;
+  String? inboxId;
+  String? notification;
+  String? type;
+  String? message;
+  String? title;
+  String? subtitle;
+  NotificareAttachment? attachment;
+  Map<String, String>? extra;
+  String? time;
+  bool? opened;
 
   factory NotificareInboxItem.fromJson(Map<String, dynamic> json) =>
       _$NotificareInboxItemFromJson(json);
@@ -212,15 +213,15 @@ class NotificareInboxItem {
 @JsonSerializable()
 class NotificareLocation {
   NotificareLocation();
-  double latitude;
-  double longitude;
-  double altitude;
-  double horizontalAccuracy;
-  double verticalAccuracy;
-  int floor;
-  double speed;
-  double course;
-  String timestamp;
+  double? latitude;
+  double? longitude;
+  double? altitude;
+  double? horizontalAccuracy;
+  double? verticalAccuracy;
+  int? floor;
+  double? speed;
+  double? course;
+  String? timestamp;
   factory NotificareLocation.fromJson(Map<String, dynamic> json) =>
       _$NotificareLocationFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareLocationToJson(this);
@@ -229,13 +230,13 @@ class NotificareLocation {
 @JsonSerializable()
 class NotificareBeacon {
   NotificareBeacon();
-  String beaconId;
-  String beaconName;
-  String beaconRegion;
-  String beaconUUID;
-  int beaconMajor;
-  int beaconMinor;
-  bool beaconTriggers;
+  String? beaconId;
+  String? beaconName;
+  String? beaconRegion;
+  String? beaconUUID;
+  int? beaconMajor;
+  int? beaconMinor;
+  bool? beaconTriggers;
   factory NotificareBeacon.fromJson(Map<String, dynamic> json) =>
       _$NotificareBeaconFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareBeaconToJson(this);
@@ -244,13 +245,13 @@ class NotificareBeacon {
 @JsonSerializable()
 class NotificareRegion {
   NotificareRegion();
-  String regionId;
-  String regionName;
-  int regionMajor;
-  NotificarePoint regionGeometry;
-  NotificarePolygon regionAdvancedGeometry;
-  double regionDistance;
-  String regionTimezone;
+  String? regionId;
+  String? regionName;
+  int? regionMajor;
+  NotificarePoint? regionGeometry;
+  NotificarePolygon? regionAdvancedGeometry;
+  double? regionDistance;
+  String? regionTimezone;
   factory NotificareRegion.fromJson(Map<String, dynamic> json) =>
       _$NotificareRegionFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareRegionToJson(this);
@@ -259,8 +260,8 @@ class NotificareRegion {
 @JsonSerializable()
 class NotificarePolygon {
   NotificarePolygon();
-  String type;
-  List<List<List<double>>> coordinates;
+  String? type;
+  List<List<List<double>>>? coordinates;
   factory NotificarePolygon.fromJson(Map<String, dynamic> json) =>
       _$NotificarePolygonFromJson(json);
   Map<String, dynamic> toJson() => _$NotificarePolygonToJson(this);
@@ -269,8 +270,8 @@ class NotificarePolygon {
 @JsonSerializable()
 class NotificarePoint {
   NotificarePoint();
-  String type;
-  List<double> coordinates;
+  String? type;
+  List<double>? coordinates;
   factory NotificarePoint.fromJson(Map<String, dynamic> json) =>
       _$NotificarePointFromJson(json);
   Map<String, dynamic> toJson() => _$NotificarePointToJson(this);
@@ -279,12 +280,12 @@ class NotificarePoint {
 @JsonSerializable()
 class NotificareHeading {
   NotificareHeading();
-  double magneticHeading;
-  double trueHeading;
-  double headingAccuracy;
-  double headingX;
-  double headingY;
-  double headingZ;
+  double? magneticHeading;
+  double? trueHeading;
+  double? headingAccuracy;
+  double? headingX;
+  double? headingY;
+  double? headingZ;
   factory NotificareHeading.fromJson(Map<String, dynamic> json) =>
       _$NotificareHeadingFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareHeadingToJson(this);
@@ -293,10 +294,10 @@ class NotificareHeading {
 @JsonSerializable()
 class NotificareVisit {
   NotificareVisit();
-  double latitude;
-  double longitude;
-  String departureDate;
-  String arrivalDate;
+  double? latitude;
+  double? longitude;
+  String? departureDate;
+  String? arrivalDate;
   factory NotificareVisit.fromJson(Map<String, dynamic> json) =>
       _$NotificareVisitFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareVisitToJson(this);
@@ -309,10 +310,10 @@ class NotificareVisit {
 class NotificareUser {
   NotificareUser();
 
-  String userID;
-  String userName;
-  List<String> segments;
-  String accessToken;
+  String? userID;
+  String? userName;
+  List<String>? segments;
+  String? accessToken;
 
   factory NotificareUser.fromJson(Map<String, dynamic> json) =>
       _$NotificareUserFromJson(json);
@@ -323,8 +324,8 @@ class NotificareUser {
 class NotificareUserSegment {
   NotificareUserSegment();
 
-  String segmentId;
-  String segmentLabel;
+  String? segmentId;
+  String? segmentLabel;
 
   factory NotificareUserSegment.fromJson(Map<String, dynamic> json) =>
       _$NotificareUserSegmentFromJson(json);
@@ -334,9 +335,9 @@ class NotificareUserSegment {
 @JsonSerializable()
 class NotificareUserData {
   NotificareUserData();
-  String key;
-  String label;
-  String value;
+  String? key;
+  String? label;
+  String? value;
   factory NotificareUserData.fromJson(Map<String, dynamic> json) =>
       _$NotificareUserDataFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareUserDataToJson(this);
@@ -345,10 +346,10 @@ class NotificareUserData {
 @JsonSerializable()
 class NotificareUserPreference {
   NotificareUserPreference();
-  String preferenceId;
-  String preferenceLabel;
-  String preferenceType;
-  List<NotificareUserPreferenceOption> preferenceOptions;
+  String? preferenceId;
+  String? preferenceLabel;
+  String? preferenceType;
+  List<NotificareUserPreferenceOption>? preferenceOptions;
   factory NotificareUserPreference.fromJson(Map<String, dynamic> json) =>
       _$NotificareUserPreferenceFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareUserPreferenceToJson(this);
@@ -357,9 +358,9 @@ class NotificareUserPreference {
 @JsonSerializable()
 class NotificareUserPreferenceOption {
   NotificareUserPreferenceOption();
-  String segmentId;
-  String segmentLabel;
-  bool selected;
+  String? segmentId;
+  String? segmentLabel;
+  bool? selected;
   factory NotificareUserPreferenceOption.fromJson(Map<String, dynamic> json) =>
       _$NotificareUserPreferenceOptionFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareUserPreferenceOptionToJson(this);
@@ -371,12 +372,12 @@ class NotificareUserPreferenceOption {
 @JsonSerializable()
 class NotificareAsset {
   NotificareAsset();
-  String assetTitle;
-  String assetDescription;
-  String assetUrl;
-  NotificareAssetMetaData assetMetaData;
-  NotificareAssetButton assetButton;
-  Map<String, dynamic> assetExtra;
+  String? assetTitle;
+  String? assetDescription;
+  String? assetUrl;
+  NotificareAssetMetaData? assetMetaData;
+  NotificareAssetButton? assetButton;
+  Map<String, dynamic>? assetExtra;
   factory NotificareAsset.fromJson(Map<String, dynamic> json) =>
       _$NotificareAssetFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareAssetToJson(this);
@@ -385,10 +386,10 @@ class NotificareAsset {
 @JsonSerializable()
 class NotificareAssetMetaData {
   NotificareAssetMetaData();
-  String originalFileName;
-  String key;
-  String contentType;
-  int contentLength;
+  String? originalFileName;
+  String? key;
+  String? contentType;
+  int? contentLength;
   factory NotificareAssetMetaData.fromJson(Map<String, dynamic> json) =>
       _$NotificareAssetMetaDataFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareAssetMetaDataToJson(this);
@@ -397,8 +398,8 @@ class NotificareAssetMetaData {
 @JsonSerializable()
 class NotificareAssetButton {
   NotificareAssetButton();
-  String label;
-  String action;
+  String? label;
+  String? action;
   factory NotificareAssetButton.fromJson(Map<String, dynamic> json) =>
       _$NotificareAssetButtonFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareAssetButtonToJson(this);
@@ -410,14 +411,14 @@ class NotificareAssetButton {
 @JsonSerializable()
 class NotificarePass {
   NotificarePass();
-  String passbook;
-  String serial;
-  String redeem;
-  String token;
-  String date;
-  int limit;
-  Map<String, dynamic> data;
-  List<NotificarePassRedemption> redeemHistory;
+  String? passbook;
+  String? serial;
+  String? redeem;
+  String? token;
+  String? date;
+  int? limit;
+  Map<String, dynamic>? data;
+  List<NotificarePassRedemption>? redeemHistory;
   factory NotificarePass.fromJson(Map<String, dynamic> json) =>
       _$NotificarePassFromJson(json);
   Map<String, dynamic> toJson() => _$NotificarePassToJson(this);
@@ -426,8 +427,8 @@ class NotificarePass {
 @JsonSerializable()
 class NotificarePassRedemption {
   NotificarePassRedemption();
-  String commments;
-  String date;
+  String? commments;
+  String? date;
   factory NotificarePassRedemption.fromJson(Map<String, dynamic> json) =>
       _$NotificarePassRedemptionFromJson(json);
   Map<String, dynamic> toJson() => _$NotificarePassRedemptionToJson(this);
@@ -439,14 +440,14 @@ class NotificarePassRedemption {
 @JsonSerializable()
 class NotificareProduct {
   NotificareProduct();
-  String productIdentifier;
-  String productType;
-  String productName;
-  String productDescription;
-  String productPrice;
-  String productCurrency;
-  String productDate;
-  bool productActive;
+  String? productIdentifier;
+  String? productType;
+  String? productName;
+  String? productDescription;
+  String? productPrice;
+  String? productCurrency;
+  String? productDate;
+  bool? productActive;
   factory NotificareProduct.fromJson(Map<String, dynamic> json) =>
       _$NotificareProductFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareProductToJson(this);
@@ -455,13 +456,13 @@ class NotificareProduct {
 @JsonSerializable()
 class NotificareDownload {
   NotificareDownload();
-  String contentIdentifier;
-  String contentUrl;
-  int contentLength;
-  String contentVersion;
-  double progress;
-  double timeRemaining;
-  String downloadState;
+  String? contentIdentifier;
+  String? contentUrl;
+  int? contentLength;
+  String? contentVersion;
+  double? progress;
+  double? timeRemaining;
+  String? downloadState;
   factory NotificareDownload.fromJson(Map<String, dynamic> json) =>
       _$NotificareDownloadFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareDownloadToJson(this);
@@ -473,12 +474,12 @@ class NotificareDownload {
 @JsonSerializable()
 class NotificareScannable {
   NotificareScannable();
-  String scannableId;
-  String name;
-  String type;
-  String tag;
-  Map<String, dynamic> data;
-  NotificareNotification notification;
+  String? scannableId;
+  String? name;
+  String? type;
+  String? tag;
+  Map<String, dynamic>? data;
+  NotificareNotification? notification;
   factory NotificareScannable.fromJson(Map<String, dynamic> json) =>
       _$NotificareScannableFromJson(json);
   Map<String, dynamic> toJson() => _$NotificareScannableToJson(this);

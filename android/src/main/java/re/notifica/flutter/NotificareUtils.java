@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import re.notifica.Notificare;
 import re.notifica.model.NotificareAction;
@@ -208,7 +207,9 @@ public class NotificareUtils {
         JSONObject assetMap = new JSONObject();
         assetMap.put("assetTitle", asset.getTitle());
         assetMap.put("assetDescription", asset.getDescription());
-        assetMap.put("assetUrl", (asset.getUrl() != null) ? asset.getUrl().toString() : null);
+        if (asset.getUrl() != null) {
+            assetMap.put("assetUrl", asset.getUrl().toString());
+        }
         assetMap.put("assetExtra", asset.getExtra());
 
         JSONObject metaMap = new JSONObject();
@@ -370,9 +371,13 @@ public class NotificareUtils {
     public static JSONObject mapInboxItem(NotificareInboxItem notificareInboxItem) throws JSONException {
         JSONObject inboxItemMap = new JSONObject();
         inboxItemMap.put("inboxId", notificareInboxItem.getItemId());
-        inboxItemMap.put("notification", notificareInboxItem.getNotification().getNotificationId());
+        if (notificareInboxItem.getNotification() != null) {
+            inboxItemMap.put("notification", notificareInboxItem.getNotification().getNotificationId());
+        }
         inboxItemMap.put("type", notificareInboxItem.getType());
-        inboxItemMap.put("message", notificareInboxItem.getNotification().getMessage());
+        if (notificareInboxItem.getNotification() != null) {
+            inboxItemMap.put("message", notificareInboxItem.getNotification().getMessage());
+        }
         inboxItemMap.put("title", notificareInboxItem.getTitle());
         inboxItemMap.put("subtitle", notificareInboxItem.getSubtitle());
         if (notificareInboxItem.getAttachment() != null) {

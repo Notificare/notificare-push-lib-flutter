@@ -1,3 +1,64 @@
+## 2.7.0
+- Update native dependencies
+- Fix notification opens from cold app start
+- Fix notification content (map) parsing
+
+## 2.7.0-beta.1
+- Update native Android dependency to 2.7.0-beta.5
+- Update native iOS dependency to 2.7-beta2
+- Add handled flags for openUrl and continueUserActivity
+
+##### BREAKING CHANGE: ANDROID NOTIFICATION TRAMPOLINE
+Add the following to your `Manifest.xml`:
+
+```xml
+<activity android:name=".MainActivity">
+
+    <!-- existing intent filters  -->
+
+    <intent-filter>
+        <action android:name="re.notifica.intent.action.RemoteMessageOpened" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+
+</activity>
+```
+
+For more information about this subject please take a look at [this](https://github.com/Notificare/notificare-push-lib-android-src/blob/2.7-dev/UPGRADE.md#breaking-change-trampoline-intents) section.
+
+##### BREAKING CHANGE: ANDROID BLUETOOTH PERMISSION
+From Android 12 and up, bluetooth scanning permissions have to be requested at runtime. This impacts the geofencing functionality of our library.
+
+## 2.6.2
+- Prevent the plugin from stopping the events propagation
+
+## 2.6.1
+- Update native Android dependency
+- Update native iOS dependency
+- Handle test device registration
+- Fix notification serialisation
+
+## 2.6.0
+- Fix preferred language update
+- Add null safety support
+
+## 2.5.4
+- Update native iOS dependency
+- Improve present notifications, inbox items & scannables transition & styling 
+
+## 2.5.3
+- Prevent crash on mapping inbox items without a notification
+- Update native Android dependency
+- Update native iOS dependency
+
+## 2.5.2
+* Fix WidgetsBindingObserver lifecycle issue
+* Fix un-launch related inbox crash
+
+## 2.5.1
+* Add `extra` to assets
+* Allow nullable asset URLs 
+
 ## 2.5.0
 * Update native Android SDK to 2.5.0
 * Update native iOS SDK to 2.5.0

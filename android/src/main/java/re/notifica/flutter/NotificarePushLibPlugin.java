@@ -256,8 +256,6 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       replySuccess(result, null);
     } else if ("setCategoryOptions".equals(call.method)) {
       replySuccess(result, null);
-    } else if ("didChangeAppLifecycleState".equals(call.method)) {
-      replySuccess(result, null);
     } else if ("registerForNotifications".equals(call.method)) {
       Notificare.shared().enableNotifications();
       replySuccess(result, null);
@@ -340,8 +338,11 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
     } else if ("fetchPreferredLanguage".equals(call.method)) {
       replySuccess(result, Notificare.shared().getPreferredLanguage());
     } else if ("updatePreferredLanguage".equals(call.method)) {
-      if (call.hasArgument("language") && call.argument("language") instanceof String) {
-        Notificare.shared().updatePreferredLanguage(call.argument("language"), new NotificareCallback<Boolean>() {
+      if (call.hasArgument("preferredLanguage")) {
+        String language = call.argument("preferredLanguage") != JSONObject.NULL
+                ? call.argument("preferredLanguage")
+                : null;
+        Notificare.shared().updatePreferredLanguage(language, new NotificareCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean aBoolean) {
             replySuccess(result, null);
@@ -1362,6 +1363,8 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
   }
 
   private boolean handleIntent(Intent intent) {
+    if (Notificare.shared().handleTrampolineIntent(intent)) return true;
+
     JSONObject notificationMap = parseNotificationIntent(intent);
     if (notificationMap != null) {
       sendEvent("remoteNotificationReceivedInBackground", notificationMap, true);
@@ -1370,6 +1373,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
       if (sendValidateUserToken(Notificare.shared().parseValidateUserIntent(intent))) return true;
       if (sendResetPasswordToken(Notificare.shared().parseResetPasswordIntent(intent))) return true;
       if (mActivity != null && Notificare.shared().handleDynamicLinkIntent(mActivity, intent)) return true;
+      if (Notificare.shared().handleTestDeviceIntent(intent)) return true;
 
       if (intent.getData() != null) {
         try {
@@ -1419,7 +1423,7 @@ public class NotificarePushLibPlugin implements FlutterPlugin, ActivityAware, Ap
   @Override
   public void onChanged(@Nullable SortedSet<NotificareInboxItem> notificareInboxItems) {
     JSONArray inbox = new JSONArray();
-    if (notificareInboxItems != null) {
+    if (notificareInboxItems != null && Notificare.shared().getInboxManager() != null) {
       try {
         for (NotificareInboxItem item : notificareInboxItems) {
           inbox.put(NotificareUtils.mapInboxItem(item));
