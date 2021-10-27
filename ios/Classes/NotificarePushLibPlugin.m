@@ -1294,17 +1294,12 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
-
-    NSLog(@"openURL START");
-
     BOOL handled = [[NotificarePushLib shared] handleOpenURL:url withOptions:options];
     
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[url absoluteString] forKey:@"url"];
     [payload setObject:options forKey:@"options"];
     [self sendEvent:@{@"event":@"urlOpened", @"body": payload}];
-    NSLog(@"openURL END");
-
     return NO;
 }
 
