@@ -1294,18 +1294,23 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
+
+    NSLog(@"openURL START");
+
     BOOL handled = [[NotificarePushLib shared] handleOpenURL:url withOptions:options];
     
     NSMutableDictionary * payload = [NSMutableDictionary new];
     [payload setObject:[url absoluteString] forKey:@"url"];
     [payload setObject:options forKey:@"options"];
     [self sendEvent:@{@"event":@"urlOpened", @"body": payload}];
-    
-    return handled;
+    NSLog(@"openURL END");
+
+    return NO;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nonnull))restorationHandler {
-    return [[NotificarePushLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    [[NotificarePushLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return NO;
 }
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken {
