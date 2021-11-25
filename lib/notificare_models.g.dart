@@ -275,9 +275,7 @@ NotificareInboxItem _$NotificareInboxItemFromJson(Map<String, dynamic> json) {
         ? null
         : NotificareAttachment.fromJson(
             json['attachment'] as Map<String, dynamic>)
-    ..extra = (json['extra'] as Map<String, dynamic>?)?.map(
-      (k, e) => MapEntry(k, e as String),
-    )
+    ..extra = json['extra'] as Map<String, dynamic>?
     ..time = json['time'] as String?
     ..opened = json['opened'] as bool?;
 }
