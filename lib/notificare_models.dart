@@ -198,7 +198,7 @@ class NotificareInboxItem {
   String? title;
   String? subtitle;
   NotificareAttachment? attachment;
-  Map<String, String>? extra;
+  Map<String, dynamic>? extra;
   String? time;
   bool? opened;
 

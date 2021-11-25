@@ -1,3 +1,6 @@
+## 2.7.2
+- Fix inbox item extra parsing
+
 ## 2.7.1
 - Update native iOS dependency
 

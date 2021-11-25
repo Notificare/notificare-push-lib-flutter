@@ -25,7 +25,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We will need access to the device&apos;s camera to reply to notifications or scan QR codes</string>
+	<string>We will need access to the device's camera to reply to notifications or scan QR codes</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>You will need to select the Always Allow option if you wish to receive geo-fencing and beacon notifications. Selecting the option Only While Using the App will prevent us from sending you these messages.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
